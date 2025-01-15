@@ -1,0 +1,133 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model permission {
+  id                 String               @id(map: "permission_pk") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name               String?
+  description        String?
+  profile_permission profile_permission[]
+}
+
+model profile {
+  id                 String               @id(map: "profiles_pk") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name               String?
+  profile_permission profile_permission[]
+  user               user[]
+}
+
+model profile_permission {
+  permission_d String     @db.Uuid
+  profile_id   String     @db.Uuid
+  permission   permission @relation(fields: [permission_d], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "profile_permission_permission_fk")
+  profile      profile    @relation(fields: [profile_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "profile_permission_profile_fk")
+
+  @@id([permission_d, profile_id], map: "profile_permission_pk")
+}
+
+model user {
+  id         String   @id(map: "users_pk") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  email      String
+  first_name String?
+  last_name  String?
+  profile_id String?  @db.Uuid
+  profile    profile? @relation(fields: [profile_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "users_profiles_fk")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model exercise {
+  id              String            @id(map: "exercise_pk") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name            String?
+  created_at      DateTime?         @default(now()) @db.Timestamptz(6)
+  updated_at      DateTime?         @db.Timestamptz(6)
+  target          Json?
+  year            Int?
+  status          String?
+  data_version    data_version[]
+  exercise_period exercise_period[]
+}
+
+model exercise_period {
+  exercise_id String   @db.Uuid
+  period_id   String   @db.Uuid
+  exercise    exercise @relation(fields: [exercise_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "exercise_period_exercise_fk")
+  period      period   @relation(fields: [period_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "exercise_period_period_fk")
+
+  @@id([exercise_id, period_id], map: "exercise_period_pk")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model exercise_step {
+  id             String       @id(map: "exercise_step_pk") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  step_config_id String?      @db.Uuid
+  status         String?
+  deadline_dt    DateTime?    @db.Timestamptz(6)
+  step_config    step_config? @relation(fields: [step_config_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "exercise_step_step_config_fk")
+}
+
+model period {
+  id              String            @id(map: "period_pk") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name            String?
+  parent_id       String?           @db.Uuid
+  sorted_by       Int?
+  exercise_period exercise_period[]
+  period          period?           @relation("periodToperiod", fields: [parent_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "period_period_fk")
+  other_period    period[]          @relation("periodToperiod")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model step_config {
+  id            String          @id(map: "step_config_pk") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name          String?
+  code          String?
+  icon_key      String?
+  sorted_by     Int?
+  exercise_step exercise_step[]
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model data_source {
+  id           String         @id(map: "data_source_pk") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  type         String?
+  name         String?
+  code         String?
+  data_version data_version[]
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model data_version {
+  id             String       @id(map: "data_version_pk") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  version        Int?
+  path           String?
+  name           String?
+  sbu_id         String?      @db.Uuid
+  exercise_id    String?      @db.Uuid
+  site_id        String?      @db.Uuid
+  created_at     DateTime?    @db.Timestamptz(6)
+  data_source_id String?      @db.Uuid
+  data_source    data_source? @relation(fields: [data_source_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "data_version_data_source_fk")
+  exercise       exercise?    @relation(fields: [exercise_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "data_version_exercise_fk")
+  ref_sbu        ref_sbu?     @relation(fields: [sbu_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "data_version_ref_sbu_fk")
+  ref_site       ref_site?    @relation(fields: [site_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "data_version_ref_site_fk")
+}
+
+model ref_sbu {
+  id           String         @id(map: "ref_sbu_pk") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name         String?
+  data_version data_version[]
+  ref_site     ref_site[]
+}
+
+model ref_site {
+  id           String         @id(map: "ref_site_pk") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name         String?
+  code         String?
+  sbu_id       String?        @db.Uuid
+  data_version data_version[]
+  ref_sbu      ref_sbu?       @relation(fields: [sbu_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "ref_site_ref_sbu_fk")
+}
