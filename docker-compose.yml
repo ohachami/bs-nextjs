@@ -1,4 +1,4 @@
-version: '3.1'
+version: "3.1"
 services:
   db:
     container_name: postgres
@@ -13,19 +13,19 @@ services:
       - "5432:5432"
     networks:
       - pg-network
-      
+
   minio:
     image: docker.io/bitnami/minio:2022
     ports:
-      - '9000:9000'
-      - '9001:9001'
+      - "9000:9000"
+      - "9001:9001"
     volumes:
       - ../minio:/home
     environment:
       - MINIO_ROOT_USER=0B6X4FMCQRQWHB7LTOMZ
       - MINIO_ROOT_PASSWORD=DlDkHCOrl2DcHC7vO6YzxLtgvRl8LehT6wdNj3qo
       - MINIO_DEFAULT_BUCKETS=business-steering
- 
+
 networks:
   pg-network:
     driver: bridge

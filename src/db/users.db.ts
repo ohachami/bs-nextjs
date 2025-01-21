@@ -1,5 +1,5 @@
-import { prisma } from "./baseDbService"
+import { prisma } from "./baseDbService";
 
 export const getUsers = () => {
-    return prisma.user.findMany()
-}
+  return prisma.user.findMany();
+};
