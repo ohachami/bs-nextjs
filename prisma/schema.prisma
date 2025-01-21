@@ -31,12 +31,20 @@ model profile_permission {
 }
 
 model user {
-  id         String   @id(map: "users_pk") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  email      String
-  first_name String?
-  last_name  String?
-  profile_id String?  @db.Uuid
-  profile    profile? @relation(fields: [profile_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "users_profiles_fk")
+  id            String         @id(map: "users_pk") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  email         String
+  first_name    String?
+  last_name     String?
+  profile_id    String?        @db.Uuid
+  profile_image String?        @db.VarChar(255)
+  created_at    DateTime?      @db.Timestamp(6)
+  last_login    DateTime?      @db.Timestamp(6)
+  sbu_id        String         @db.Uuid
+  audit_log     audit_log[]
+  data_version  data_version[]
+  exercise      exercise[]
+  ref_sbu       ref_sbu        @relation(fields: [sbu_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "user_ref_sbu_fk")
+  profile       profile?       @relation(fields: [profile_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "users_profiles_fk")
 }
 
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
@@ -48,13 +56,18 @@ model exercise {
   target          Json?
   year            Int?
   status          String?
+  creator_id      String            @db.Uuid
+  description     String?
   data_version    data_version[]
+  user            user              @relation(fields: [creator_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "exercise_creator_id")
   exercise_period exercise_period[]
+  period_config   period_config[]
 }
 
 model exercise_period {
   exercise_id String   @db.Uuid
   period_id   String   @db.Uuid
+  year        Int?
   exercise    exercise @relation(fields: [exercise_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "exercise_period_exercise_fk")
   period      period   @relation(fields: [period_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "exercise_period_period_fk")
 
@@ -71,13 +84,17 @@ model exercise_step {
 }
 
 model period {
-  id              String            @id(map: "period_pk") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  name            String?
-  parent_id       String?           @db.Uuid
-  sorted_by       Int?
-  exercise_period exercise_period[]
-  period          period?           @relation("periodToperiod", fields: [parent_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "period_period_fk")
-  other_period    period[]          @relation("periodToperiod")
+  id                                                   String            @id(map: "period_pk") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name                                                 String?
+  parent_id                                            String?           @db.Uuid
+  sorted_by                                            Int?
+  horizon_id                                           String            @db.Uuid
+  exercise_period                                      exercise_period[]
+  horizon                                              horizon           @relation(fields: [horizon_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "period_horizon_fk")
+  period                                               period?           @relation("periodToperiod", fields: [parent_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "period_period_fk")
+  other_period                                         period[]          @relation("periodToperiod")
+  period_config_period_config_parent_period_idToperiod period_config[]   @relation("period_config_parent_period_idToperiod")
+  period_config_period_config_period_idToperiod        period_config[]   @relation("period_config_period_idToperiod")
 }
 
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
@@ -110,10 +127,12 @@ model data_version {
   site_id        String?      @db.Uuid
   created_at     DateTime?    @db.Timestamptz(6)
   data_source_id String?      @db.Uuid
+  user_id        String       @db.Uuid
   data_source    data_source? @relation(fields: [data_source_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "data_version_data_source_fk")
   exercise       exercise?    @relation(fields: [exercise_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "data_version_exercise_fk")
   ref_sbu        ref_sbu?     @relation(fields: [sbu_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "data_version_ref_sbu_fk")
   ref_site       ref_site?    @relation(fields: [site_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "data_version_ref_site_fk")
+  user           user         @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "data_version_user_fk")
 }
 
 model ref_sbu {
@@ -121,6 +140,7 @@ model ref_sbu {
   name         String?
   data_version data_version[]
   ref_site     ref_site[]
+  user         user[]
 }
 
 model ref_site {
@@ -130,4 +150,49 @@ model ref_site {
   sbu_id       String?        @db.Uuid
   data_version data_version[]
   ref_sbu      ref_sbu?       @relation(fields: [sbu_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "ref_site_ref_sbu_fk")
+}
+
+model audit_log {
+  id         String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id    String     @db.Uuid
+  action_id  String     @db.Uuid
+  timestamp  DateTime   @default(now()) @db.Timestamp(6)
+  details    String?
+  ref_action ref_action @relation(fields: [action_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "audit_log_action_fk")
+  user       user       @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "audit_log_user_fk")
+}
+
+model exercise_type {
+  id         String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name       String? @db.VarChar(255)
+  horizon_id String  @db.Uuid
+  horizon    horizon @relation(fields: [horizon_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "exercise_type_horizon_fk")
+}
+
+model horizon {
+  id            String          @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name          String?         @db.VarChar(255)
+  exercise_type exercise_type[]
+  period        period[]
+}
+
+model period_config {
+  exercise_id                                   String   @db.Uuid
+  parent_period_id                              String   @db.Uuid
+  period_id                                     String   @db.Uuid
+  sorted_by                                     Int?
+  bump_year                                     Boolean?
+  exercise                                      exercise @relation(fields: [exercise_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "period_config_exercise_fk")
+  period_period_config_parent_period_idToperiod period   @relation("period_config_parent_period_idToperiod", fields: [parent_period_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "period_config_parent_period_fk")
+  period_period_config_period_idToperiod        period   @relation("period_config_period_idToperiod", fields: [period_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "period_config_period_fk")
+
+  @@id([exercise_id, parent_period_id, period_id])
+}
+
+model ref_action {
+  id          String      @id(map: "action_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  description String?
+  key         String?     @db.VarChar(255)
+  label       String?     @db.VarChar(255)
+  audit_log   audit_log[]
 }
