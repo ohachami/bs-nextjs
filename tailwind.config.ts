@@ -41,6 +41,7 @@ export default {
           light: "hsl(var(--tertiary-light))",
         },
         blue: {
+          DEFAULT: "hsl(var(--blue))",
           dark: "hsl(var(--blue-dark))",
         },
         muted: {

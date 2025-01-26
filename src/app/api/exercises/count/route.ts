@@ -1,4 +1,4 @@
-import { getCount } from "@/db/exercices.db";
+import { getCount } from "@/db/exercises.db";
 
 export async function GET() {
     const count = await getCount();

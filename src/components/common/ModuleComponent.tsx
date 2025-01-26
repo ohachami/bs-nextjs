@@ -53,9 +53,9 @@ const ModuleComponent: React.FC<Props> = ({
 
       {children && children}
 
-      <div>
+      <div className="w-9 h-9">
         {to && (
-          <Link className="w-9" href={to}>
+          <Link href={to}>
             <MoveRight
               strokeWidth={1}
               size={36}

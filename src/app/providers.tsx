@@ -11,7 +11,14 @@ export default function Providers({
   session: Session | null;
   children: React.ReactNode;
 }) {
-  const queryClient = new QueryClient();
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        throwOnError: false,
+        retry: false,
+      },
+    },
+  });
 
   /* activate when ADFS is configured
     if(!session) {

@@ -1,12 +1,12 @@
 'use client';
 import ModuleComponent from '@/components/common/ModuleComponent';
-import { useExercicesCount } from '@/services/exercices.service';
+import { useExercisesCount } from '@/services/exercises.service';
 import { MousePointerClick, SlidersHorizontal } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { modules } from '@/utils/constants';
 
 const Module = () => {
-  const countQuery = useExercicesCount();
+  const countQuery = useExercisesCount();
   return (
     <div className=" h-full flex flex-col gap-4 p-8 pt-6">
       <div className="flex flex-col gap-2.5 mt-5 mb-11">
