@@ -23,7 +23,7 @@ const ModuleComponent: React.FC<Props> = ({
   <div className="my-[80px] p-4 bg-white rounded-lg shadow-sm flex flex-col h-full max-h-[387px]">
     <div
       className={clsx(
-        '-mt-[79px] h-[152.4px] w-[151px] border-[1.5px] rounded-[20px] p-5',
+        '-mt-[90px] h-[150px] w-[150px] border-[1.5px] rounded-[20px] p-5',
         {
           'bg-primary-light border-primary/40': variant === 'primary',
           'bg-secondary-light border-secondary/40': variant === 'secondary',
@@ -53,9 +53,9 @@ const ModuleComponent: React.FC<Props> = ({
 
       {children && children}
 
-      <div>
+      <div className="w-9 h-9">
         {to && (
-          <Link className="w-fit" href={to}>
+          <Link href={to}>
             <MoveRight
               strokeWidth={1}
               size={36}

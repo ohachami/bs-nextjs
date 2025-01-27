@@ -1,6 +1,6 @@
 'use client';
 
-import ModuleComponent from '@/components/shared/ModuleComponent';
+import ModuleComponent from '@/components/common/ModuleComponent';
 import { modules } from '@/utils/constants';
 import { ChartLine, ClipboardList, GitCompareArrows } from 'lucide-react';
 import React from 'react';
