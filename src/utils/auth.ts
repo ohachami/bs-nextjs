@@ -1,6 +1,6 @@
 import { getUserPermissions } from '@/db/users.db';
 import { AuthOptions, getServerSession } from 'next-auth';
-import { generateToken } from './jwt';
+import { generateToken } from './jwt/jose';
 
 const authOptions: AuthOptions = {
   providers: [
