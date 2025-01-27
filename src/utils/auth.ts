@@ -1,18 +1,20 @@
-import { AuthOptions, getServerSession } from "next-auth";
+import { getUserPermissions } from '@/db/users.db';
+import { AuthOptions, getServerSession } from 'next-auth';
+import { generateToken } from './jwt/jose';
 
 const authOptions: AuthOptions = {
   providers: [
     {
-      id: "adfs",
-      name: "ADFS",
-      type: "oauth",
+      id: 'adfs',
+      name: 'ADFS',
+      type: 'oauth',
       issuer: process.env.ADFS_ISSUER,
       clientId: process.env.ADFS_CLIENT_ID,
       clientSecret: process.env.ADFS_CLIENT_SECRET,
       authorization: {
         url: `${process.env.ADFS_ISSUER}/oauth2/authorize/`,
         params: {
-          scope: "openid profile email",
+          scope: 'openid profile email',
         },
       },
       token: {
@@ -22,7 +24,7 @@ const authOptions: AuthOptions = {
         url: `${process.env.ADFS_ISSUER}/userinfo`,
       },
       jwks_endpoint: `${process.env.ADFS_ISSUER}/discovery/keys`, // Optionally for verifying tokens
-      checks: ["pkce", "state"], // Recommended for enhanced security
+      checks: ['pkce', 'state'], // Recommended for enhanced security
       profile(profile) {
         return {
           id: profile.sub,
@@ -34,19 +36,37 @@ const authOptions: AuthOptions = {
     },
   ],
   session: {
-    strategy: "jwt",
+    strategy: 'jwt',
   },
-
   callbacks: {
-    async jwt({ token, account }) {
-      if (account) {
-        token.accessToken = account.access_token;
+    async signIn({ user }) {
+      // AD account check
+      if (!user.email) {
+        throw new Error('Authentication Failed: No Email Found');
+      }
+      return true;
+    },
+    async jwt({ token, user, account }) {
+      // Persist email across token refreshes
+      if (account && user.email) {
+        token.adfsToken = account.access_token;
+        try {
+          // Fetch permissions by email
+          const permissions = await getUserPermissions(user.email);
+          // Generate custom token with claims
+          const customToken = generateToken({ email: user.email, permissions });
+          // Update session with token and permissions
+          token.accessToken = customToken;
+        } catch (error) {
+          console.error('Token Generation Error:', error);
+          throw new Error('Failed to generate token');
+        }
       }
       return token;
     },
     async session({ session, token }) {
-      // @ts-expect-error add token to session
-      session.accessToken = token.accessToken;
+      session.accessToken = token.accessToken as string;
+      session.adfsToken = token.adfsToken as string;
       return session;
     },
   },
@@ -54,6 +74,21 @@ const authOptions: AuthOptions = {
   // Additional options (optional)
   secret: process.env.NEXTAUTH_SECRET, // Ensure you set this environment variable
 };
+
+// Extended type definitions
+declare module 'next-auth' {
+  interface Session {
+    user: {
+      id: string;
+      name: string;
+      email: string;
+      image: null;
+      permissions: string[];
+    };
+    accessToken: string;
+    adfsToken: string;
+  }
+}
 
 /**
  * Helper function to get the session on the server without having to import the authOptions object every single time
