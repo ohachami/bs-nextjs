@@ -13,6 +13,14 @@ export const serverRoutes: RoutesIF[] = [
         permissions: [Permissions.ROLE_ADMIN, Permissions.ROLE_USERS_R]
     },
     {
+        route: '/api/exercises',
+        permissions: []
+    },
+    {
+        route: '/api/exercises/count',
+        permissions: []
+    },
+    {
         route: '/api/sitemap', // open route (no restrictions)
         permissions: []
     },
@@ -25,11 +33,15 @@ export const clientRoutes: RoutesIF[] = [
         permissions: []
     },
     {
-        route: '/login',  // open route (no restrictions)
+        route: '/showcase',  // open route (no restrictions)
         permissions: []
     },
     {
         route: '/modules/tacticalPlanning',
+        permissions: [Permissions.ROLE_ADMIN, Permissions.ROLE_USERS_R]
+    },
+    {
+        route: '/modules/tacticalPlanning/exercises',
         permissions: [Permissions.ROLE_ADMIN, Permissions.ROLE_USERS_R]
     }
 ] as const;
