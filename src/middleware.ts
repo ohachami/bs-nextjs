@@ -10,11 +10,10 @@ export async function middleware(req: NextRequest) {
   const session = await getMockSession();
   // getting the requested url pathname
   const url = req.nextUrl.pathname;
+  
   // decoding the JWT Token
   const JWTClaims = await decodeToken(session.accessToken);
 
-
-  console.log(JWTClaims);
   
 
   /**
