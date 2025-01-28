@@ -26,7 +26,7 @@ const Module = () => {
             variant="primary"
             title="Gestion des exercices"
             description="Description Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam imperdiet quam fringilla libero rutrum lobortis..."
-            to={`/modules/${modules.tacticalPlanning}/exercices`}
+            to={`/modules/${modules.tacticalPlanning}/exercises`}
           >
             <div className="flex gap-3">
               {countQuery.isSuccess && (
