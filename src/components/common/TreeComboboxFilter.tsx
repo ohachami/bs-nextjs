@@ -1,7 +1,13 @@
 'use client';
 
 import React, { useState, useCallback, useMemo } from 'react';
-import { ChevronRight, ChevronDown, Check, ChevronsUpDown } from 'lucide-react';
+import {
+  ChevronRight,
+  ChevronDown,
+  Check,
+  ChevronsUpDown,
+  ListFilter,
+} from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import {
@@ -23,41 +29,59 @@ import {
   TreeNode,
 } from '@/types/TreeComboboxFilterTypes';
 
-function filterTreeData(searchQuery: string, treeData: TreeNode[]): TreeNode[] {
-  const lowerSearchQuery = searchQuery.toLowerCase();
+/**
+ * Filtering the tree of nodes based on the search query
+ * returning the whole tree structure from the root node
+ * @param tree: tree of nodes
+ * @param searchTerm: search query for tree filter
+ * @returns a new tree of nodes based on the serach query
+ */
+function filterTreeData(tree: TreeNode[], searchTerm: string): TreeNode[] {
+  const searchLower = searchTerm.toLowerCase();
 
-  // Function to filter the nodes
-  function filterNode(node: TreeNode): TreeNode | null {
-    // Check if the current node or its children match the search query
-    const isMatch = node.label.toLowerCase().includes(lowerSearchQuery);
+  // Helper function to check if node matches search
+  const isMatch = (node: TreeNode) =>
+    node.label.toLowerCase().includes(searchLower);
 
-    // If the node label matches the search query, return only the parent node without children
-    if (isMatch) {
-      return { id: node.id, label: node.label };
+  // Helper function to clone node with specific children
+  const cloneWithChildren = (
+    node: TreeNode,
+    children?: TreeNode[]
+  ): TreeNode => ({
+    ...node,
+    children: children?.length ? children : undefined,
+  });
+
+  // Main filter function that preserves paths to matching nodes
+  const filterNode = (node: TreeNode): TreeNode | null => {
+    // Check if current node matches
+    const nodeMatches = isMatch(node);
+
+    // If node has children, recursively filter them
+    let matchingChildren: TreeNode[] = [];
+    if (node.children?.length) {
+      matchingChildren = node.children
+        .map((child) => filterNode(child))
+        .filter((n): n is TreeNode => n !== null);
     }
 
-    // If the node has children, check each child
-    if (node.children) {
-      // Check if any child matches the search query
-      const hasMatchingChild = node.children.some((child) =>
-        child.label.toLowerCase().includes(lowerSearchQuery)
-      );
-
-      // If any child matches, return the parent node without its children
-      if (hasMatchingChild) {
-        return { id: node.id, label: node.label };
-      }
+    // Return cases:
+    // 1. If current node matches, return it with all its children
+    if (nodeMatches) {
+      return cloneWithChildren(node, node.children);
     }
-
-    // Return null if no match
+    // 2. If any children match, return current node with only matching children
+    if (matchingChildren.length > 0) {
+      return cloneWithChildren(node, matchingChildren);
+    }
+    // 3. If neither current node nor children match, return null
     return null;
-  }
+  };
 
-  // Apply filter to each top-level node and collect the valid ones
-  const filteredTree = treeData.map((node) => filterNode(node)).filter(Boolean);
-
-  // Return the filtered tree or an empty array if no matches
-  return filteredTree.length > 0 ? filteredTree : [];
+  // Apply filter to each root node
+  return tree
+    .map((node) => filterNode(node))
+    .filter((n): n is TreeNode => n !== null);
 }
 
 const TreeComboboxFilter: React.FC<TreeFilterDropdownProps> = ({
@@ -71,13 +95,9 @@ const TreeComboboxFilter: React.FC<TreeFilterDropdownProps> = ({
   // list of selected (checked) nodes
   const [selectedNodes, setSelectedNodes] = useState<Set<string>>(new Set());
   // search query
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState<string>('');
 
-  const filteredNodes = useMemo(() => {
-    if (searchQuery === '') return [];
-    return filterTreeData(searchQuery, data);
-  }, [searchQuery, data]);
-
+  // on expand button: we expand tree children
   const toggleExpand = useCallback((e: React.MouseEvent, nodeId: string) => {
     e.stopPropagation();
     setExpandedNodes((prev) => {
@@ -91,6 +111,7 @@ const TreeComboboxFilter: React.FC<TreeFilterDropdownProps> = ({
     });
   }, []);
 
+  // on select node: we toggle Selection to children
   const toggleSelect = useCallback((node: TreeNode) => {
     setSelectedNodes((prev) => {
       const newSet = new Set(prev);
@@ -115,13 +136,25 @@ const TreeComboboxFilter: React.FC<TreeFilterDropdownProps> = ({
     });
   }, []);
 
+  // filtered nodes after entering a search query
+  const filteredNodes = useMemo(() => {
+    if (searchQuery === '') return [];
+    return filterTreeData(data, searchQuery);
+  }, [data, searchQuery]);
+
+  // clearing the search query
+  const onTreeSearchClear = () => {
+    setSearchQuery('');
+  };
+
+  // recurssive nodes tree rendrering
   const renderTreeNodes = (nodes: TreeNode[], level = 0) => {
     return nodes.map((node) => (
       <React.Fragment key={node.id}>
         <CommandItem
           onSelect={() => toggleSelect(node)}
           className={cn(
-            'flex items-center space-x-2 cursor-pointer',
+            'flex items-center space-x-2',
             level > 0 && `pl-${level * 4}`
           )}
         >
@@ -139,18 +172,15 @@ const TreeComboboxFilter: React.FC<TreeFilterDropdownProps> = ({
               )}
             </Button>
           )}
-          <Checkbox
-            checked={selectedNodes.has(node.id)}
-            onCheckedChange={() => toggleSelect(node)}
-            onClick={() => toggleSelect(node)}
-          />
+          {!node.children && <div className="pl-4"></div>}
+          <Checkbox checked={selectedNodes.has(node.id)} />
           <span className="flex-grow">{node.label}</span>
           {selectedNodes.has(node.id) && <Check className="h-4 w-4" />}
         </CommandItem>
         {node.children &&
           node.children.length > 0 &&
           expandedNodes.has(node.id) && (
-            <CommandGroup>
+            <CommandGroup key={`group-${level}-${node.id}`}>
               {renderTreeNodes(node.children, level + 1)}
             </CommandGroup>
           )}
@@ -158,6 +188,8 @@ const TreeComboboxFilter: React.FC<TreeFilterDropdownProps> = ({
     ));
   };
 
+  // on node selection sending event to the parent 
+  // with a list of selected IDs
   React.useEffect(() => {
     onSelectionChange(Array.from(selectedNodes));
   }, [selectedNodes, onSelectionChange]);
@@ -171,27 +203,36 @@ const TreeComboboxFilter: React.FC<TreeFilterDropdownProps> = ({
           aria-expanded={open}
           className="w-[200px] justify-between"
         >
+          <ListFilter />
           {selectedNodes.size > 0
             ? `${selectedNodes.size} selected`
-            : 'Select filters'}
+            : 'Filtres'}
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-[200px] p-0">
         <Command>
           <CommandInput
-            placeholder="Search tree..."
+            placeholder="Horizon"
             onValueChange={setSearchQuery}
+            value={searchQuery}
           />
           <CommandList>
             <CommandEmpty>No results found.</CommandEmpty>
             <CommandGroup>
-              {filteredNodes.length > 0
-                ? renderTreeNodes(filteredNodes)
-                : renderTreeNodes(data)}
+              {searchQuery === ''
+                ? renderTreeNodes(data)
+                : renderTreeNodes(filteredNodes)}
             </CommandGroup>
           </CommandList>
         </Command>
+        {/* Clear filters */}
+        <div
+          onClick={onTreeSearchClear}
+          className="flex justify-center border-t-2 cursor-pointer py-2 px-2 rounded-md hover:bg-gray-50"
+        >
+          <p className="text-sm">Clear filters</p>
+        </div>
       </PopoverContent>
     </Popover>
   );
