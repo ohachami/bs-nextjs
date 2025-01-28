@@ -1,13 +1,17 @@
 'use client';
 import { DataTable } from '@/components/common/DataTable';
 import ExerciseCard from '@/components/common/ExerciseCard';
+import TreeCombobox from '@/components/common/TreeCombobox';
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { treeData } from '@/db/mockData';
 import { useExercises } from '@/services/exercises.service';
 import { formatDate, getFullName } from '@/utils/functions';
 import { Nullable } from '@/utils/types';
 import { ColumnDef } from '@tanstack/react-table';
 import { PlusIcon, SearchIcon, XIcon } from 'lucide-react';
+import { useState } from 'react';
 
 type DataTableColumns = {
   name: Nullable<string>;
@@ -19,7 +23,7 @@ type DataTableColumns = {
 
 const ModuleExercices = () => {
   const { isPending, data } = useExercises();
-
+  const [selectedPeriods, setSelectedPeriods] = useState<string[]>([])
   if (isPending) {
     return (
       <div className="flex justify-center items-center h-full">
@@ -36,6 +40,11 @@ const ModuleExercices = () => {
     {
       header: 'Horizon',
       accessorKey: 'period',
+      cell: ({ row }) => (
+        <Badge variant="muted">
+          {row.original.period}
+        </Badge>
+      ),
     },
     {
       header: 'Date Début',
@@ -50,6 +59,8 @@ const ModuleExercices = () => {
       accessorKey: 'creator',
     },
   ];
+
+ 
 
   return (
     <div className="flex flex-col p-8 pt-6 gap-4">
@@ -71,8 +82,16 @@ const ModuleExercices = () => {
             placeholder="Rechercher un exercice"
           />
         </div>
-        <div>filtres</div>
-        <Button variant="ghost">
+        <div>
+        <TreeCombobox 
+            items={treeData}
+            multiSelect 
+            selectChildren={false}
+            defaultValues={selectedPeriods}
+            onSelectionChange={setSelectedPeriods}
+          />
+        </div>
+        <Button variant="ghost" onClick={() => setSelectedPeriods([])}>
           <XIcon />
           Réinitialiser
         </Button>
@@ -83,8 +102,10 @@ const ModuleExercices = () => {
       </h2>
 
       {data && (
-        <div className="flex gap-2">
-          {data.open.map((ex) => (
+        <div className="flex gap-4">
+          {data.open
+          .filter(e => selectedPeriods.length === 0 || selectedPeriods.includes(`${e.year}-${e.period.name}`))
+          .map((ex) => (
             <ExerciseCard
               key={ex.id}
               creator={getFullName(ex.user.last_name, ex.user.first_name)}
@@ -110,7 +131,9 @@ const ModuleExercices = () => {
 
       {data && (
         <DataTable
-          data={data.closed.map((ex) => ({
+          data={data.closed
+            .filter(e => selectedPeriods.length === 0 || selectedPeriods.includes(`${e.year}-${e.period.name}`))
+            .map((ex) => ({
             id: ex.id,
             name: ex.name,
             period: ex.period.name,

@@ -1,19 +1,11 @@
 'use client';
 
 import ModuleComponent from '@/components/common/ModuleComponent';
-import TreeComboboxFilter from '@/components/common/TreeComboboxFilter';
-import { treeData } from '@/db/mockData';
 import { modules } from '@/utils/constants';
 import { ChartLine, ClipboardList, GitCompareArrows } from 'lucide-react';
 import React from 'react';
 
 const HomePage = () => {
-
-  // TODO: Mock test to remove
-  const handleSelectionChange = (selectedIds: string[]) => {
-    console.log('Selected IDs:', selectedIds);
-    // You can use these selectedIds to filter your DataTable
-  };
 
   return (
     <div className=" h-full flex flex-col gap-4 p-8 pt-6">
@@ -26,10 +18,6 @@ const HomePage = () => {
           Nam imperdiet quam fringilla libero rutrum lobortis...
         </p>
         {/* TODO: Mock test to remove */}
-        <TreeComboboxFilter
-          data={treeData}
-          onSelectionChange={handleSelectionChange}
-        />
       </div>
 
       <div className="grow grid grid-cols-3 gap-4 h-fit">

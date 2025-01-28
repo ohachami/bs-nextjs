@@ -1,8 +1,8 @@
-import { TreeNode } from '@/types/TreeComboboxFilterTypes';
+import { TreeItem } from '@/types/TreeComboboxFilterTypes';
 
-const treeData: TreeNode[] = [
+const treeData: TreeItem[] = [
   {
-    id: '2024',
+    id: '2024-Budget',
     label: '2024',
     children: [
       {
@@ -26,7 +26,7 @@ const treeData: TreeNode[] = [
     ],
   },
   {
-    id: '2025',
+    id: '2025-Budget',
     label: '2025',
     children: [
       {

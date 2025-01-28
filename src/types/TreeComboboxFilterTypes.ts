@@ -1,12 +1,20 @@
-interface TreeNode {
-  id: string;
-  label: string;
-  children?: TreeNode[];
+import { Column } from "@tanstack/react-table"
+
+interface TreeItem {
+  id: string
+  label: string
+  children?: TreeItem[]
 }
 
-interface TreeFilterDropdownProps {
-  data: TreeNode[];
-  onSelectionChange: (selectedIds: string[]) => void;
+interface TreeComboboxProps {
+  items: TreeItem[]
+  multiSelect?: boolean
+  selectChildren?: boolean
+  defaultValues?: string []
+  onSelectionChange: (selectedItems: string[]) => void
 }
 
-export type { TreeNode, TreeFilterDropdownProps };
+interface TableFilteredProps<TData, TValue> {
+  column?: Column<TData, TValue>
+}
+export type { TreeItem, TreeComboboxProps, TableFilteredProps };
