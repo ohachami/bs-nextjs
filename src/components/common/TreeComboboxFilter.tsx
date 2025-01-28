@@ -136,22 +136,44 @@ const TreeComboboxFilter: React.FC<TreeFilterDropdownProps> = ({
     });
   }, []);
 
+  // expand all nodes at onces
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const expandAllNodes = () => {
+    // Helper function to collect all node IDs recursively
+    const collectNodeIds = (nodes: TreeNode[], ids: Set<string>) => {
+      nodes.forEach((node) => {
+        ids.add(node.id); // Add the current node's ID
+        if (node.children) {
+          collectNodeIds(node.children, ids); // Recursively add child node IDs
+        }
+      });
+    };
+    // Create a new Set to hold all the node IDs
+    const allNodeIds = new Set<string>();
+    collectNodeIds(data, allNodeIds); // Collect all node IDs from the tree
+    // Update the expandedNodes state to include all node IDs
+    setExpandedNodes(allNodeIds);
+  };
+
   // filtered nodes after entering a search query
   const filteredNodes = useMemo(() => {
-    if (searchQuery === '') return [];
+    if (searchQuery === '') return data;
     return filterTreeData(data, searchQuery);
   }, [data, searchQuery]);
 
   // clearing the search query
   const onTreeSearchClear = () => {
     setSearchQuery('');
+    setSelectedNodes(new Set());
+    setExpandedNodes(new Set());
   };
 
   // recurssive nodes tree rendrering
-  const renderTreeNodes = (nodes: TreeNode[], level = 0) => {
+  const renderTreeNodes = (nodes: TreeNode[], level = 0) => {    
     return nodes.map((node) => (
       <React.Fragment key={node.id}>
         <CommandItem
+          key={`command-item-${node.id}`}
           onSelect={() => toggleSelect(node)}
           className={cn(
             'flex items-center space-x-2',
@@ -220,9 +242,7 @@ const TreeComboboxFilter: React.FC<TreeFilterDropdownProps> = ({
           <CommandList>
             <CommandEmpty>No results found.</CommandEmpty>
             <CommandGroup>
-              {searchQuery === ''
-                ? renderTreeNodes(data)
-                : renderTreeNodes(filteredNodes)}
+              {searchQuery===''? renderTreeNodes(data): renderTreeNodes(filteredNodes)}
             </CommandGroup>
           </CommandList>
         </Command>
