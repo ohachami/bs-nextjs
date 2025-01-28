@@ -60,8 +60,6 @@ const ModuleExercices = () => {
     },
   ];
 
- 
-
   return (
     <div className="flex flex-col p-8 pt-6 gap-4">
       <div className="flex justify-between items-center">
