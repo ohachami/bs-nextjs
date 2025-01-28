@@ -1,7 +1,7 @@
 import { ExerciseDetailsPayload } from "@/db/exercises.db";
 import { callAsync } from "@/hooks/useAsync";
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 
 export const useExercisesCount = () => {
   return useQuery({
@@ -14,11 +14,11 @@ export const useExercisesCount = () => {
 };
 
 export const useExercises = () => {
-  return useQuery<ExerciseDetailsPayload>({
+  return useQuery<{ closed: ExerciseDetailsPayload, open: ExerciseDetailsPayload }>({
     queryKey: ["exercises"],
     queryFn: async () => {
-      const response = await callAsync(() => axios.get(`/api/exercises`));
-      return response.data
+      const response = await callAsync<AxiosResponse<ExerciseDetailsPayload>>(() => axios.get(`/api/exercises`));
+      return { closed: response.data.filter(ex => ex.status === 'CLOSED'), open: response.data.filter(ex => ex.status === 'IN_PROGRESS') }
     }
   })
 }
