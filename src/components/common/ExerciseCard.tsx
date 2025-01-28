@@ -1,10 +1,11 @@
-import { formatDateMedium, truncateString } from '@/utils/functions';
-import { Nullable } from '@/utils/types';
-import { MousePointerClick } from 'lucide-react';
-import ExerciseStatus from './ExerciseStatus';
-import { Badge } from '../ui/badge';
-import StepProgress from './ExerciseStepper';
 import { cn } from '@/lib/utils';
+import { formatDate } from '@/utils/functions';
+import { Nullable } from '@/utils/types';
+import { ArrowRightIcon, EyeIcon, MousePointerClick } from 'lucide-react';
+import { Badge } from '../ui/badge';
+import { Button } from '../ui/button';
+import ExerciseStatus from './ExerciseStatus';
+import StepProgress from './ExerciseStepper';
 
 type Props = {
   creator: Nullable<string>;
@@ -34,7 +35,7 @@ const ExerciceCard: React.FC<Props> = (props) => {
           </p>
           {props.creationDate && (
             <p className="font-geist text-muted-foreground leading-5 text-[10px] font-normal">
-              crée le {formatDateMedium(new Date(props.creationDate))}
+              crée le {formatDate(props.creationDate)}
             </p>
           )}
         </div>
@@ -63,17 +64,24 @@ const ExerciceCard: React.FC<Props> = (props) => {
       >
         {actifStep && (
           <div className="flex flex-col font-geist">
-            <p className="font-semibold text-sm text-foreground">
-              {truncateString(actifStep.name)}
+            <p className="font-semibold text-sm text-foreground truncate max-w-32">
+              {actifStep.name}
             </p>
             <p className="text-xs text-card-foreground">
-              {actifStep.deadline &&
-                formatDateMedium(new Date(actifStep.deadline))}
+              {actifStep.deadline && formatDate(new Date(actifStep.deadline))}
             </p>
           </div>
         )}
 
-        <div>access btn</div>
+        <div className="flex gap-3">
+          <Button variant="ghost" className="px-2 hover:bg-white">
+            <EyeIcon />
+          </Button>
+
+          <Button variant="ghost" className="px-2 hover:bg-white">
+            <ArrowRightIcon />
+          </Button>
+        </div>
       </div>
     </div>
   );

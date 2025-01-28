@@ -1,4 +1,6 @@
 import { Nullable } from "./types";
+import { format } from 'date-fns';
+import { fr } from 'date-fns/locale';
 
 export const getFullName = (lastname: Nullable<string>, firstname: Nullable<string>) => {
     let first = '';
@@ -16,11 +18,9 @@ export const getFullName = (lastname: Nullable<string>, firstname: Nullable<stri
     return `${first} ${last}`;
 }
 
-export const formatDateMedium = (date: Date) => {
-    const formatter = new Intl.DateTimeFormat(undefined, { dateStyle: 'medium' });
-
+export const formatDate = (date: Date) => {
     // Format the date
-    const formattedDate = formatter.format(date);
+    const formattedDate = format(date, 'dd MMM yyyy', { locale: fr });
 
     // Capitalize the first letter of the month
     return formattedDate.replace(/(\b[a-z])/i, (char) => char.toUpperCase());
