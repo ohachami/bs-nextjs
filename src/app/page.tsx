@@ -6,6 +6,7 @@ import { ChartLine, ClipboardList, GitCompareArrows } from 'lucide-react';
 import React from 'react';
 
 const HomePage = () => {
+
   return (
     <div className=" h-full flex flex-col gap-4 p-8 pt-6">
       <div className="flex flex-col gap-2.5 mt-5 mb-11">
@@ -16,6 +17,7 @@ const HomePage = () => {
           Description Lorem ipsum dolor sit amet, consectetur adipiscing elit.
           Nam imperdiet quam fringilla libero rutrum lobortis...
         </p>
+        {/* TODO: Mock test to remove */}
       </div>
 
       <div className="grow grid grid-cols-3 gap-4 h-fit">

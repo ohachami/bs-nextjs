@@ -30,6 +30,7 @@ export default function Home() {
       enableHiding: false,
     },
     {
+      id: "first_name",
       header: ({ column }) => {
         return (
           <Button
