@@ -1,4 +1,4 @@
-import { TreeItem } from '@/types/TreeComboboxFilterTypes';
+import { TreeItem } from '@/types/common/TreeComboboxFilterTypes';
 
 const treeData: TreeItem[] = [
   {
