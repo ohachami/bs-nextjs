@@ -1,6 +1,7 @@
 'use client';
 
 import ModuleComponent from '@/components/common/ModuleComponent';
+import Stepper from '@/components/common/Stepper';
 import { modules } from '@/utils/constants';
 import { ChartLine, ClipboardList, GitCompareArrows } from 'lucide-react';
 import React from 'react';
@@ -17,7 +18,7 @@ const HomePage = () => {
           Nam imperdiet quam fringilla libero rutrum lobortis...
         </p>
       </div>
-
+    <Stepper/>
       <div className="grow grid grid-cols-3 gap-4 h-fit">
         <div className="col-span-1">
           <ModuleComponent
