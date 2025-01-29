@@ -26,20 +26,20 @@ type DataTableColumns = {
 
 const ModuleExercices = () => {
   const { isPending, data } = useExercises();
-  const [selectedPeriods, setSelectedPeriods] = useState<string[]>([])
+  const [selectedPeriods, setSelectedPeriods] = useState<string[]>([]);
   const periodQuery = usePeriodsTree();
-  const [filter, setFilter] = useState<TreeItem[]>([])
+  const [filter, setFilter] = useState<TreeItem[]>([]);
 
   useEffect(() => {
-    if(data && periodQuery.data) {
-      let cyears = data.open.map(e => e.year);
-      cyears = cyears.concat(data.closed.map(e => e.year));
-      const items = cyears.map(y => (mapPeriodToTreeItem({...periodQuery.data, name: `${y}`} as Period, y!)))
+    if (data && periodQuery.data) {
+      let cyears = data.open.map((e) => e.year);
+      cyears = cyears.concat(data.closed.map((e) => e.year));
+      const items = cyears.map((y) =>
+        mapPeriodToTreeItem({ ...periodQuery.data, name: `${y}` } as Period, y!)
+      );
       setFilter(items);
-
     }
-  }, [data, periodQuery.data])
-
+  }, [data, periodQuery.data]);
 
   if (isPending) {
     return (
@@ -57,11 +57,7 @@ const ModuleExercices = () => {
     {
       header: 'Horizon',
       accessorKey: 'period',
-      cell: ({ row }) => (
-        <Badge variant="muted">
-          {row.original.period}
-        </Badge>
-      ),
+      cell: ({ row }) => <Badge variant="muted">{row.original.period}</Badge>,
     },
     {
       header: 'Date Début',
@@ -76,7 +72,6 @@ const ModuleExercices = () => {
       accessorKey: 'creator',
     },
   ];
-
 
   return (
     <div className="flex flex-col p-8 pt-6 gap-4">
@@ -99,13 +94,15 @@ const ModuleExercices = () => {
           />
         </div>
         <div>
-        {periodQuery.isSuccess && <TreeCombobox 
-            items={filter}
-            multiSelect 
-            selectChildren={false}
-            defaultValues={selectedPeriods}
-            onSelectionChange={setSelectedPeriods}
-          />}
+          {periodQuery.isSuccess && (
+            <TreeCombobox
+              items={filter}
+              multiSelect
+              selectChildren={false}
+              defaultValues={selectedPeriods}
+              onSelectionChange={setSelectedPeriods}
+            />
+          )}
         </div>
         <Button variant="ghost" onClick={() => setSelectedPeriods([])}>
           <XIcon />
@@ -120,24 +117,28 @@ const ModuleExercices = () => {
       {data && (
         <div className="flex gap-4">
           {data.open
-          .filter(e => selectedPeriods.length === 0 || selectedPeriods.includes(`${e.year}-${e.period.id}`))
-          .map((ex) => (
-            <ExerciseCard
-              key={ex.id}
-              creator={getFullName(ex.user.last_name, ex.user.first_name)}
-              creationDate={ex.created_at}
-              name={ex.name}
-              status={ex.status}
-              period={ex.period.name}
-              steps={ex.exercise_step.map((s, index) => ({
-                id: s.id,
-                name: s.step_config?.name || null,
-                status: s.status,
-                deadline: s.deadline_at,
-                order: s.step_config?.sorted_by || index,
-              }))}
-            />
-          ))}
+            .filter(
+              (e) =>
+                selectedPeriods.length === 0 ||
+                selectedPeriods.includes(`${e.year}-${e.parentPeriod.id}`)
+            )
+            .map((ex) => (
+              <ExerciseCard
+                key={ex.id}
+                creator={getFullName(ex.creator.lastName, ex.creator.firstName)}
+                creationDate={ex.createdAt}
+                name={ex.name}
+                status={ex.status}
+                period={ex.parentPeriod.name}
+                steps={ex.steps.map((s) => ({
+                  id: s.id,
+                  name: s.stepConfig.name,
+                  status: s.status,
+                  deadline: s.deadlineAt,
+                  order: s.stepConfig.sortedBy,
+                }))}
+              />
+            ))}
         </div>
       )}
 
@@ -148,15 +149,19 @@ const ModuleExercices = () => {
       {data && (
         <DataTable
           data={data.closed
-            .filter(e => selectedPeriods.length === 0 || selectedPeriods.includes(`${e.year}-${e.period.id}`))
+            .filter(
+              (e) =>
+                selectedPeriods.length === 0 ||
+                selectedPeriods.includes(`${e.year}-${e.parentPeriod.id}`)
+            )
             .map((ex) => ({
-            id: ex.id,
-            name: ex.name,
-            period: ex.period.name,
-            createdAt: ex.created_at && formatDate(ex.created_at),
-            deadline: null,
-            creator: getFullName(ex.user.last_name, ex.user.first_name),
-          }))}
+              id: ex.id,
+              name: ex.name,
+              period: ex.parentPeriod.name,
+              createdAt: formatDate(ex.createdAt),
+              deadline: formatDate(ex.updatedAt),
+              creator: getFullName(ex.creator.lastName, ex.creator.firstName),
+            }))}
           columns={columns}
         />
       )}
