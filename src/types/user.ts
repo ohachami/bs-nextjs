@@ -1,4 +1,4 @@
-import { RefSbu, Timestamps } from "./config";
+import { RefSbu, Timestamps } from "./refExercise/config";
 
 export type User = Timestamps & {
     id: string;

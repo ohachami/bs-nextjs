@@ -30,9 +30,6 @@ interface PeriodConfigIF {
   bumpYear: boolean;
 }
 
-
-
-
 export type StepConfig = Timestamps & {
   id: string;
   name: string;
@@ -47,7 +44,5 @@ export type RefSbu = Timestamps & {
   id: string;
   name: string;
 }
-
-
 
 export type { PeriodConfigIF, ExerciseTypeIF, PeriodIF };

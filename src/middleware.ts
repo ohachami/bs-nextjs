@@ -6,14 +6,14 @@ import { cookies } from 'next/headers'
 export async function middleware(req: NextRequest) {
   // getting the requested url pathname
   const url = req.nextUrl.pathname;
-  
+
   const cookieStore = await cookies();
   const token = cookieStore.get("steerlinxJwt")
   // decoding the JWT Token
 
   const JWTClaims = token ? await decodeToken(token.value) : null;
   console.log("token", JWTClaims)
-  
+
   /**
    * CLIENT ROUTES PROTECTION LOGIC
    */
