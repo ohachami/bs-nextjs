@@ -11,9 +11,5 @@ export const permissions = {
     // User Create Role
     ROLE_USERS_C: "ROLE_USERS_C",
     // User Read Role
-    ROLE_USERS_R: "ROLE_USERS_R",
-    // User Update Role
-    ROLE_USERS_U: "ROLE_USERS_U",
-    // User Delete Role
-    ROLE_USERS_D: "ROLE_USERS_D",
+    ROLE_EXERCISE_LIST_R: "ROLE_EXERCISES_LIST_R",
 } as const;

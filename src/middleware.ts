@@ -1,56 +1,19 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getMockSession } from './utils/mocks';
-import { clientRoutes, serverRoutes } from './utils/routes';
+import { clientRoutes } from './utils/routes';
 import { decodeToken } from './utils/jwt/jose';
-
+import { cookies } from 'next/headers'
 
 export async function middleware(req: NextRequest) {
-  // getting the session data
-  // TODO: update the mocked session with the real one "getSession" found in '@/utils/auth'
-  const session = await getMockSession();
   // getting the requested url pathname
   const url = req.nextUrl.pathname;
   
+  const cookieStore = await cookies();
+  const token = cookieStore.get("steerlinxJwt")
   // decoding the JWT Token
-  const JWTClaims = await decodeToken(session.accessToken);
 
+  const JWTClaims = token ? await decodeToken(token.value) : null;
+  console.log("token", JWTClaims)
   
-
-  /**
-   * API ROUTES PROTECTION LOGIC
-   */
-  if (url.startsWith('/api/')) {
-    // if user is not authenticated (session null)
-    if (!session || (session && !JWTClaims)) {
-      return NextResponse.json({ error: `UNAUTHORIZED` }, { status: 401 });
-    }
-
-    // looking for the requested server route configuration
-    const routeConfig = serverRoutes.find((route) => route.route === url);
-
-    if (!routeConfig) {
-      return NextResponse.json({ error: `BAD_REQUEST` }, { status: 400 });
-    }
-
-    // if it's an open server route (a route without permissions restrictions, but still needs authentication)
-    // procced to the requested URL path
-    if (routeConfig.permissions.length === 0) {
-      return NextResponse.next();
-    }
-
-    // checking if the user has at least one of the api route permissions
-    const userHasAccess = routeConfig.permissions.some(
-      (permission) => JWTClaims && JWTClaims.permissions.includes(permission)
-    );
-
-    if (!userHasAccess) {
-      return NextResponse.json({ error: 'FORBIDDEN' }, { status: 403 });
-    }
-
-    // Go to the requested route if every test is passed
-    return NextResponse.next();
-  }
-
   /**
    * CLIENT ROUTES PROTECTION LOGIC
    */
@@ -58,8 +21,9 @@ export async function middleware(req: NextRequest) {
   // looking for the requested client route configuration
   const routeConfig = clientRoutes.find((route) => route.route === url);
 
+
   // if user is not authenticated (session null) => redirect to the login page '/'
-  if (!session || (session && !JWTClaims)) {
+  if (!JWTClaims) {
     return NextResponse.redirect(new URL('/login', req.url));
   }
 
