@@ -8,7 +8,7 @@ import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, Command
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Checkbox } from "@/components/ui/checkbox"
-import { TreeComboboxProps, TreeItem } from "@/types/TreeComboboxFilterTypes"
+import { TreeComboboxProps, TreeItem } from "@/types/common/TreeComboboxFilterTypes"
 
 
 

@@ -1,4 +1,4 @@
-import { Period, StepConfig, Timestamps } from "./config";
+import { PeriodIF, StepConfig, Timestamps } from "./refExercise/config";
 import { User } from "./user";
 
 export type Exercise = Timestamps & {
@@ -10,7 +10,7 @@ export type Exercise = Timestamps & {
     description: string;
     creator: User;
     exerciseType: ExerciseType;
-    parentPeriod: Period;
+    parentPeriod: PeriodIF;
     steps: ExerciseStep[]
 }
 
