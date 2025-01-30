@@ -1,6 +1,8 @@
 import { callAsync } from "@/hooks/useAsync";
 import { ExerciseTypeIF, PeriodConfigIF } from "@/types/refExercise";
 import { apiPaths } from "@/utils/apiPaths";
+import { Period } from "@/types/config";
+import { BASE_API } from "@/utils/routes";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
@@ -38,3 +40,13 @@ export const usePeriodConfig = (exerciseTypeId: string) => {
         enabled: !!exerciseTypeId,
     })
 }
+
+export const usePeriodsTree = () => {
+    return useQuery({
+      queryKey: ["periods", "tree"],
+      queryFn: async () => {
+        const response = await callAsync<AxiosResponse<Period[]>>(() => axios.get(`${BASE_API}/config/periods`));
+        return response.data && response.data.length > 0 ? response.data[0] : null
+      },
+    });
+};

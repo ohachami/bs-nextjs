@@ -70,7 +70,7 @@ const TreeCombobox: React.FC<TreeComboboxProps> = ({ items, multiSelect, default
     return items.map((item) => (
       <React.Fragment key={item.id}>
         <CommandItem
-          value={item.label}
+          value={item.id}
           onSelect={() => handleSelect(item)}
           className={cn("flex items-center gap-2", level > 0 && "ml-4")}
         >

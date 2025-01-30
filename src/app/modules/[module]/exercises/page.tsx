@@ -5,13 +5,16 @@ import TreeCombobox from '@/components/common/TreeCombobox';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { treeData } from '@/db/mockData';
 import { useExercises } from '@/services/exercises.service';
+import { mapPeriodToTreeItem } from '@/services/mappers/periodMapper';
+import { usePeriodsTree } from '@/services/refExercise.service';
+import { Period } from '@/types/config';
+import { TreeItem } from '@/types/TreeComboboxFilterTypes';
 import { formatDate, getFullName } from '@/utils/functions';
 import { Nullable } from '@/utils/types';
 import { ColumnDef } from '@tanstack/react-table';
 import { PlusIcon, SearchIcon, XIcon } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 type DataTableColumns = {
   name: Nullable<string>;
@@ -24,6 +27,20 @@ type DataTableColumns = {
 const ModuleExercices = () => {
   const { isPending, data } = useExercises();
   const [selectedPeriods, setSelectedPeriods] = useState<string[]>([])
+  const periodQuery = usePeriodsTree();
+  const [filter, setFilter] = useState<TreeItem[]>([])
+
+  useEffect(() => {
+    if(data && periodQuery.data) {
+      let cyears = data.open.map(e => e.year);
+      cyears = cyears.concat(data.closed.map(e => e.year));
+      const items = cyears.map(y => (mapPeriodToTreeItem({...periodQuery.data, name: `${y}`} as Period, y!)))
+      setFilter(items);
+
+    }
+  }, [data, periodQuery.data])
+
+
   if (isPending) {
     return (
       <div className="flex justify-center items-center h-full">
@@ -60,6 +77,7 @@ const ModuleExercices = () => {
     },
   ];
 
+
   return (
     <div className="flex flex-col p-8 pt-6 gap-4">
       <div className="flex justify-between items-center">
@@ -81,13 +99,13 @@ const ModuleExercices = () => {
           />
         </div>
         <div>
-        <TreeCombobox 
-            items={treeData}
+        {periodQuery.isSuccess && <TreeCombobox 
+            items={filter}
             multiSelect 
             selectChildren={false}
             defaultValues={selectedPeriods}
             onSelectionChange={setSelectedPeriods}
-          />
+          />}
         </div>
         <Button variant="ghost" onClick={() => setSelectedPeriods([])}>
           <XIcon />
@@ -102,7 +120,7 @@ const ModuleExercices = () => {
       {data && (
         <div className="flex gap-4">
           {data.open
-          .filter(e => selectedPeriods.length === 0 || selectedPeriods.includes(`${e.year}-${e.period.name}`))
+          .filter(e => selectedPeriods.length === 0 || selectedPeriods.includes(`${e.year}-${e.period.id}`))
           .map((ex) => (
             <ExerciseCard
               key={ex.id}
@@ -115,7 +133,7 @@ const ModuleExercices = () => {
                 id: s.id,
                 name: s.step_config?.name || null,
                 status: s.status,
-                deadline: s.deadline_dt,
+                deadline: s.deadline_at,
                 order: s.step_config?.sorted_by || index,
               }))}
             />
@@ -130,7 +148,7 @@ const ModuleExercices = () => {
       {data && (
         <DataTable
           data={data.closed
-            .filter(e => selectedPeriods.length === 0 || selectedPeriods.includes(`${e.year}-${e.period.name}`))
+            .filter(e => selectedPeriods.length === 0 || selectedPeriods.includes(`${e.year}-${e.period.id}`))
             .map((ex) => ({
             id: ex.id,
             name: ex.name,
