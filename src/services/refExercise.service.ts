@@ -1,24 +1,24 @@
-import { callAsync } from "@/hooks/useAsync";
-import { ExerciseTypeIF, PeriodConfigIF } from "@/types/refExercise";
-import { apiPaths } from "@/utils/apiPaths";
-import { Period } from "@/types/config";
-import { BASE_API } from "@/utils/routes";
-import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
+import { callAsync } from '@/hooks/useAsync';
+import { ExerciseTypeIF, PeriodConfigIF, PeriodIF } from '@/types/refExercise/config';
+import { apiPaths } from '@/utils/apiPaths';
+import { useQuery } from '@tanstack/react-query';
+import axios, { AxiosResponse } from 'axios';
 
 /**
  * Fetching the list of exercise Types
  * @returns a list of exercise Types
  */
 export const useExerciseTypes = () => {
-    return useQuery<ExerciseTypeIF[]>({
-        queryKey: ["exerciseTypes"],
-        queryFn: async () => {
-            const response = await callAsync(() => axios.get(apiPaths.exerciceTypes()));
-            return response.data;
-        }
-    })
-}
+  return useQuery<ExerciseTypeIF[]>({
+    queryKey: ['exerciseTypes'],
+    queryFn: async () => {
+      const response = await callAsync<AxiosResponse<ExerciseTypeIF[]>>(() =>
+        axios.get(apiPaths.exerciceTypes())
+      );
+      return response.data;
+    },
+  });
+};
 
 /**
  * Fetching the list of config for a given exercise
@@ -26,27 +26,33 @@ export const useExerciseTypes = () => {
  * @returns the list of config for a given exercise ID
  */
 export const usePeriodConfig = (exerciseTypeId: string) => {
-    return useQuery<PeriodConfigIF[]>({
-        queryKey: ["periodConfig", exerciseTypeId],
-        queryFn: async () => {
-            const response = await callAsync(() => axios.get(apiPaths.periodConfig(), {
-                params: {
-                    exerciseType: exerciseTypeId
-                }
-            }));
-            return response.data;
-        },
-        // only run the query if the exerciseTypeId is provided
-        enabled: !!exerciseTypeId,
-    })
-}
+  return useQuery<PeriodConfigIF[]>({
+    queryKey: ['periodConfig', exerciseTypeId],
+    queryFn: async () => {
+      const response = await callAsync<AxiosResponse<PeriodConfigIF[]>>(() =>
+        axios.get(apiPaths.periodConfig(), {
+          params: {
+            exerciseType: exerciseTypeId,
+          },
+        })
+      );
+      return response.data;
+    },
+    // only run the query if the exerciseTypeId is provided
+    enabled: !!exerciseTypeId,
+  });
+};
 
 export const usePeriodsTree = () => {
-    return useQuery({
-      queryKey: ["periods", "tree"],
-      queryFn: async () => {
-        const response = await callAsync<AxiosResponse<Period[]>>(() => axios.get(`${BASE_API}/config/periods`));
-        return response.data && response.data.length > 0 ? response.data[0] : null
-      },
-    });
+  return useQuery<PeriodIF | null>({
+    queryKey: ['periods', 'tree'],
+    queryFn: async () => {
+      const response = await callAsync<AxiosResponse<PeriodIF[]>>(() =>
+        axios.get(apiPaths.periods())
+      );
+      return response.data && response.data.length > 0
+        ? response.data[0]
+        : null;
+    },
+  });
 };

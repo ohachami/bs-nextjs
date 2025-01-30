@@ -25,4 +25,4 @@ interface PeriodConfigIF {
   bumpYear: boolean;
 }
 
-export type { PeriodConfigIF, ExerciseTypeIF };
+export type { PeriodConfigIF, ExerciseTypeIF, PeriodIF };
