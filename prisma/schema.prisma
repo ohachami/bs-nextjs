@@ -22,12 +22,12 @@ model profile {
 }
 
 model profile_permission {
-  permission_d String     @db.Uuid
-  profile_id   String     @db.Uuid
-  permission   permission @relation(fields: [permission_d], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "profile_permission_permission_fk")
-  profile      profile    @relation(fields: [profile_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "profile_permission_profile_fk")
+  profile_id    String     @db.Uuid
+  permission_id String     @db.Uuid
+  permission    permission @relation(fields: [permission_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "profile_permission_permission_fk")
+  profile       profile    @relation(fields: [profile_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "profile_permission_profile_fk")
 
-  @@id([permission_d, profile_id], map: "profile_permission_pk")
+  @@id([profile_id, permission_id], map: "profile_permission_pk")
 }
 
 model user {
@@ -66,7 +66,6 @@ model exercise {
   period           period            @relation(fields: [parent_period_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "exercise_parent_period_fk")
   exercise_period  exercise_period[]
   exercise_step    exercise_step[]
-  period_config    period_config[]
 }
 
 model exercise_period {
@@ -84,7 +83,7 @@ model exercise_step {
   id             String       @id(map: "exercise_step_pk") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   step_config_id String?      @db.Uuid
   status         String?
-  deadline_dt    DateTime?    @db.Timestamptz(6)
+  deadline_at    DateTime?    @db.Timestamptz(6)
   exercise_id    String       @db.Uuid
   exercise       exercise     @relation(fields: [exercise_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "exercise_step_exercise_fk")
   step_config    step_config? @relation(fields: [step_config_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "exercise_step_step_config_fk")
@@ -148,7 +147,10 @@ model data_version {
 model ref_sbu {
   id          String        @id(map: "ref_sbu_pk") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   name        String?
+  description String?
   data_source data_source[]
+  ref_client  ref_client[]
+  ref_entity  ref_entity[]
   ref_site    ref_site[]
   user        user[]
 }
@@ -173,23 +175,24 @@ model audit_log {
 }
 
 model exercise_type {
-  id           String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  name         String?    @db.VarChar(255)
-  month_offset Int?
-  exercise     exercise[]
+  id            String          @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name          String?         @db.VarChar(255)
+  month_offset  Int?
+  horizon       String?
+  exercise      exercise[]
+  period_config period_config[]
 }
 
 model period_config {
-  exercise_id                                   String   @db.Uuid
-  parent_period_id                              String   @db.Uuid
-  period_id                                     String   @db.Uuid
+  parent_period_id                              String         @db.Uuid
+  period_id                                     String         @db.Uuid
   sorted_by                                     Int?
   bump_year                                     Boolean?
-  exercise                                      exercise @relation(fields: [exercise_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "period_config_exercise_fk")
-  period_period_config_parent_period_idToperiod period   @relation("period_config_parent_period_idToperiod", fields: [parent_period_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "period_config_parent_period_fk")
-  period_period_config_period_idToperiod        period   @relation("period_config_period_idToperiod", fields: [period_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "period_config_period_fk")
-
-  @@id([exercise_id, parent_period_id, period_id])
+  id                                            String         @id(map: "period_config_pk") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  exercise_type_id                              String?        @db.Uuid
+  exercise_type                                 exercise_type? @relation(fields: [exercise_type_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "period_config_exercise_type_fk")
+  period_period_config_parent_period_idToperiod period         @relation("period_config_parent_period_idToperiod", fields: [parent_period_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "period_config_parent_period_fk")
+  period_period_config_period_idToperiod        period         @relation("period_config_period_idToperiod", fields: [period_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "period_config_period_fk")
 }
 
 model ref_action {
@@ -198,4 +201,38 @@ model ref_action {
   key         String?     @db.VarChar(255)
   label       String?     @db.VarChar(255)
   audit_log   audit_log[]
+}
+
+model ref_client {
+  id          String       @id(map: "ref_client_pk") @db.Uuid
+  name        String?
+  country_id  String?      @db.Uuid
+  sbu_id      String?      @db.Uuid
+  is_disabled Boolean?
+  ref_country ref_country? @relation(fields: [country_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "ref_client_ref_country_fk")
+  ref_sbu     ref_sbu?     @relation(fields: [sbu_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "ref_client_ref_sbu_fk")
+}
+
+model ref_country {
+  id          String       @id(map: "ref_country_pk") @db.Uuid
+  name        String?
+  region_id   String?      @db.Uuid
+  is_disabled Boolean?
+  ref_client  ref_client[]
+  ref_region  ref_region?  @relation(fields: [region_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "ref_country_ref_region_fk")
+}
+
+model ref_entity {
+  id      String   @id(map: "ref_entity_pk") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name    String?
+  sbu_id  String?  @db.Uuid
+  ref_sbu ref_sbu? @relation(fields: [sbu_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "ref_entity_ref_sbu_fk")
+}
+
+model ref_region {
+  id          String        @id(map: "ref_region_pk") @db.Uuid
+  name        String?
+  latitude    Decimal?      @db.Decimal
+  longitude   Decimal?      @db.Decimal
+  ref_country ref_country[]
 }

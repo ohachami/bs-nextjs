@@ -6,6 +6,8 @@ interface RoutesIF {
     permissions: string[]
 }
 
+export const BASE_API = process.env.NODE_ENV === "production" ?  "/api" : "http://localhost:8080/api"
+
 // List of server routes with their corresponding permissions
 export const serverRoutes: RoutesIF[] = [
     {
