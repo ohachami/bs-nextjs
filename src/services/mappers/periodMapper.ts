@@ -1,7 +1,7 @@
-import { Period } from "@/types/config";
-import { TreeItem } from "@/types/TreeComboboxFilterTypes";
+import { PeriodIF } from "@/types/refExercise/config";
+import { TreeItem } from "@/types/common/TreeComboboxFilterTypes";
 
-export const mapPeriodToTreeItem = (periodDTO: Period, year: number): TreeItem => {
+export const mapPeriodToTreeItem = (periodDTO: PeriodIF, year: number): TreeItem => {
     return {
       id: `${year}-${periodDTO.id}`,
       label: periodDTO.name,
@@ -10,3 +10,5 @@ export const mapPeriodToTreeItem = (periodDTO: Period, year: number): TreeItem =
       })
     };
   };
+
+  
