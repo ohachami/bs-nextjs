@@ -1,8 +1,9 @@
 // Backend URL (API CONTEXT)
-const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
+export const BASE_API = process.env.NODE_ENV === "production" ?  "/api" : "http://localhost:8080/api"
 
 // List of key;value api paths 
 export const apiPaths = {
-    exerciceTypes: () => `${BACKEND_URL}config/exerciseTypes`,
-    periodConfig: () => `${BACKEND_URL}config/periodConfig`,
+    exerciceTypes: () => `${BASE_API}/config/exerciseTypes`,
+    periodConfig: () => `${BASE_API}/config/periodConfig`,
+    periods: () => `${BASE_API}/config/periods`,
 } as const;
