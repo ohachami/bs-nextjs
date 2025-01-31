@@ -20,6 +20,7 @@ type Props = {
     deadline: Nullable<Date>;
     order: number;
   }[];
+  onDetailsView: () => void;
 };
 
 const ExerciceCard: React.FC<Props> = (props) => {
@@ -74,7 +75,11 @@ const ExerciceCard: React.FC<Props> = (props) => {
         )}
 
         <div className="flex gap-3">
-          <Button variant="ghost" className="px-2 hover:bg-white">
+          <Button
+            variant="ghost"
+            className="px-2 hover:bg-white"
+            onClick={props.onDetailsView}
+          >
             <EyeIcon />
           </Button>
 

@@ -5,7 +5,6 @@ import { Badge } from '../ui/badge';
 const ExerciseStatus: FC<{
   status: Nullable<string>;
 }> = ({ status }) => {
-  console.log(status);
   switch (status) {
     case 'IN_PROGRESS':
       return (
