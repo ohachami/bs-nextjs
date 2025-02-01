@@ -13,6 +13,40 @@ import {
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { X } from 'lucide-react';
+import HorizonForm from './HorizonForm';
+import ObjectifsForm from './ObjectifsForms';
+import DeadlinesForm from './DeadlinesForm';
+import { Step } from '@/types/common/FormStepperTypes';
+
+/**
+ * Definning steps for the Dynamic "create exercise" step form.
+ */
+const steps: Step[] = [
+  {
+    id: 'horizon',
+    label: 'Informations générales',
+    component: <HorizonForm/>,
+    // onNext: async () => {
+    //   // Validate form or perform any action
+    //   const isValid = await validateHorizonForm();
+    //   return isValid;
+    // }
+  },
+  {
+    id: 'objectifs',
+    label: 'Objectifs',
+    component: <ObjectifsForm/>,
+    // onNext: () => {
+    //   // Synchronous validation is also supported
+    //   return validateObjectifs();
+    // }
+  },
+  {
+    id: 'deadlines',
+    label: 'Deadlines',
+    component: <DeadlinesForm/>
+  }
+]
 
 function CreateNewExercise() {
   const [open, setOpen] = useState(false);
@@ -43,7 +77,14 @@ function CreateNewExercise() {
             suivant
           </DialogDescription>
         </DialogHeader>
-        <FormStepper />
+        {/* Adding the Form Stepper */}
+        <FormStepper
+          steps={steps}
+          onComplete={() => {
+            // Handle form completion
+            console.log('Form completed!');
+          }}
+        />
       </DialogContent>
     </Dialog>
   );

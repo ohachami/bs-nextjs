@@ -1,5 +1,5 @@
 import { callAsync } from '@/hooks/useAsync';
-import { ExerciseTypeIF, PeriodConfigIF, PeriodIF } from '@/types/refExercise/config';
+import { ExerciseTypeIF, PeriodConfigIF, PeriodIF, StepConfigIF } from '@/types/refExercise/config';
 import { apiPaths } from '@/utils/apiPaths';
 import { useQuery } from '@tanstack/react-query';
 import axios, { AxiosResponse } from 'axios';
@@ -40,6 +40,23 @@ export const usePeriodConfig = (exerciseTypeId: string) => {
     },
     // only run the query if the exerciseTypeId is provided
     enabled: !!exerciseTypeId,
+  });
+};
+
+/**
+ * Fetching the list of StepConfig
+ * @returns a list of steps config used for the step number 3
+ * at the exercice step form creation process.
+ */
+export const useStepConfig = () => {
+  return useQuery<StepConfigIF[]>({
+    queryKey: ['stepConfig'],
+    queryFn: async () => {
+      const response = await callAsync<AxiosResponse<StepConfigIF[]>>(() =>
+        axios.get(apiPaths.stepConfig())
+      );
+      return response.data;
+    },
   });
 };
 

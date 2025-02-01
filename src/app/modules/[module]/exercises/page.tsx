@@ -8,8 +8,8 @@ import { Input } from '@/components/ui/input';
 import { useExercises } from '@/services/exercises.service';
 import { mapPeriodToTreeItem } from '@/services/mappers/periodMapper';
 import { usePeriodsTree } from '@/services/refExercise.service';
-import { Period } from '@/types/config';
-import { TreeItem } from '@/types/TreeComboboxFilterTypes';
+import { PeriodIF } from '@/types/refExercise/config';
+import { TreeItem } from '@/types/common/TreeComboboxFilterTypes';
 import { formatDate, getFullName } from '@/utils/functions';
 import { Nullable } from '@/utils/types';
 import { ColumnDef } from '@tanstack/react-table';
@@ -34,7 +34,7 @@ const ModuleExercices = () => {
     if(data && periodQuery.data) {
       let cyears = data.open.map(e => e.year);
       cyears = cyears.concat(data.closed.map(e => e.year));
-      const items = cyears.map(y => (mapPeriodToTreeItem({...periodQuery.data, name: `${y}`} as Period, y!)))
+      const items = cyears.map(y => (mapPeriodToTreeItem({...periodQuery.data, name: `${y}`} as PeriodIF, y!)))
       setFilter(items);
 
     }

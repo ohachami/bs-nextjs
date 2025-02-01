@@ -1,4 +1,5 @@
 // Type definitions for RefExercise Config
+// Used for The Exercise Section
 
 interface PeriodIF {
   id: string;
@@ -9,6 +10,7 @@ interface PeriodIF {
   children: PeriodIF[];
 }
 
+// used to get exercise types
 interface ExerciseTypeIF {
   id: string;
   name: string;
@@ -25,4 +27,18 @@ interface PeriodConfigIF {
   bumpYear: boolean;
 }
 
-export type { PeriodConfigIF, ExerciseTypeIF, PeriodIF };
+// StepConfig used for the step number 3
+// at the exercice step form creation process
+interface StepConfigIF {
+  id: string;
+  name: string;
+  code: string;
+  iconKey: string;
+  sortedBy: number;
+  deadlineDay: number;
+  mandatory: true;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export type { PeriodConfigIF, ExerciseTypeIF, PeriodIF, StepConfigIF };

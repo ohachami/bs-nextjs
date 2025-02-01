@@ -5,27 +5,56 @@ import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { defineStepper } from '@stepperize/react';
 import { Check, Circle, Dot, MoveLeft, MoveRight } from 'lucide-react';
-import HorizonForm from '../modules/exercises/create/HorizonForm';
-import ObjectifsForm from '../modules/exercises/create/ObjectifsForms';
-import DeadlinesForm from '../modules/exercises/create/DeadlinesForm';
-import ExerciseSuccess from '../modules/exercises/create/ExerciseSuccess';
+import { Step } from '@/types/common/FormStepperTypes';
 
-const { useStepper, steps, utils } = defineStepper(
-  { id: 'shipping', label: 'Shipping' },
-  { id: 'payment', label: 'Payment' },
-  { id: 'complete', label: 'Complete' }
-);
 
-function FormStepper() {
+// Form stepper Props Definition
+interface FormStepperProps {
+  steps: Step[];
+  onComplete: () => void;
+  submitButtonText?: string;
+  previousButtonText?: string;
+  nextButtonText?: string;
+  className?: string;
+}
+
+function FormStepper({
+  steps,
+  onComplete,
+  submitButtonText = "Terminer",
+  previousButtonText = "Précédent",
+  nextButtonText = "Suivant",
+  className = "",
+}: FormStepperProps) {
+  // Convert steps array to format required by defineStepper
+  const stepperConfig = steps.map(({ id, label }) => ({ id, label }));
+  const { useStepper, utils } = defineStepper(...stepperConfig);
+  
   const stepper = useStepper();
-
   const currentIndex = utils.getIndex(stepper.current.id);
+  
+  // Handle next step action
+  const handleNext = async () => {
+    const currentStep = steps[currentIndex];
+    
+    if (currentStep.onNext) {
+      const canProceed = await currentStep.onNext();
+      if (!canProceed) return;
+    }
+    
+    if (stepper.isLast) {
+      onComplete();
+    } else {
+      stepper.next();
+    }
+  };
 
-  const [success, setSucess] = React.useState<boolean>(false);
+  // Get current component
+  const CurrentStepComponent = steps[currentIndex].component;
 
   return (
-    <div className="flex flex-col gap-5">
-      {/* Stepper header (cicrled steps) */}
+    <div className={`flex flex-col gap-5 ${className}`}>
+      {/* Stepper header (circled steps) */}
       <div className="w-full mx-auto my-4">
         <div className="flex items-center justify-between">
           {stepper.all.map((step, index, array) => (
@@ -74,14 +103,12 @@ function FormStepper() {
           ))}
         </div>
       </div>
+
       {/* Stepper content */}
       <div className="space-y-4">
-        {stepper.switch({
-          shipping: () => <HorizonForm />,
-          payment: () => <ObjectifsForm />,
-          complete: () => <DeadlinesForm />,
-        })}
+        {CurrentStepComponent}
       </div>
+
       {/* Stepper footer (actions buttons) */}
       <div className="flex justify-between gap-4 mt-5">
         <Button
@@ -89,22 +116,18 @@ function FormStepper() {
           onClick={stepper.prev}
           disabled={stepper.isFirst}
         >
-          <MoveLeft /> Précédent
+          <MoveLeft /> {previousButtonText}
         </Button>
-        {!stepper.isLast ? (
-          <Button type="submit" onClick={() => stepper.next()}>
-            Suivant <MoveRight />
-          </Button>
-        ) : (
-          <Button type="submit" onClick={() => setSucess(true)}>
-            Terminer <MoveRight />
-          </Button>
-        )}
+        <Button 
+          type="submit" 
+          onClick={handleNext}
+        >
+          {stepper.isLast ? submitButtonText : nextButtonText} 
+          <MoveRight />
+        </Button>
       </div>
-      {success && <ExerciseSuccess/>}
     </div>
   );
 }
-
 
 export default FormStepper;
