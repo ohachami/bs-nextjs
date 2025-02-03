@@ -1,6 +1,4 @@
 'use client';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
 import { Label } from '@/components/ui/label';
 import {
   Select,
@@ -10,58 +8,101 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { useExerciseTypes } from '@/services/refExercise.service';
-import { ExerciseTypeIF } from '@/types/refExercise/config';
-import { useEffect, useState } from 'react';
 import {
-  horizonFormSchema,
-  HorizonFormType,
-} from '@/validations/exercises.create';
+  useExerciseTypes,
+  usePeriodsTree,
+} from '@/services/refExercise.service';
+import { ExerciseTypeIF, PeriodIF } from '@/types/refExercise/config';
+import { useState } from 'react';
+import TreeCombobox from '@/components/common/TreeCombobox';
+import { useExerciseCreationStore } from '@/store/exercises/create';
+import { exerciseTypes as EXERCISE_TYPES } from '@/utils/constants';
+import { TreeItem } from '@/types/common/TreeComboboxFilterTypes';
+import { mapPeriodToTreeItem } from '@/services/mappers/periodMapper';
+import { getElementsByLevel, getThreeYearsFromNow } from '@/utils/functions';
 
 function HorizonForm() {
-  const {
-    data: exerciseTypes,
-    isLoading: isExerciseTypeLoading,
-    isError: isExerciseTypeError,
-  } = useExerciseTypes();
+  // zustand state manager
+  const { data, updateData, errors } = useExerciseCreationStore();
+  // backend state for periods list
+  const { data: periods } = usePeriodsTree();
+  // backend state for exercise types list
+  const { data: exerciseTypes, isLoading: isExerciseTypeLoading } =
+    useExerciseTypes();
+  // current tree data object
+  const [treeData, setTreeData] = useState<TreeItem[]>([]);
 
-  const [selectedExerciseTypeId, setSelectedExerciseTypeId] =
-    useState<string>('');
-
-  useEffect(() => {}, []);
-
-  // react hook form instance
-  const {
-    trigger,
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<HorizonFormType>({
-    // schema validation with zod
-    resolver: zodResolver(horizonFormSchema),
-  });
-
-  const onSubmit = (data: HorizonFormType) => {
-    console.log("Form Data:", data);
+  // on exercice type change
+  const onExerciceTypeChange = (exerciceType: string) => {
+    updateData({ ...data, exerciceType });
+    // getting exercise type name
+    const [, exercieTypeName] = exerciceType.split(';');
+    // updating the tree data
+    updateTreeData(exercieTypeName);
   };
 
-  const handleButtonClick = async () => {
-    const isValid = await trigger(); // Manually trigger validation
+  // on period config selected
+  const onPeriodConfigChange = (periodConfig: string[]) => {
+    updateData({ ...data, periodConfig });
+  };
 
-    if (isValid) {
-      handleSubmit(onSubmit)(); // Manually submit the form
+  /**
+   * Updating the Tree combobox based on the selected exercise type
+   * @param exerciceTypeName : Exaercise Type name
+   */
+  function updateTreeData(exerciceTypeName: string) {
+    // checking all 4 cases (Budget, MBR, QBR, Ad hoc)
+    switch (exerciceTypeName) {
+      case EXERCISE_TYPES.Budget: {
+        // get only years
+        if (periods) {
+          const items: TreeItem[] = getElementsByLevel(periods, 1);
+          setTreeData(items);
+        }
+        break;
+      }
+      case EXERCISE_TYPES.QBR: {
+        // get only quarters
+        if (periods) {
+          const items: TreeItem[] = getElementsByLevel(periods, 2);
+          setTreeData(items);
+        }
+        break;
+      }
+      case EXERCISE_TYPES.MBR: {
+        // get only months
+        if (periods) {
+          const items: TreeItem[] = getElementsByLevel(periods, 3);
+          setTreeData(items);
+        }
+        break;
+      }
+      case EXERCISE_TYPES['Ad hoc']: {
+        // get all data tree (year, quarter, month)
+        if (periods) {
+          const items = getThreeYearsFromNow().map((y) =>
+            mapPeriodToTreeItem({ ...periods, name: `${y}` } as PeriodIF, y)
+          );
+          setTreeData(items);
+        }
+        break;
+      }
+      default:
+        break;
     }
-  };
-
-
+  }
   
-
   return (
     <div className="space-y-6">
       {/* Type d'exercice */}
       <section className="space-y-2">
         <Label htmlFor="typeExercice">Type d&apos;exercice</Label>
-        <Select {...register('exerciseType')}>
+        <Select
+          disabled={isExerciseTypeLoading}
+          defaultValue={data && data.exerciceType}
+          // on new exercise type value selected
+          onValueChange={onExerciceTypeChange}
+        >
           <SelectTrigger className="w-full">
             <SelectValue
               placeholder={
@@ -73,42 +114,40 @@ function HorizonForm() {
             <SelectGroup>
               {!isExerciseTypeLoading &&
                 exerciseTypes &&
-                exerciseTypes.map((type: ExerciseTypeIF, key: number) => (
-                  <SelectItem key={key} value={type.id}>
-                    {type.name}
-                  </SelectItem>
-                ))}
+                exerciseTypes.map(
+                  (exerciceType: ExerciseTypeIF, key: number) => (
+                    <SelectItem
+                      key={key}
+                      value={`${exerciceType.id};${exerciceType.name}`}
+                    >
+                      {exerciceType.name}
+                    </SelectItem>
+                  )
+                )}
             </SelectGroup>
           </SelectContent>
         </Select>
-        {errors.exerciseType && <p>{errors.exerciseType.message}</p>}
+        {errors.exerciceType && (
+          <p className="text-xs text-red-500">{errors.exerciceType[0]}</p>
+        )}
       </section>
       {/* Période del'exercice */}
       <section className="space-y-2">
         <Label htmlFor="typeExercice">Période de l&apos;exercice</Label>
-        <Select {...register('exercisePeriod')}>
-          <SelectTrigger className="w-full">
-            <SelectValue
-              placeholder={
-                isExerciseTypeLoading ? 'Loading...' : 'Sélectionner un type'
-              }
-            />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectGroup>
-              {!isExerciseTypeLoading &&
-                exerciseTypes &&
-                exerciseTypes.map((type: ExerciseTypeIF, key: number) => (
-                  <SelectItem key={key} value={type.id}>
-                    {type.name}
-                  </SelectItem>
-                ))}
-            </SelectGroup>
-          </SelectContent>
-        </Select>
-        {errors.exercisePeriod && <p>{errors.exercisePeriod.message}</p>}
+        <TreeCombobox
+          items={treeData}
+          title="Séléctionner une période"
+          multiSelect={
+            data.exerciceType.split(';')[1] === EXERCISE_TYPES['Ad hoc']
+          }
+          selectChildren={false}
+          defaultValues={data.periodConfig}
+          onSelectionChange={onPeriodConfigChange}
+        />
+        {errors.periodConfig && (
+          <p className="text-xs text-red-500">{errors.periodConfig[0]}</p>
+        )}
       </section>
-      <button onClick={handleButtonClick}>validate</button>
     </div>
   );
 }

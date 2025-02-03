@@ -12,7 +12,7 @@ import { TreeComboboxProps, TreeItem } from "@/types/common/TreeComboboxFilterTy
 
 
 
-const TreeCombobox: React.FC<TreeComboboxProps> = ({ items, multiSelect, defaultValues, selectChildren, onSelectionChange }) => {
+const TreeCombobox: React.FC<TreeComboboxProps> = ({ items, multiSelect, defaultValues, title, selectChildren, onSelectionChange }) => {
   const [open, setOpen] = React.useState(false)
   const [selected, setSelected] = React.useState<string[]>([])
   const [search, setSearch] = React.useState("")
@@ -118,12 +118,12 @@ const TreeCombobox: React.FC<TreeComboboxProps> = ({ items, multiSelect, default
   }, [items, search])
 
   return (
-    <Popover open={open} onOpenChange={setOpen}>
+    <Popover open={open} onOpenChange={setOpen} modal={true}>
       <PopoverTrigger asChild>
         <Button variant="outline" role="combobox" aria-expanded={open} className="w-full justify-between">
-          <ListFilter />
-          {selected.length > 0 ? `${selected.length} selected` : "Filtre"}
-          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+          {!title && <ListFilter />}
+          {selected.length > 0 ? `${selected.length} selected` : title? title: "Filtre"}
+          {!title? <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />: <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />}
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-[300px] p-0">

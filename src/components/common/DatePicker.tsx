@@ -15,9 +15,11 @@ import {
 function DatePicker(props: {
   placeholder?: string;
   withClearBtn?: boolean;
+  onDateClear: () => void;
+  initialDate?: Date;
   onSelectedDate: (date: Date) => void;
 }) {
-  const [date, setDate] = React.useState<Date | undefined>(undefined);
+  const [date, setDate] = React.useState<Date | undefined>(props.initialDate);
   const [open, setOpen] = React.useState(false);
 
   const onDateSelected = (selectedDate: Date | undefined) => {
@@ -32,6 +34,7 @@ function DatePicker(props: {
     e.stopPropagation();
     e.preventDefault();
     setDate(undefined);
+    props.onDateClear();
   };
 
   return (
@@ -82,9 +85,6 @@ function DatePicker(props: {
           selected={date}
           onSelect={onDateSelected}
           initialFocus
-          disabled={(date) =>
-            date > new Date() || date < new Date('1900-01-01')
-          }
         />
       </PopoverContent>
     </Popover>

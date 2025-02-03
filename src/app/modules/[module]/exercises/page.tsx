@@ -26,7 +26,7 @@ type DataTableColumns = {
 
 const ModuleExercices = () => {
   const { isPending, data } = useExercises();
-  const [selectedPeriods, setSelectedPeriods] = useState<string[]>([])
+  const [selectedPeriods, setSelectedPeriods] = useState<string[]>([]);
   const periodQuery = usePeriodsTree();
   const [filter, setFilter] = useState<TreeItem[]>([])
 

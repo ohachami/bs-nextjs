@@ -17,3 +17,17 @@ export const permissions = {
     // User Delete Role
     ROLE_USERS_D: "ROLE_USERS_D",
 } as const;
+
+// Exercice Types
+export const exerciseTypes = {
+    Budget: 'Budget',
+    MBR: 'MBR',
+    QBR: 'QBR',
+    'Ad hoc': 'Ad hoc'
+} as const;
+
+// Exercice Status
+export const exerciseStatus = {
+    ACTIVE: 'ACTIVE',
+    PENDING: 'PENDING'
+} as const;

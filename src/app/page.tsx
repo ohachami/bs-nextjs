@@ -1,7 +1,6 @@
 'use client';
 
 import ModuleComponent from '@/components/common/ModuleComponent';
-import CreateNewExercise from '@/components/modules/exercises/create';
 import { modules } from '@/utils/constants';
 import { ChartLine, ClipboardList, GitCompareArrows } from 'lucide-react';
 import React from 'react';
@@ -18,8 +17,6 @@ const HomePage = () => {
           Description Lorem ipsum dolor sit amet, consectetur adipiscing elit.
           Nam imperdiet quam fringilla libero rutrum lobortis...
         </p>
-        {/* TODO: TO remove (testing purposes) */}
-        <CreateNewExercise />
       </div>
 
       <div className="grow grid grid-cols-3 gap-4 h-fit">

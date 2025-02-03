@@ -1,5 +1,5 @@
 import { callAsync } from '@/hooks/useAsync';
-import { ExerciseTypeIF, PeriodConfigIF, PeriodIF, StepConfigIF } from '@/types/refExercise/config';
+import { ExerciseTypeIF, PeriodConfigV2IF, PeriodIF, StepConfigIF } from '@/types/refExercise/config';
 import { apiPaths } from '@/utils/apiPaths';
 import { useQuery } from '@tanstack/react-query';
 import axios, { AxiosResponse } from 'axios';
@@ -26,10 +26,10 @@ export const useExerciseTypes = () => {
  * @returns the list of config for a given exercise ID
  */
 export const usePeriodConfig = (exerciseTypeId: string) => {
-  return useQuery<PeriodConfigIF[]>({
+  return useQuery<PeriodConfigV2IF>({
     queryKey: ['periodConfig', exerciseTypeId],
     queryFn: async () => {
-      const response = await callAsync<AxiosResponse<PeriodConfigIF[]>>(() =>
+      const response = await callAsync<AxiosResponse<PeriodConfigV2IF>>(() =>
         axios.get(apiPaths.periodConfig(), {
           params: {
             exerciseType: exerciseTypeId,

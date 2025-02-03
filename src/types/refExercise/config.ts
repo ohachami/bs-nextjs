@@ -27,6 +27,13 @@ interface PeriodConfigIF {
   bumpYear: boolean;
 }
 
+interface PeriodConfigV2IF {
+  id: string;
+  exerciseTypeName: string;
+  parentPeriodId: string;
+  periods: PeriodIF[];
+}
+
 // StepConfig used for the step number 3
 // at the exercice step form creation process
 interface StepConfigIF {
@@ -41,4 +48,4 @@ interface StepConfigIF {
   updatedAt: Date;
 }
 
-export type { PeriodConfigIF, ExerciseTypeIF, PeriodIF, StepConfigIF };
+export type { PeriodConfigIF, PeriodConfigV2IF, ExerciseTypeIF, PeriodIF, StepConfigIF };

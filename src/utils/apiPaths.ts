@@ -7,4 +7,5 @@ export const apiPaths = {
     periodConfig: () => `${BASE_API}/config/periodConfig`,
     periods: () => `${BASE_API}/config/periods`,
     stepConfig: () => `${BASE_API}/config/steps`,
+    exercises: () => `${BASE_API}/exercises`
 } as const;

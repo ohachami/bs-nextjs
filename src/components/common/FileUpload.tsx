@@ -8,6 +8,7 @@ interface FileUploadProps {
   uploadBtnText?: string;
   uploadBtnIcon?: React.ReactNode;
   acceptedFileFormats?: string;
+  file: File | null;
   onFileUpload?: (file: File) => void;
 }
 
@@ -16,8 +17,9 @@ const FileUpload: React.FC<FileUploadProps> = ({
   uploadBtnIcon = <PlusIcon />,
   acceptedFileFormats = 'xlsx',
   onFileUpload,
+  file
 }) => {
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [selectedFile, setSelectedFile] = useState<File | null>(file);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   // on file uploaded
