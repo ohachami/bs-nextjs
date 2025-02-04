@@ -49,7 +49,9 @@ const ModuleExercices = () => {
 
   useEffect(() => {
     if(data && periodQuery.data) {
-      const cyears = data.map(e => e.year);
+      const yearsSet = new Set(data.map(e => e.year));
+      const cyears = Array.from(yearsSet);
+
       const items = cyears.map(y => (mapPeriodToTreeItem({...periodQuery.data, name: `${y}`} as PeriodIF, y!)))
       setFilter(items);
 
