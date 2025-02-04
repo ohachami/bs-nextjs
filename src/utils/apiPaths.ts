@@ -5,5 +5,6 @@ export const apiPaths = {
     periodConfig: () => `/config/periodConfig`,
     periods: () => `/config/periods`,
     exercisesCount: () => `/exercises/count`,
-    exercises: () => `/exercises`
+    exercises: () => `/exercises`,
+    currentUser: () => `/users/current`
 } as const;
