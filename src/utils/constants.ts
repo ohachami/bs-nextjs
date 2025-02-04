@@ -28,7 +28,13 @@ export const exerciseTypes = {
 } as const;
 
 // Exercice Status
-export const exerciseStatus = {
-    ACTIVE: 'ACTIVE',
-    PENDING: 'PENDING'
+export const EXERCISE_STATUS = {
+    IN_PROGRESS: 'IN_PROGRESS',
+    CLOSED: 'CLOSED' 
+} as const;
+
+export const STEP_STATUS = {
+    INACTIVE: 'INACTIVE',
+    IN_PROGRESS: 'IN_PROGRESS',
+    CLOSED: 'CLOSED' 
 } as const;

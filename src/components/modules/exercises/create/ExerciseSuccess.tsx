@@ -48,7 +48,6 @@ function ExerciseSuccess() {
           <Button
             className="h-12 rounded-lg"
             onClick={() => {
-              alert("");
               clearState();
               setOpen(false);
             }}

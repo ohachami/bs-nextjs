@@ -31,7 +31,7 @@ export const usePeriodConfig = (exerciseTypeId: string) => {
     queryKey: ['periodConfig', exerciseTypeId],
     queryFn: async () => {
       const response = await callAsync<AxiosResponse<PeriodConfigV2IF>>(() =>
-        axios.get(apiPaths.periodConfig(), {
+        api.get(apiPaths.periodConfig(), {
           params: {
             exerciseType: exerciseTypeId,
           },
@@ -54,7 +54,7 @@ export const useStepConfig = () => {
     queryKey: ['stepConfig'],
     queryFn: async () => {
       const response = await callAsync<AxiosResponse<StepConfigIF[]>>(() =>
-        axios.get(apiPaths.stepConfig())
+        api.get(apiPaths.stepConfig())
       );
       return response.data;
     },

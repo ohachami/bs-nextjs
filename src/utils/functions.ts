@@ -77,7 +77,7 @@ export function getElementsByLevel(baseObject: PeriodIF, level: 1 | 2 | 3) {
 
   if (level === 1) {
     return years.map((year) => ({
-      id: `${year}`,
+      id: `${year};${baseObject.id}`,
       label: `${year}`
     }));
   }
@@ -87,7 +87,7 @@ export function getElementsByLevel(baseObject: PeriodIF, level: 1 | 2 | 3) {
       id: `${year}`,
       label: `${year}`,
       children: baseObject.children.map((q) => ({
-        id: `${year}-${q.id}`,
+        id: `${year};${q.id}`,
         label: q.name,
       })),
     }));
@@ -99,7 +99,7 @@ export function getElementsByLevel(baseObject: PeriodIF, level: 1 | 2 | 3) {
       label: `${year}`,
       children: baseObject.children.flatMap((q) =>
         q.children.map((month) => ({
-          id: `${year}-${month.id}`,
+          id: `${year};${month.id}`,
           label: month.name,
         }))
       ),

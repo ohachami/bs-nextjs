@@ -22,7 +22,7 @@ import {
 } from '@/store/exercises/create';
 import { Step } from '@/types/common/FormStepperTypes';
 import ExerciseSuccess from './ExerciseSuccess';
-import { exerciseStatus as EXERCISE_STATUS } from '@/utils/constants';
+import { EXERCISE_STATUS, STEP_STATUS } from '@/utils/constants';
 import { useCreateExercise } from '@/services/exercises.service';
 import { ExercisePayload } from '@/types/exercises/createExercise';
 import { toast } from '@/hooks/use-toast';
@@ -82,20 +82,21 @@ function CreateNewExercise() {
    * @returns STATUS CODE Example: 200OK
    */
   function preprocessData(data: ExerciseCreationFormData): ExercisePayload {
+    
     return {
       name: '',
-      year: +data.periodConfig[0].split('-')[0],
-      status: EXERCISE_STATUS.PENDING,
+      year: +data.periodConfig[0].split(';')[0],
+      status: EXERCISE_STATUS.IN_PROGRESS,
       description: '',
       exerciseType: {
         id: data.exerciceType.split(';')[0],
       },
       parentPeriod: {
-        id: data.periodConfig[0].split('-')[1],
+        id: data.periodConfig[0].split(';')[1],
       },
       steps: data.steps.map((step) => ({
-        status: EXERCISE_STATUS.PENDING,
-        deadlineAt: step.deadlineAt ? step.deadlineAt?.toString() : '',
+        status: step.sortedBy === 1 ? STEP_STATUS.IN_PROGRESS: STEP_STATUS.INACTIVE,
+        deadlineAt: step.deadlineAt ? step.deadlineAt?.toISOString() : '',
         stepConfig: {
           id: step.stepConfigId,
         },

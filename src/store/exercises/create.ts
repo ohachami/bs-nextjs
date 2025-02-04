@@ -8,6 +8,7 @@ import {
 
 export interface StepIF {
   stepConfigId: string;
+  sortedBy: number;
   deadlineAt: Date | undefined;
 }
 

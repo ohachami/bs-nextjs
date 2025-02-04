@@ -4,6 +4,7 @@ import ExerciseCard from '@/components/common/ExerciseCard';
 import ExerciseStatus from '@/components/common/ExerciseStatus';
 import StepProgress from '@/components/common/ExerciseStepper';
 import TreeCombobox from '@/components/common/TreeCombobox';
+import CreateNewExercise from '@/components/modules/exercises/create';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -20,10 +21,11 @@ import { usePeriodsTree } from '@/services/refExercise.service';
 import { TreeItem } from '@/types/common/TreeComboboxFilterTypes';
 import { Exercise } from '@/types/exercise';
 import { PeriodIF } from '@/types/refExercise/config';
+import { EXERCISE_STATUS } from '@/utils/constants';
 import { formatDate, getFullName } from '@/utils/functions';
 import { Nullable } from '@/utils/types';
 import { ColumnDef } from '@tanstack/react-table';
-import { PenIcon, PlusIcon, SearchIcon, XIcon } from 'lucide-react';
+import { PenIcon, SearchIcon, XIcon } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 type DataTableColumns = {
@@ -47,8 +49,7 @@ const ModuleExercices = () => {
 
   useEffect(() => {
     if(data && periodQuery.data) {
-      let cyears = data.open.map(e => e.year);
-      cyears = cyears.concat(data.closed.map(e => e.year));
+      const cyears = data.map(e => e.year);
       const items = cyears.map(y => (mapPeriodToTreeItem({...periodQuery.data, name: `${y}`} as PeriodIF, y!)))
       setFilter(items);
 
@@ -66,8 +67,8 @@ const ModuleExercices = () => {
         );
       }
 
-      setOpenEx(newData.filter((ex) => ex.status === 'IN_PROGRESS'));
-      setClosedEx(newData.filter((ex) => ex.status === 'CLOSED'));
+      setOpenEx(newData.filter((ex) => ex.status === EXERCISE_STATUS.IN_PROGRESS));
+      setClosedEx(newData.filter((ex) => ex.status === EXERCISE_STATUS.CLOSED));
     }
   }, [data, selectedPeriods, search]);
 
@@ -136,10 +137,7 @@ const ModuleExercices = () => {
         <h1 className="text-2xl text-card-foreground font-semibold font-geist tracking-tight">
           Liste des exercices
         </h1>
-
-        <Button>
-          <PlusIcon /> Démarrer un exercice
-        </Button>
+        <CreateNewExercise />
       </div>
 
       <div className="flex flex-nowrap gap-2.5">

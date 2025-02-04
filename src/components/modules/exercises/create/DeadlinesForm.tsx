@@ -19,6 +19,7 @@ function DeadlinesForm() {
       // fetching already existing dates
       const existingDates = stepConfig.map((item: StepConfigIF) => ({
         stepConfigId: item.id,
+        sortedBy: item.sortedBy,
         deadlineAt: getDateWithDay(item.deadlineDay),
       }));
       // update state with backend data
