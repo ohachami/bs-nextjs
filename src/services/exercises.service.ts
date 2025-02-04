@@ -1,9 +1,11 @@
-import api from "@/api";
-import { callAsync } from "@/hooks/useAsync";
+import { ExerciseDetailsPayload } from '@/db/exercises.db';
+import { callAsync } from '@/hooks/useAsync';
+import { ExercisePayload } from '@/types/exercises/createExercise';
 import { Exercise } from "@/types/exercise";
 import { apiPaths } from "@/utils/apiPaths";
-import { useQuery } from "@tanstack/react-query";
-import { AxiosResponse } from "axios";
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import axios, { AxiosResponse } from 'axios';
+import api from "@/api";
 
 export const useExercisesCount = () => {
   return useQuery<number>({
@@ -23,4 +25,25 @@ export const useExercises = () => {
       return response.data;
     }
   })
-}
+};
+
+// create an exercise post request
+export const useCreateExercise = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation<AxiosResponse, Error, ExercisePayload>({
+    mutationFn: async (exerciseData) => {
+      return callAsync<AxiosResponse>(() =>
+        axios.post(apiPaths.exercises(), exerciseData)
+      );
+    },
+    onSuccess: () => {
+      // Invalidate and refetch exercises query after successful creation
+      queryClient.invalidateQueries({ queryKey: ['exercises'] });
+    },
+    onError: (error) => {
+      // Optional: Add error handling logic
+      console.error('Exercise creation failed:', error);
+    },
+  });
+};

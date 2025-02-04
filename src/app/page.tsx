@@ -17,7 +17,6 @@ const HomePage = () => {
           Description Lorem ipsum dolor sit amet, consectetur adipiscing elit.
           Nam imperdiet quam fringilla libero rutrum lobortis...
         </p>
-        {/* TODO: Mock test to remove */}
       </div>
       <div className="grow grid grid-cols-3 gap-4 h-fit">
         <div className="col-span-1">

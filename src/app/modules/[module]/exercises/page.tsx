@@ -46,7 +46,12 @@ const ModuleExercices = () => {
   const [exercise, setExercise] = useState<Exercise | null>(null);
 
   useEffect(() => {
-    if (data) {
+    if(data && periodQuery.data) {
+      let cyears = data.open.map(e => e.year);
+      cyears = cyears.concat(data.closed.map(e => e.year));
+      const items = cyears.map(y => (mapPeriodToTreeItem({...periodQuery.data, name: `${y}`} as PeriodIF, y!)))
+      setFilter(items);
+
       let newData = [...data];
 
       if (search !== '') {

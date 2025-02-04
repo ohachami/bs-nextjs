@@ -1,45 +1,21 @@
-'use client';
+"use client"
 
-import * as React from 'react';
-import {
-  ChevronsUpDown,
-  ChevronRight,
-  ChevronDown,
-  ListFilter,
-} from 'lucide-react';
-import { cn } from '@/lib/utils';
-import { Button } from '@/components/ui/button';
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from '@/components/ui/command';
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@/components/ui/popover';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { Checkbox } from '@/components/ui/checkbox';
-import {
-  TreeComboboxProps,
-  TreeItem,
-} from '@/types/common/TreeComboboxFilterTypes';
+import * as React from "react"
+import { ChevronsUpDown, ChevronRight, ChevronDown, ListFilter } from "lucide-react"
+import { cn } from "@/lib/utils"
+import { Button } from "@/components/ui/button"
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command"
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
+import { ScrollArea } from "@/components/ui/scroll-area"
+import { Checkbox } from "@/components/ui/checkbox"
+import { TreeComboboxProps, TreeItem } from "@/types/common/TreeComboboxFilterTypes"
 
-const TreeCombobox: React.FC<TreeComboboxProps> = ({
-  items,
-  multiSelect,
-  defaultValues,
-  selectChildren,
-  onSelectionChange,
-}) => {
-  const [open, setOpen] = React.useState(false);
-  const [selected, setSelected] = React.useState<string[]>([]);
-  const [search, setSearch] = React.useState('');
-  const [expanded, setExpanded] = React.useState<string[]>([]);
+
+const TreeCombobox: React.FC<TreeComboboxProps> = ({ items, multiSelect, defaultValues, title, selectChildren, onSelectionChange }) => {
+  const [open, setOpen] = React.useState(false)
+  const [selected, setSelected] = React.useState<string[]>([])
+  const [search, setSearch] = React.useState("")
+  const [expanded, setExpanded] = React.useState<string[]>([])
 
   React.useEffect(() => {
     if (defaultValues) {
@@ -151,17 +127,12 @@ const TreeCombobox: React.FC<TreeComboboxProps> = ({
   }, [items, search]);
 
   return (
-    <Popover open={open} onOpenChange={setOpen}>
+    <Popover open={open} onOpenChange={setOpen} modal={true}>
       <PopoverTrigger asChild>
-        <Button
-          variant="outline"
-          role="combobox"
-          aria-expanded={open}
-          className="w-full justify-between"
-        >
-          <ListFilter />
-          {selected.length > 0 ? `${selected.length} selected` : 'Filtre'}
-          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+        <Button variant="outline" role="combobox" aria-expanded={open} className="w-full justify-between">
+          {!title && <ListFilter />}
+          {selected.length > 0 ? `${selected.length} selected` : title? title: "Filtre"}
+          {!title? <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />: <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />}
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-[300px] p-0">
