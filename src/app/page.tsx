@@ -18,7 +18,6 @@ const HomePage = () => {
           Nam imperdiet quam fringilla libero rutrum lobortis...
         </p>
       </div>
-
       <div className="grow grid grid-cols-3 gap-4 h-fit">
         <div className="col-span-1">
           <ModuleComponent

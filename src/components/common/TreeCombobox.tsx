@@ -11,7 +11,6 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { TreeComboboxProps, TreeItem } from "@/types/common/TreeComboboxFilterTypes"
 
 
-
 const TreeCombobox: React.FC<TreeComboboxProps> = ({ items, multiSelect, defaultValues, title, selectChildren, onSelectionChange }) => {
   const [open, setOpen] = React.useState(false)
   const [selected, setSelected] = React.useState<string[]>([])
@@ -19,52 +18,56 @@ const TreeCombobox: React.FC<TreeComboboxProps> = ({ items, multiSelect, default
   const [expanded, setExpanded] = React.useState<string[]>([])
 
   React.useEffect(() => {
-    if(defaultValues) {
-      setSelected(defaultValues)
+    if (defaultValues) {
+      setSelected(defaultValues);
     }
-  }, [defaultValues])
+  }, [defaultValues]);
 
   const getAllChildrenIds = (item: TreeItem): string[] => {
-    let ids: string[] = []
+    let ids: string[] = [];
     if (item.children) {
       item.children.forEach((child) => {
-        ids.push(child.id)
-        ids = [...ids, ...getAllChildrenIds(child)]
-      })
+        ids.push(child.id);
+        ids = [...ids, ...getAllChildrenIds(child)];
+      });
     }
-    return ids
-  }
+    return ids;
+  };
 
   const handleSelect = (item: TreeItem) => {
     setSelected((prev) => {
-      let newSelected: string[]
+      let newSelected: string[];
 
       if (multiSelect) {
         if (prev.includes(item.id)) {
-          newSelected = prev.filter((id) => id !== item.id)
+          newSelected = prev.filter((id) => id !== item.id);
           if (selectChildren && item.children) {
-            newSelected = newSelected.filter((id) => !getAllChildrenIds(item).includes(id))
+            newSelected = newSelected.filter(
+              (id) => !getAllChildrenIds(item).includes(id)
+            );
           }
         } else {
-          newSelected = [...prev, item.id]
+          newSelected = [...prev, item.id];
           if (selectChildren && item.children) {
-            newSelected = [...newSelected, ...getAllChildrenIds(item)]
+            newSelected = [...newSelected, ...getAllChildrenIds(item)];
           }
         }
       } else {
-        newSelected = [item.id]
+        newSelected = [item.id];
       }
 
-      onSelectionChange(newSelected)
-      return newSelected
-    })
-  }
+      onSelectionChange(newSelected);
+      return newSelected;
+    });
+  };
 
   const toggleExpand = (itemId: string) => {
-    setExpanded((prev) => (prev.includes(itemId) ? prev.filter((id) => id !== itemId) : [...prev, itemId]))
-  }
-
-
+    setExpanded((prev) =>
+      prev.includes(itemId)
+        ? prev.filter((id) => id !== itemId)
+        : [...prev, itemId]
+    );
+  };
 
   const renderTreeItems = (items: TreeItem[], level = 0) => {
     return items.map((item) => (
@@ -72,50 +75,56 @@ const TreeCombobox: React.FC<TreeComboboxProps> = ({ items, multiSelect, default
         <CommandItem
           value={item.id}
           onSelect={() => handleSelect(item)}
-          className={cn("flex items-center gap-2", level > 0 && "ml-4")}
+          className={cn('flex items-center gap-2', level > 0 && 'ml-4')}
         >
           {item.children && (
             <button
               onClick={(e) => {
-                e.stopPropagation()
-                toggleExpand(item.id)
+                e.stopPropagation();
+                toggleExpand(item.id);
               }}
               className="mr-1"
             >
-              {expanded.includes(item.id) ? <ChevronDown className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
+              {expanded.includes(item.id) ? (
+                <ChevronDown className="h-4 w-4" />
+              ) : (
+                <ChevronRight className="h-4 w-4" />
+              )}
             </button>
           )}
           {!item.children && <span className="w-5 mr-5" />}
           <Checkbox checked={selected.includes(item.id)} />
           {item.label}
         </CommandItem>
-        {item.children && expanded.includes(item.id) && renderTreeItems(item.children, level + 1)}
+        {item.children &&
+          expanded.includes(item.id) &&
+          renderTreeItems(item.children, level + 1)}
       </React.Fragment>
-    ))
-  }
+    ));
+  };
 
   const clearSelection = () => {
-    setSelected([])
-    onSelectionChange([])
-  }
+    setSelected([]);
+    onSelectionChange([]);
+  };
 
   const filteredItems = React.useMemo(() => {
     const filterItems = (items: TreeItem[]): TreeItem[] => {
       return items.reduce((acc: TreeItem[], item) => {
         if (item.label.toLowerCase().includes(search.toLowerCase())) {
-          acc.push(item)
+          acc.push(item);
         } else if (item.children) {
-          const filteredChildren = filterItems(item.children)
+          const filteredChildren = filterItems(item.children);
           if (filteredChildren.length > 0) {
-            acc.push({ ...item, children: filteredChildren })
+            acc.push({ ...item, children: filteredChildren });
           }
         }
-        return acc
-      }, [])
-    }
+        return acc;
+      }, []);
+    };
 
-    return filterItems(items)
-  }, [items, search])
+    return filterItems(items);
+  }, [items, search]);
 
   return (
     <Popover open={open} onOpenChange={setOpen} modal={true}>
@@ -128,11 +137,17 @@ const TreeCombobox: React.FC<TreeComboboxProps> = ({ items, multiSelect, default
       </PopoverTrigger>
       <PopoverContent className="w-[300px] p-0">
         <Command>
-          <CommandInput placeholder="Horizon..." value={search} onValueChange={setSearch} />
+          <CommandInput
+            placeholder="Horizon..."
+            value={search}
+            onValueChange={setSearch}
+          />
           <CommandList>
             <CommandEmpty>Aucun élément.</CommandEmpty>
             <CommandGroup>
-              <ScrollArea className="h-72">{renderTreeItems(filteredItems)}</ScrollArea>
+              <ScrollArea className="h-72">
+                {renderTreeItems(filteredItems)}
+              </ScrollArea>
             </CommandGroup>
           </CommandList>
         </Command>
@@ -144,8 +159,7 @@ const TreeCombobox: React.FC<TreeComboboxProps> = ({ items, multiSelect, default
         </div>
       </PopoverContent>
     </Popover>
-  )
-}
+  );
+};
 
-export default TreeCombobox
-
+export default TreeCombobox;

@@ -1,5 +1,6 @@
 'use client';
 import { DataTable } from '@/components/common/DataTable';
+import Stepper from '@/components/common/Stepper';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { ColumnDef } from '@tanstack/react-table';
@@ -53,6 +54,7 @@ export default function Home() {
   return (
     <div className="grid w-full items-center justify-items-center p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
       <main className="flex flex-col w-1/2 gap-8 row-start-2 items-center sm:items-start">
+      <Stepper/>
         <div className="w-full">
           <DataTable
             data={[

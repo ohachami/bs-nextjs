@@ -8,25 +8,6 @@ interface RoutesIF {
 
 export const BASE_API = process.env.NODE_ENV === "production" ?  "/api" : "http://localhost:8080/api"
 
-// List of server routes with their corresponding permissions
-export const serverRoutes: RoutesIF[] = [
-    {
-        route: '/api/users',
-        permissions: [Permissions.ROLE_ADMIN, Permissions.ROLE_USERS_R]
-    },
-    {
-        route: '/api/exercises',
-        permissions: []
-    },
-    {
-        route: '/api/exercises/count',
-        permissions: []
-    },
-    {
-        route: '/api/sitemap', // open route (no restrictions)
-        permissions: []
-    },
-] as const;
 
 // List of client routes with their corresponding permissions
 export const clientRoutes: RoutesIF[] = [
@@ -40,10 +21,10 @@ export const clientRoutes: RoutesIF[] = [
     },
     {
         route: '/modules/tacticalPlanning',
-        permissions: [Permissions.ROLE_ADMIN, Permissions.ROLE_USERS_R]
+        permissions: []
     },
     {
         route: '/modules/tacticalPlanning/exercises',
-        permissions: [Permissions.ROLE_ADMIN, Permissions.ROLE_USERS_R]
+        permissions: [Permissions.ROLE_ADMIN, Permissions.ROLE_EXERCISE_LIST_R]
     }
 ] as const;

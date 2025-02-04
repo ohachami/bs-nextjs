@@ -1,4 +1,5 @@
-import { JWTPayload, SignJWT, jwtVerify } from 'jose';
+import { JWTPayload } from 'jose';
+import { jwtDecode, JwtPayload } from "jwt-decode";
 
 // JWT CLAIMS structure
 interface JWTClaimsIF extends JWTPayload {
@@ -6,18 +7,6 @@ interface JWTClaimsIF extends JWTPayload {
   permissions: string[];
 }
 
-/**
- * Generate a JWT Token using claims: email & permissions
- * @param claims : JWT claims object
- * @returns a JWT Token
- */
-export async function generateToken(claims: JWTClaimsIF): Promise<string> {
-  const secret = new TextEncoder().encode(process.env.JWT_SECRET);
-  return await new SignJWT(claims)
-    .setProtectedHeader({ alg: 'HS256' })
-    .setExpirationTime('1h')
-    .sign(secret);
-}
 
 /**
  * Decode a JWT Token to extract email and permissions
@@ -26,11 +15,10 @@ export async function generateToken(claims: JWTClaimsIF): Promise<string> {
  */
 export async function decodeToken(token: string): Promise<JWTClaimsIF | null> {
   try {
-    const secret = new TextEncoder().encode(process.env.JWT_SECRET);
-    const { payload } = await jwtVerify(token, secret);
+    const payload: JwtPayload & {permissions?: string[]} = jwtDecode(token);
     
     return {
-      email: payload.email as string,
+      email: payload.sub as string,
       permissions: payload.permissions as string[]
     };
   } catch (error: unknown) {

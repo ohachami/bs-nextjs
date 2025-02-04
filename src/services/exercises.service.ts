@@ -1,36 +1,30 @@
 import { ExerciseDetailsPayload } from '@/db/exercises.db';
 import { callAsync } from '@/hooks/useAsync';
 import { ExercisePayload } from '@/types/exercises/createExercise';
-import { apiPaths } from '@/utils/apiPaths';
+import { Exercise } from "@/types/exercise";
+import { apiPaths } from "@/utils/apiPaths";
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import axios, { AxiosResponse } from 'axios';
+import api from "@/api";
 
 export const useExercisesCount = () => {
-  return useQuery({
-    queryKey: ['exercises', 'count'],
+  return useQuery<number>({
+    queryKey: ["exercises", "count"],
     queryFn: async () => {
-      const response = await callAsync(() => axios.get(`/api/exercises/count`));
-      return response.data;
+      const response = await callAsync<AxiosResponse<number>>(() => api.get(apiPaths.exercisesCount()));
+      return response.data
     },
   });
 };
 
 export const useExercises = () => {
-  return useQuery<{
-    closed: ExerciseDetailsPayload;
-    open: ExerciseDetailsPayload;
-  }>({
-    queryKey: ['exercises'],
+  return useQuery<Exercise[]>({
+    queryKey: ["exercises"],
     queryFn: async () => {
-      const response = await callAsync<AxiosResponse<ExerciseDetailsPayload>>(
-        () => axios.get(`/api/exercises`)
-      );
-      return {
-        closed: response.data.filter((ex) => ex.status === 'CLOSED'),
-        open: response.data.filter((ex) => ex.status === 'IN_PROGRESS'),
-      };
-    },
-  });
+      const response = await callAsync<AxiosResponse<Exercise[]>>(() => api.get(apiPaths.exercises()));
+      return response.data;
+    }
+  })
 };
 
 // create an exercise post request

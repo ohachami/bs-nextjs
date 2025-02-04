@@ -1,4 +1,3 @@
-import { getSession } from '@/utils/auth';
 import { Geist, Geist_Mono, Montserrat } from 'next/font/google';
 import './globals.css';
 import NavBar from './Navbar';
@@ -25,7 +24,6 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const session = await getSession();
 
   return (
     <html lang="en">
@@ -34,7 +32,7 @@ export default async function RootLayout({
       >
         <NavBar />
 
-        <Providers session={session}>
+        <Providers>
           <div className="flex-grow">{children}</div>
         </Providers>
 

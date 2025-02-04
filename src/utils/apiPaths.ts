@@ -1,5 +1,3 @@
-// Backend URL (API CONTEXT)
-export const BASE_API = process.env.NODE_ENV === "production" ?  "/api" : "http://localhost:8080/api"
 
 // List of key;value api paths 
 export const apiPaths = {
@@ -7,5 +5,7 @@ export const apiPaths = {
     periodConfig: () => `${BASE_API}/config/periodConfig`,
     periods: () => `${BASE_API}/config/periods`,
     stepConfig: () => `${BASE_API}/config/steps`,
-    exercises: () => `${BASE_API}/exercises`
+    exercises: () => `${BASE_API}/exercises`,
+    exercisesCount: () => `/exercises/count`,
+    currentUser: () => `/users/current`
 } as const;

@@ -16,6 +16,7 @@ export const permissions = {
     ROLE_USERS_U: "ROLE_USERS_U",
     // User Delete Role
     ROLE_USERS_D: "ROLE_USERS_D",
+    ROLE_EXERCISE_LIST_R: "ROLE_EXERCISES_LIST_R",
 } as const;
 
 // Exercice Types

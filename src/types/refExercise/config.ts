@@ -1,6 +1,11 @@
 // Type definitions for RefExercise Config
 // Used for The Exercise Section
 
+export type Timestamps = {
+  createdAt: Date;
+  updatedAt: Date;
+}
+
 interface PeriodIF {
   id: string;
   name: string;
@@ -43,9 +48,14 @@ interface StepConfigIF {
   iconKey: string;
   sortedBy: number;
   deadlineDay: number;
-  mandatory: true;
+  mandatory: boolean;
   createdAt: Date;
   updatedAt: Date;
+}
+
+export type RefSbu = Timestamps & {
+  id: string;
+  name: string;
 }
 
 export type { PeriodConfigIF, PeriodConfigV2IF, ExerciseTypeIF, PeriodIF, StepConfigIF };
