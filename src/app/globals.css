@@ -76,3 +76,18 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+.arrow-bg {
+  @apply bg-[#007BFF] text-white font-bold flex items-center justify-center;
+  clip-path: polygon(0 0, 90% 0, 100% 50%, 90% 100%, 0 100%, 10% 50%);
+}
+
+.arrow-bg-first {
+  @apply bg-[#007BFF] text-white font-bold flex items-center justify-center;
+  clip-path: polygon(0 0, 90% 0, 100% 50%, 90% 100%, 0 100%, 0% 50%);
+}
+
+.arrow-bg-end {
+  @apply bg-[#007BFF] text-white font-bold flex items-center justify-center;
+  clip-path: polygon(0 0, 100% 0, 100% 50%, 100% 100%, 0 100%, 10% 50%);
+}
