@@ -1,42 +1,43 @@
 import { LayoutDashboard, NotebookText } from 'lucide-react';
-import Step, { StepStatus } from './Step';
+import Step from './Step';
+import { STEP_STATUS } from '@/utils/constants';
 
 
 const mockList = [
   {
     text: 'Hypothèses manufacturing',
     icon: <NotebookText />,
-    status: StepStatus.DONE,
+    status: STEP_STATUS.DONE,
     redirectUrl: '/modules/BS/exercises',
   },
   {
     text: 'TopLine & UpSide',
     icon: <LayoutDashboard />,
-    status: StepStatus.IN_PROGRESS,
+    status: STEP_STATUS.IN_PROGRESS,
     redirectUrl: '/modules/BS/exercises',
   },
   {
     text: 'Ajustement des hypothèses',
     icon: <NotebookText />,
-    status: StepStatus.INACTIVE,
+    status: STEP_STATUS.INACTIVE,
     redirectUrl: '/modules/BS/exercises',
   },
   {
     text: 'Scénarisation',
     icon: <NotebookText />,
-    status: StepStatus.INACTIVE,
+    status: STEP_STATUS.INACTIVE,
     redirectUrl: '/modules/BS/exercises',
   },
   {
     text: 'Arbitrage & Validation',
     icon: <NotebookText />,
-    status: StepStatus.INACTIVE,
+    status: STEP_STATUS.INACTIVE,
     redirectUrl: '/modules/BS/exercises',
   },
   {
     text: 'Reporting',
     icon: <NotebookText />,
-    status: StepStatus.INACTIVE,
+    status: STEP_STATUS.INACTIVE,
     redirectUrl: '/modules/BS/exercises',
   },
 ];

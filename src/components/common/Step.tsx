@@ -1,14 +1,8 @@
+import { STEP_STATUS } from '@/utils/constants';
 import clsx from 'clsx';
 import { Check } from 'lucide-react';
 import Link from 'next/link';
 import React from 'react';
-
-
-export const StepStatus = {
-  DONE: 'DONE',
-  IN_PROGRESS: 'IN_PROGRESS',
-  INACTIVE: 'INACTIVE'
-} as const;
 
 interface StepProps {
   label: string;
@@ -51,14 +45,14 @@ function Step({
         {/* Number Circle */}
         {
           <div
-            className={`border-2 ${isActive ? 'border-white': status === "DONE"? 'border-[#57D762] bg-[#6fef7930]': 'border-gray-400'} p-3 rounded-full w-14 h-14 flex items-center justify-center`}
+            className={`border-2 ${isActive ? 'border-white': status === STEP_STATUS.DONE? 'border-[#57D762] bg-[#6fef7930]': 'border-gray-400'} p-3 rounded-full w-14 h-14 flex items-center justify-center`}
           >
             <p
               className={`font-semibold ${isActive ? 'text-white' : 'text-gray-400'}`}
             >
-              {status === 'DONE' ? (
+              {status === STEP_STATUS.DONE ? (
                 <Check color='#57D762' />
-              ) : status === 'INACTIVE' ? (
+              ) : status === STEP_STATUS.INACTIVE ? (
                 stepNumber
               ) : (
                 iconKey

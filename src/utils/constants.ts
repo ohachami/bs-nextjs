@@ -34,6 +34,7 @@ export const EXERCISE_STATUS = {
 } as const;
 
 export const STEP_STATUS = {
+    DONE: 'DONE',
     INACTIVE: 'INACTIVE',
     IN_PROGRESS: 'IN_PROGRESS',
     CLOSED: 'CLOSED' 
