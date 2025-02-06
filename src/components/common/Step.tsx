@@ -4,20 +4,21 @@ import { Check } from 'lucide-react';
 import Link from 'next/link';
 import React from 'react';
 
-interface StepProps {
+export interface StepProps {
   label: string;
-  iconKey: React.ReactNode;
+  iconKey: React.ComponentType<{ color?: string }>;
   status: string;
+  code: string;
   redirectUrl: string;
-  stepNumber: number;
-  isActive: boolean;
-  isFirst: boolean;
-  isLast: boolean;
+  stepNumber?: number;
+  isActive?: boolean;
+  isFirst?: boolean;
+  isLast?: boolean;
 }
 
 function Step({
   label,
-  iconKey,
+  iconKey: Icon,
   status,
   redirectUrl,
   stepNumber,
@@ -32,14 +33,14 @@ function Step({
           'flex justify-between gap-4 px-10 items-center py-2 rounded-lg cursor-pointer relative bg-white',
           isActive &&
             isFirst &&
-            'arrow-bg-first pr-0 pl-8 shadow-lg z-10 scale-[1.20] absolute',
+            'arrow-bg-first pr-0 pl-8 shadow-lg z-10 scale-[1.1] absolute',
           isActive &&
             !isFirst &&
             !isLast &&
-            'arrow-bg pl-10 pr-0 shadow-xl z-10 scale-[1.20] absolute',
+            'arrow-bg pl-10 pr-0 shadow-xl z-10 scale-[1.1] absolute',
           isActive &&
             isLast &&
-            'arrow-bg-end pr-0 pl-10 shadow-xl z-10 scale-[1.20] absolute'
+            'arrow-bg-end pr-0 pl-10 shadow-xl z-10 scale-[1.1] absolute'
         )}
       >
         {/* Number Circle */}
@@ -55,7 +56,7 @@ function Step({
               ) : status === STEP_STATUS.INACTIVE ? (
                 stepNumber
               ) : (
-                iconKey
+                <Icon />
               )}
             </p>
           </div>
