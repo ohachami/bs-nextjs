@@ -1,61 +1,31 @@
-import { LayoutDashboard, NotebookText } from 'lucide-react';
 import Step from './Step';
-import { STEP_STATUS } from '@/utils/constants';
 
+interface StepListProps {
+  steps: {
+    label: string;
+    iconKey: React.ComponentType<{ color?: string }>;
+    status: string;
+    code: string;
+    sortedBy: number;
+    redirectUrl: string;
+  }[];
+}
 
-const mockList = [
-  {
-    text: 'Hypothèses manufacturing',
-    icon: <NotebookText />,
-    status: STEP_STATUS.DONE,
-    redirectUrl: '/modules/BS/exercises',
-  },
-  {
-    text: 'TopLine & UpSide',
-    icon: <LayoutDashboard />,
-    status: STEP_STATUS.IN_PROGRESS,
-    redirectUrl: '/modules/BS/exercises',
-  },
-  {
-    text: 'Ajustement des hypothèses',
-    icon: <NotebookText />,
-    status: STEP_STATUS.INACTIVE,
-    redirectUrl: '/modules/BS/exercises',
-  },
-  {
-    text: 'Scénarisation',
-    icon: <NotebookText />,
-    status: STEP_STATUS.INACTIVE,
-    redirectUrl: '/modules/BS/exercises',
-  },
-  {
-    text: 'Arbitrage & Validation',
-    icon: <NotebookText />,
-    status: STEP_STATUS.INACTIVE,
-    redirectUrl: '/modules/BS/exercises',
-  },
-  {
-    text: 'Reporting',
-    icon: <NotebookText />,
-    status: STEP_STATUS.INACTIVE,
-    redirectUrl: '/modules/BS/exercises',
-  },
-];
-
-function StepList() {
+function StepList({ steps }: StepListProps) {
   return (
     <div className="flex justify-between items-center border border-gray-300 bg-white rounded-lg relative">
-      {mockList.map((item, key) => (
+      {steps.map((item, key) => (
         <Step
           key={key}
-          label={item.text}
-          iconKey={item.icon}
+          label={item.label}
+          iconKey={item.iconKey}
           status={item.status}
+          code={item.code}
           redirectUrl={item.redirectUrl}
           stepNumber={key + 1}
-          isActive={key == 1}
+          isActive={key == 0}
           isFirst={key === 0}
-          isLast={key === mockList.length - 1}
+          isLast={key === steps.length - 1}
         />
       ))}
     </div>

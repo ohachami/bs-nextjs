@@ -1,3 +1,6 @@
+import { BookDashed, Check, LayoutDashboard, NotebookText } from "lucide-react";
+import { STEP_STATUS } from "./constants";
+
 // Interface defining a Mock Session structure
 interface MockSessionIF {
   user: {
@@ -31,3 +34,61 @@ export const getMockSession = async (permissions: string[] = ['ROLE_ADMIN', 'ROL
     }, sleep);
   });
 };
+
+
+// exercice Step List mocks
+
+export const steps = [
+  {
+    title: 'Collecte',
+    description: 'Collecte de données brutes',
+    icon: BookDashed,
+    status: STEP_STATUS.IN_PROGRESS,
+  },
+  {
+    title: 'Consolidation & visualisation',
+    description: 'Consolidation et visualisation de données',
+    icon: Check,
+    status: STEP_STATUS.DONE,
+  }
+];
+
+
+export const mockList = [
+  {
+    label: 'Hypothèses manufacturing',
+    iconKey: NotebookText,
+    status: STEP_STATUS.IN_PROGRESS,
+    redirectUrl: '/modules/BS/exercises',
+  },
+  {
+    label: 'TopLine & UpSide',
+    iconKey: LayoutDashboard,
+    status: STEP_STATUS.IN_PROGRESS,
+    redirectUrl: '/modules/BS/exercises',
+  },
+  {
+    label: 'Ajustement des hypothèses',
+    iconKey: NotebookText,
+    status: STEP_STATUS.INACTIVE,
+    redirectUrl: '/modules/BS/exercises',
+  },
+  // {
+  //   text: 'Scénarisation',
+  //   icon: <NotebookText />,
+  //   status: STEP_STATUS.INACTIVE,
+  //   redirectUrl: '/modules/BS/exercises',
+  // },
+  // {
+  //   text: 'Arbitrage & Validation',
+  //   icon: <NotebookText />,
+  //   status: STEP_STATUS.INACTIVE,
+  //   redirectUrl: '/modules/BS/exercises',
+  // },
+  // {
+  //   text: 'Reporting',
+  //   icon: <NotebookText />,
+  //   status: STEP_STATUS.INACTIVE,
+  //   redirectUrl: '/modules/BS/exercises',
+  // },
+];

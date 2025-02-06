@@ -1,4 +1,4 @@
-import { PeriodIF, StepConfig, Timestamps } from "./refExercise/config";
+import { PeriodIF, StepConfigIF, Timestamps } from "./refExercise/config";
 import { User } from "./user";
 
 export type Exercise = Timestamps & {
@@ -25,6 +25,6 @@ export type ExerciseStep = Timestamps & {
     id: string;
     status: string;
     deadlineAt: Date;
-    stepConfig: StepConfig;
+    stepConfig: StepConfigIF;
 }
 
