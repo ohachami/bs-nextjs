@@ -9,5 +9,5 @@ export const apiPaths = {
     exercises: () => `/exercises`,
     exercisesCount: () => `/exercises/count`,
     currentUser: () => `/users/current`,
-    dashboardSections: (stepId: string) => `/api/dashboard/steps/${stepId}/sections`,
+    dashboardSections: (stepId: string) => `/dashboard/steps/${stepId}/sections`,
 } as const;
