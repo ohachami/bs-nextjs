@@ -4,7 +4,7 @@
 export type Timestamps = {
   createdAt: Date;
   updatedAt: Date;
-}
+};
 
 interface PeriodIF {
   id: string;
@@ -53,9 +53,25 @@ interface StepConfigIF {
   updatedAt: Date;
 }
 
-export type RefSbu = Timestamps & {
+type RefSbu = Timestamps & {
   id: string;
   name: string;
+  steps?: StepConfigIF[];
+};
+
+interface RefSiteIF {
+  id: string;
+  name: string;
+  code: string;
+  sbu: RefSbu;
 }
 
-export type { PeriodConfigIF, PeriodConfigV2IF, ExerciseTypeIF, PeriodIF, StepConfigIF };
+export type {
+  PeriodConfigIF,
+  PeriodConfigV2IF,
+  ExerciseTypeIF,
+  PeriodIF,
+  StepConfigIF,
+  RefSbu,
+  RefSiteIF,
+};
