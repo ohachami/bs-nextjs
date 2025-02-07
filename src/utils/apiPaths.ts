@@ -10,4 +10,5 @@ export const apiPaths = {
     exercisesCount: () => `/exercises/count`,
     currentUser: () => `/users/current`,
     dashboardSections: (stepId: string) => `/dashboard/steps/${stepId}/sections`,
+    dataSourceVersions: (id: string) => `/datasources/versions/${id}`
 } as const;
