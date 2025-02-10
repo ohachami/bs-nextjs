@@ -49,6 +49,7 @@ interface DataTableProps<TData, TValue> {
   displaySelectedOnly?: boolean;
   onSelect?: (selected: TData[]) => void;
   hiddenColumns?: string[];
+  hidePagination?: boolean;
   setTable?: (value: TableConfig<TData>) => void;
 }
 
@@ -60,6 +61,7 @@ export function DataTable<TData, TValue>({
   actions,
   facetedConfig,
   onSelect,
+  hidePagination,
   displaySelectedOnly,
   hiddenColumns,
   setTable,
@@ -211,7 +213,7 @@ export function DataTable<TData, TValue>({
         </Table>
       </div>
 
-      <div className="flex items-center justify-end space-x-2 py-4">
+      {!hidePagination && <div className="flex items-center justify-end space-x-2 py-4">
         <div className="flex-1 text-sm text-muted-foreground">
           {table.getFilteredSelectedRowModel().rows.length} of{' '}
           {table.getFilteredRowModel().rows.length} row(s) selected.
@@ -236,7 +238,7 @@ export function DataTable<TData, TValue>({
             Suivant
           </Button>
         </div>
-      </div>
+      </div>}
     </div>
   );
 }
