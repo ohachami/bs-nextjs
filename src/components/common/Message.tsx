@@ -10,7 +10,6 @@ import Editor from './Editor';
 import { MessageIF } from '@/types/chat';
 import edjsHTML from 'editorjs-html';
 import styles from '@/styles/EditorOutput.module.css';
-import { cn } from '@/lib/utils';
 
 const Message: React.FC<{ message: MessageIF }> = ({ message }) => {
   const replyEditorRef = useRef<EditorJS | null>(null);
