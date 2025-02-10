@@ -3,12 +3,13 @@
 import StepList from '@/components/common/StepList';
 import { useExercises } from '@/services/exercises.service';
 import { Exercise } from '@/types/exercise';
-import { redirect, useParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useParams } from 'next/navigation';
+import { useMemo } from 'react';
 import * as LucideIcons from 'lucide-react';
 import ExerciseIdLayoutSkeleton from '@/components/skeletons/ExerciseIdLayoutSkeleton';
-type IconKey = keyof typeof LucideIcons;
 
+// used for icons as props
+type IconKey = keyof typeof LucideIcons;
 type IconProps = { color?: string };
 
 function ExercisesLayout({
@@ -17,23 +18,20 @@ function ExercisesLayout({
   children: React.ReactNode;
 }>) {
   const { data: exercises, isLoading, isError, isSuccess } = useExercises();
-  const [exerciseData, setExerciseData] = useState<Exercise>();
   const params = useParams();
 
-  useEffect(() => {
+  const exerciseData = useMemo(() => {
     if (exercises) {
-      setExerciseData(
-        exercises.find(
-          (exercise: Exercise) => exercise.id === params.exerciseId
-        )
+      return exercises.find(
+        (exercise: Exercise) => exercise.id === params.exerciseId
       );
     }
-  }, [exercises, isLoading, params.exerciseId]);
+  }, [exercises, params.exerciseId]);
 
-  if (isLoading) return <ExerciseIdLayoutSkeleton />
+  if (isLoading) return <ExerciseIdLayoutSkeleton />;
 
   // redirect to home in case exerciseId not found
-  if (isError) return redirect(`/`);
+  if (isError) return <p className="p-4">Error Loading Exercise...</p>;
 
   return (
     <div className="p-6 space-y-6">
@@ -50,7 +48,8 @@ function ExercisesLayout({
               status: step.status,
               code: step.stepConfig.code,
               sortedBy: step.stepConfig.sortedBy,
-              redirectUrl: `/modules/BS/exercise/${params.exerciseId}/${step.stepConfig.code}`,
+              // TODO: to change tacticalPlanning with dynamic SBU name
+              redirectUrl: `/modules/tacticalPlanning/exercises/${params.exerciseId}/${step.stepConfig.code}`,
             }))
             .sort((a, b) => a.sortedBy - b.sortedBy)}
         />

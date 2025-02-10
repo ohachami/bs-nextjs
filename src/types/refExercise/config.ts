@@ -1,6 +1,8 @@
 // Type definitions for RefExercise Config
 // Used for The Exercise Section
 
+import { DataVersionIF } from "../collect/datasources";
+
 export type Timestamps = {
   createdAt: Date;
   updatedAt: Date;
@@ -62,8 +64,8 @@ type RefSbu = Timestamps & {
 interface RefSiteIF {
   id: string;
   name: string;
-  code: string;
-  sbu: RefSbu;
+  code: string | null;
+  dataVersions?: DataVersionIF[];
 }
 
 export type {

@@ -10,16 +10,12 @@ import { AxiosResponse } from 'axios';
  * @param sbuId: a string representing the sbu ID
  * @returns the list of datasources for a given sbu ID
  */
-export const useDataSource = (sbuId: string) => {
+export const useDataSourceHierarchy = (sbuId: string) => {
   return useQuery<DataSourceIF[]>({
     queryKey: ['datasources', sbuId],
     queryFn: async () => {
       const response = await callAsync<AxiosResponse<DataSourceIF[]>>(() =>
-        api.get(apiPaths.datasources(), {
-          params: {
-            sbuId,
-          },
-        })
+        api.get(apiPaths.datasources(sbuId))
       );
       return response.data;
     },

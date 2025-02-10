@@ -1,4 +1,4 @@
-import { BookDashed, Check, LayoutDashboard, NotebookText } from 'lucide-react';
+import { BookDashed, Dot } from 'lucide-react';
 import { STEP_STATUS } from './constants';
 import { DataSourceIF } from '@/types/collect/datasources';
 
@@ -42,8 +42,7 @@ export const getMockSession = async (
 };
 
 // exercice Step List mocks
-
-export const steps = [
+export const STEPS = [
   {
     title: 'Collecte',
     description: 'Collecte de données brutes',
@@ -53,142 +52,67 @@ export const steps = [
   {
     title: 'Consolidation & visualisation',
     description: 'Consolidation et visualisation de données',
-    icon: Check,
-    status: STEP_STATUS.DONE,
-  },
-];
-
-export const mockList = [
-  {
-    label: 'Hypothèses manufacturing',
-    iconKey: NotebookText,
-    status: STEP_STATUS.IN_PROGRESS,
-    redirectUrl: '/modules/BS/exercises',
-  },
-  {
-    label: 'TopLine & UpSide',
-    iconKey: LayoutDashboard,
-    status: STEP_STATUS.IN_PROGRESS,
-    redirectUrl: '/modules/BS/exercises',
-  },
-  {
-    label: 'Ajustement des hypothèses',
-    iconKey: NotebookText,
+    icon: Dot,
     status: STEP_STATUS.INACTIVE,
-    redirectUrl: '/modules/BS/exercises',
-  },
-  // {
-  //   text: 'Scénarisation',
-  //   icon: <NotebookText />,
-  //   status: STEP_STATUS.INACTIVE,
-  //   redirectUrl: '/modules/BS/exercises',
-  // },
-  // {
-  //   text: 'Arbitrage & Validation',
-  //   icon: <NotebookText />,
-  //   status: STEP_STATUS.INACTIVE,
-  //   redirectUrl: '/modules/BS/exercises',
-  // },
-  // {
-  //   text: 'Reporting',
-  //   icon: <NotebookText />,
-  //   status: STEP_STATUS.INACTIVE,
-  //   redirectUrl: '/modules/BS/exercises',
-  // },
+  }
 ];
 
 export const mockDataSources: DataSourceIF[] = [
   {
-    id: "ds-001",
-    type: "API",
-    name: "Customer Data API",
-    code: "CDA001",
-    sbu: {
-      id: "sbu-100",
-      name: "Retail Division",
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    },
-    site: {
-      id: "site-200",
-      name: "Morocco",
-      code: "SFO001",
-      sbu: {
-        id: "sbu-100",
-        name: "Retail Division",
-        createdAt: new Date(),
-        updatedAt: new Date(),
+    id: '1a2b3c4d-0001-0000-0000-000000000001',
+    name: 'Mining Data Source 1',
+    code: 'MINING_DS_1',
+    sites: [
+      {
+        id: '3d2cc8e8-eafd-4304-8213-cfadc006f3d9',
+        name: 'Youssoufia',
+        code: null,
+        dataVersions: [],
       },
-    },
+      {
+        id: 'ed75610c-99ae-4edf-a317-e408151f19de',
+        name: 'Nador',
+        code: null,
+        dataVersions: [],
+      },
+      {
+        id: '7f98eee1-8879-4f11-afcc-ddb051a8e30f',
+        name: 'Jorf',
+        code: null,
+        dataVersions: [
+          {
+            id: '1a2b3c4d-0001-0000-0000-000000000004',
+            version: null,
+            path: '/api/random_4',
+            name: 'random_4 v1.2',
+          },
+        ],
+      },
+    ],
   },
   {
-    id: "ds-006",
-    type: "API",
-    name: "Customer Data Collecte",
-    code: "CDA001",
-    sbu: {
-      id: "sbu-100",
-      name: "Retail Division",
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    },
-    site: {
-      id: "site-205",
-      name: "Morocco",
-      code: "SFO001",
-      sbu: {
-        id: "sbu-100",
-        name: "Retail Division",
-        createdAt: new Date(),
-        updatedAt: new Date(),
+    id: '1a2b3c4d-0002-0000-0000-000000000002',
+    name: 'Mining Data Source 2',
+    code: 'MINING_DS_2',
+    sites: [
+      {
+        id: '3d2cc8e8-eafd-4304-8213-cfadc006f3d9',
+        name: 'Safi',
+        code: null,
+        dataVersions: [],
       },
-    },
+      {
+        id: 'ed75610c-99ae-4edf-a317-e408151f19de',
+        name: 'Jorf',
+        code: null,
+        dataVersions: [],
+      }
+    ],
   },
   {
-    id: "ds-002",
-    type: "database",
-    name: "Order Management DB",
-    code: "OMDB002",
-    sbu: {
-      id: "sbu-101",
-      name: "E-commerce",
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    },
-    site: {
-      id: "site-201",
-      name: "London Data Center Dat center",
-      code: "LDC001",
-      sbu: {
-        id: "sbu-101",
-        name: "E-commerce",
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      },
-    },
-  },
-  {
-    id: "ds-003",
-    type: "file-storage",
-    name: "Invoice Archive",
-    code: "INV003",
-    sbu: {
-      id: "sbu-102",
-      name: "Finance",
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    },
-    site: {
-      id: "site-202",
-      name: "Tokyo HQ",
-      code: "TKO001",
-      sbu: {
-        id: "sbu-102",
-        name: "Finance",
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      },
-    },
+    id: '1a2b3c4d-0002-0000-0000-000000000004',
+    name: 'Mining Data Source 3',
+    code: 'MINING_DS_2',
+    sites: [],
   },
 ];
-

@@ -1,12 +1,13 @@
 'use client';
 
-import { useDataSource } from '@/services/datasources.service';
+import { useDataSourceHierarchy } from '@/services/datasources.service';
 import { useUser } from '@/services/users.service';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { useMemo } from 'react';
 import { DataSourceIF } from '@/types/collect/datasources';
 import { Button } from '../ui/button';
 import { RefreshCcw } from 'lucide-react';
+import { RefSiteIF } from '@/types/refExercise/config';
+
 
 function CollectPage() {
   //getting user information
@@ -16,110 +17,99 @@ function CollectPage() {
     data: datasources,
     isLoading: dsLoading,
     isError: dsError,
-  } = useDataSource(user ? user.sbu.id : '');
-
-  const grpSite = useMemo(() => {
-    if (datasources) {
-      return Object.groupBy(datasources, (d) => d.site.name);
-    }
-    return {};
-  }, [datasources]);
+  } = useDataSourceHierarchy(user ? user.sbu.id : '');
 
   if (isError || dsError) return <p>Error !</p>;
 
   if (isLoading || dsLoading) return <p>Loading...</p>;
 
-  if (Object.keys(grpSite).length < 1)
-    return (
-      <Tabs className="w-full p-2" orientation="vertical">
-        <div className="flex gap-4">
-          <TabsList className="flex-col gap-4 h-auto w-auto items-start justify-start bg-gray-200">
-            {datasources &&
-              datasources.map((datasource: DataSourceIF, key: number) => (
-                <TabsTrigger
-                  className={`w-full justify-center`}
-                  key={key}
-                  value={`${datasource.id}`}
-                >
-                  {datasource.name}
-                </TabsTrigger>
-              ))}
-          </TabsList>
-          <div className="flex w-full border">
-            {datasources &&
-              datasources.map((datasource: DataSourceIF, key: number) => (
-                <TabsContent
-                  key={key}
-                  value={`${datasource.id}`}
-                  className="p-2"
-                >
-                  <p>{`data for ${datasource.name}`}</p>
-                </TabsContent>
-              ))}
-          </div>
-        </div>
-      </Tabs>
-    );
-
   return (
-    <div className="flex gap-4 w-full mx-auto p-4">
-      {datasources && grpSite && (
-        <Tabs defaultValue={`${0}-${datasources[0].name}`} className="w-full">
-          <div className="flex-col justify-start items-start gap-6">
-            <div className="flex justify-between">
-              <TabsList
-                defaultValue={'Morocco'}
-                className="flex gap-4 h-auto bg-gray-200"
+    datasources &&
+    Array.isArray(datasources) &&
+    datasources.length > 0 && (
+      <Tabs
+        className="w-full"
+        defaultValue={`${datasources[0].id}`}
+        orientation="vertical"
+      >
+        <div className="flex items-start gap-4">
+          <TabsList className="flex-col gap-4 h-auto bg-gray-200">
+            {datasources.map((dataSource: DataSourceIF, key: number) => (
+              <TabsTrigger
+                className={`min-w-[200px]`}
+                key={key}
+                value={`${dataSource.id}`}
               >
-                {Object.keys(grpSite).map((site: string, key: number) => (
-                  <TabsTrigger
-                    className={`min-w-[150px]`}
-                    key={key}
-                    value={`${site}`}
-                  >
-                    {site}
-                  </TabsTrigger>
-                ))}
-              </TabsList>
-              {/* Button Actualiser */}
-              <Button>
-                <RefreshCcw /> Actualiser
-              </Button>
-            </div>
-            <div className="flex w-full">
-              <TabsContent className={`flex-1`} value={'Morocco'}>
-                {/* nested content */}
-                <Tabs className="w-full p-2" orientation="vertical">
-                  <div className="flex gap-4">
-                    <TabsList className="flex-col gap-4 h-auto w-auto items-start justify-start bg-gray-200">
-                      {grpSite['Morocco']!.map(
-                        (datasource: DataSourceIF, key: number) => (
-                          <TabsTrigger
-                            className={`w-full justify-center`}
-                            key={key}
-                            value={`${datasource.name}`}
-                          >
-                            {datasource.name}
-                          </TabsTrigger>
-                        )
-                      )}
-                    </TabsList>
-                    <div className="flex w-full border">
-                      <TabsContent
-                        value="Customer Data Collecte"
-                        className="p-2"
-                      >
-                        <p>Insert your table here</p>
-                      </TabsContent>
+                {dataSource.name}
+              </TabsTrigger>
+            ))}
+          </TabsList>
+          {datasources.map((dataSource: DataSourceIF, key: number) => (
+            <TabsContent
+              key={key}
+              className={`flex-1`}
+              defaultValue={datasources[0].id}
+              value={`${dataSource.id}`}
+            >
+              {/* If site are found */}
+              {dataSource.sites &&
+              Array.isArray(dataSource.sites) &&
+              dataSource.sites.length > 1 ? (
+                <Tabs defaultValue={dataSource.sites[0].id}>
+                  <div key={key} className="flex flex-col gap-4 p-2">
+                    <div className="flex justify-between">
+                      <TabsList className="flex gap-4 h-auto w-auto items-start justify-start bg-gray-200">
+                        {dataSource.sites.map(
+                          (site: RefSiteIF, key: number) => (
+                            <TabsTrigger
+                              key={key}
+                              className={`min-w-[100px]`}
+                              value={`${site.id}`}
+                            >
+                              {site.name}
+                            </TabsTrigger>
+                          )
+                        )}
+                      </TabsList>
+                      <Button>
+                        <RefreshCcw /> Actualiser
+                      </Button>
+                    </div>
+                    <div className="flex w-full h-14">
+                      {dataSource.sites.map((site: RefSiteIF, key: number) => (
+                        <TabsContent
+                          key={key}
+                          value={`${site.id}`}
+                          defaultValue={dataSource.sites[0].id}
+                        >
+                          <p>
+                            {/* TODO: Insert Table Code Here */}
+                            Insert your dataversions here for {site.name}{' '}
+                          </p>
+                        </TabsContent>
+                      ))}
                     </div>
                   </div>
                 </Tabs>
-              </TabsContent>
-            </div>
-          </div>
-        </Tabs>
-      )}
-    </div>
+              ) : (
+                // If site are not found
+                <div className="flex flex-col gap-4 justify-between p-2">
+                  <div className="flex justify-end">
+                    <Button>
+                      <RefreshCcw /> Actualiser
+                    </Button>
+                  </div>
+                  {/* TODO: Insert Table Code Here */}
+                  <div className="p-2">
+                    <p>Table with no Site Found</p>
+                  </div>
+                </div>
+              )}
+            </TabsContent>
+          ))}
+        </div>
+      </Tabs>
+    )
   );
 }
 

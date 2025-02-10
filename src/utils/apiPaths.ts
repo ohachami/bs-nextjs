@@ -1,5 +1,3 @@
-
-
 // List of key;value api paths 
 export const apiPaths = {
     exerciceTypes: () => `/config/exerciseTypes`,
@@ -9,5 +7,5 @@ export const apiPaths = {
     exercises: () => `/exercises`,
     exercisesCount: () => `/exercises/count`,
     currentUser: () => `/users/current`,
-    datasources: () => `/datasources`
+    datasources: (sbuId: string) => `/datasources/hierarchy/${sbuId}`
 } as const;

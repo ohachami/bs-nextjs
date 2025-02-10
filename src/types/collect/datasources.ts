@@ -1,14 +1,20 @@
-import { RefSbu, RefSiteIF } from "../refExercise/config";
+import { RefSiteIF } from "../refExercise/config";
 
 interface DataSourceIF {
   id: string;
-  type: string;
   name: string;
   code: string;
-  sbu: RefSbu;
-  site: RefSiteIF;
+  sites: RefSiteIF[];
+}
+
+interface DataVersionIF {
+  id: string;
+  version: string | null;
+  path: string;
+  name: string;
 }
 
 export type {
-  DataSourceIF
+  DataSourceIF,
+  DataVersionIF
 }
