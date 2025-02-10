@@ -21,6 +21,7 @@ type Props = {
     order: number;
   }[];
   onDetailsView: () => void;
+  onOpenClick: () => void;
 };
 
 const ExerciceCard: React.FC<Props> = (props) => {
@@ -83,7 +84,10 @@ const ExerciceCard: React.FC<Props> = (props) => {
             <EyeIcon />
           </Button>
 
-          <Button variant="ghost" className="px-2 hover:bg-white">
+          <Button variant="ghost" 
+                className="px-2 hover:bg-white"
+                onClick={props.onOpenClick}
+                >
             <ArrowRightIcon />
           </Button>
         </div>

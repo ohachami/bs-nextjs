@@ -26,6 +26,7 @@ import { formatDate, getFullName } from '@/utils/functions';
 import { Nullable } from '@/utils/types';
 import { ColumnDef } from '@tanstack/react-table';
 import { PenIcon, SearchIcon, XIcon } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 type DataTableColumns = {
@@ -35,6 +36,32 @@ type DataTableColumns = {
   deadline: Nullable<string>;
   creator: Nullable<string>;
 };
+
+
+const columns: ColumnDef<DataTableColumns>[] = [
+  {
+    header: 'Nom',
+    accessorKey: 'name',
+  },
+  {
+    header: 'Horizon',
+    accessorKey: 'period',
+    cell: ({ row }) => <Badge variant="muted">{row.original.period}</Badge>,
+  },
+  {
+    header: 'Date Début',
+    accessorKey: 'createdAt',
+  },
+  {
+    header: 'Date fin',
+    accessorKey: 'deadline',
+  },
+  {
+    header: 'Créateur',
+    accessorKey: 'creator',
+  },
+];
+
 
 const ModuleExercices = () => {
   const { isPending, data } = useExercises();
@@ -46,6 +73,7 @@ const ModuleExercices = () => {
   const [openEx, setOpenEx] = useState<Exercise[]>([]);
   const [closedEx, setClosedEx] = useState<Exercise[]>([]);
   const [exercise, setExercise] = useState<Exercise | null>(null);
+  const router = useRouter();
 
   useEffect(() => {
     if(data && periodQuery.data) {
@@ -95,30 +123,6 @@ const ModuleExercices = () => {
     );
   }
 
-  const columns: ColumnDef<DataTableColumns>[] = [
-    {
-      header: 'Nom',
-      accessorKey: 'name',
-    },
-    {
-      header: 'Horizon',
-      accessorKey: 'period',
-      cell: ({ row }) => <Badge variant="muted">{row.original.period}</Badge>,
-    },
-    {
-      header: 'Date Début',
-      accessorKey: 'createdAt',
-    },
-    {
-      header: 'Date fin',
-      accessorKey: 'deadline',
-    },
-    {
-      header: 'Créateur',
-      accessorKey: 'creator',
-    },
-  ];
-
   const handleViewDetails = (ex: Exercise) => {
     setExercise(ex);
   };
@@ -132,7 +136,7 @@ const ModuleExercices = () => {
 
   const objectifs = exercise && exercise.target && JSON.parse(exercise.target);
 
-  console.log(exercise);
+  
   return (
     <div className="flex flex-col p-8 pt-6 gap-4">
       <div className="flex justify-between items-center">
@@ -197,6 +201,7 @@ const ModuleExercices = () => {
                 order: s.stepConfig.sortedBy,
               }))}
               onDetailsView={() => handleViewDetails(ex)}
+              onOpenClick={() => router.push(`./exercises/${ex.id}/HYP_MANU`)}
             />
           ))}
         </div>
