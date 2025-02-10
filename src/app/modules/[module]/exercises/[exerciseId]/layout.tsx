@@ -7,6 +7,7 @@ import { redirect, useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import * as LucideIcons from 'lucide-react';
 import ExerciseIdLayoutSkeleton from '@/components/skeletons/ExerciseIdLayoutSkeleton';
+import { useExerciseStore } from '@/store/exercises/useExerciseStore';
 type IconKey = keyof typeof LucideIcons;
 
 type IconProps = { color?: string };
@@ -19,18 +20,18 @@ function ExercisesLayout({
   const { data: exercises, isLoading, isError, isSuccess } = useExercises();
   const [exerciseData, setExerciseData] = useState<Exercise>();
   const params = useParams();
-
+  const { setExercise } = useExerciseStore();
   useEffect(() => {
     if (exercises) {
-      setExerciseData(
-        exercises.find(
-          (exercise: Exercise) => exercise.id === params.exerciseId
-        )
+      let currentExercise = exercises.find(
+        (exercise: Exercise) => exercise.id === params.exerciseId
       );
+      setExerciseData(currentExercise);
+      setExercise(currentExercise);
     }
   }, [exercises, isLoading, params.exerciseId]);
 
-  if (isLoading) return <ExerciseIdLayoutSkeleton />
+  if (isLoading) return <ExerciseIdLayoutSkeleton />;
 
   // redirect to home in case exerciseId not found
   if (isError) return redirect(`/`);
