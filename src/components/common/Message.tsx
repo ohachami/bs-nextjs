@@ -3,63 +3,22 @@
 import { formatDistanceDate } from '@/utils/functions';
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 import { MessageSquareReply } from 'lucide-react';
-import EditorJS, { OutputData } from '@editorjs/editorjs';
-import { Dispatch, SetStateAction, useRef, useState } from 'react';
+import { useState } from 'react';
 import { Button } from '../ui/button';
-import Editor from './Editor';
 import { MessageIF } from '@/types/chat';
 import edjsHTML from 'editorjs-html';
 import styles from '@/styles/EditorOutput.module.css';
-import { cn } from '@/lib/utils';
 
-const Message: React.FC<{ message: MessageIF }> = ({ message }) => {
-  const replyEditorRef = useRef<EditorJS | null>(null);
-  const [displayEd, setDispalyEd] = useState(false);
-
-  const onEnterKeyPress = async () => {
-    if (replyEditorRef && replyEditorRef.current) {
-      const output: OutputData = await replyEditorRef.current.save();
-      replyEditorRef.current.clear();
-      console.log({ output });
-    }
-  };
-
-  return (
-    <div>
-      <EditorOutputHtml
-        message={{
-          userName: message.userName,
-          imageUrl: message.imageUrl,
-          timestamp: message.timestamp,
-          message: message.message,
-        }}
-        setDispalyEd={setDispalyEd}
-        displayEd={displayEd}
-      />
-      {displayEd && (
-        <Editor
-          editorRef={replyEditorRef}
-          onEnter={onEnterKeyPress}
-          className="ml-10 mt-3"
-        />
-      )}
-    </div>
-  );
-};
-
-const EditorOutputHtml: React.FC<{
-  message: MessageIF;
-  displayEd: boolean;
-  setDispalyEd: Dispatch<SetStateAction<boolean>>;
-}> = ({ message, setDispalyEd, displayEd }) => {
+const Message: React.FC<{ message: MessageIF; onReply: () => void }> = ({
+  message,
+  onReply,
+}) => {
   const edjsParser = edjsHTML();
   const htmlContent = edjsParser.parse(message.message);
   const [isExpend, setIsExpend] = useState(false);
   const _htmlContent = isExpend
     ? htmlContent
     : `${htmlContent.substring(0, 30)}...`;
-
-  console.log(htmlContent);
 
   return (
     <div className="p-5 border rounded-lg ">
@@ -79,11 +38,7 @@ const EditorOutputHtml: React.FC<{
             </div>
           </div>
           <div className="flex-none">
-            <Button
-              className="p-2"
-              variant={'outline'}
-              onClick={() => setDispalyEd(!displayEd)}
-            >
+            <Button className="p-2" variant={'outline'} onClick={onReply}>
               <MessageSquareReply size={16} />
             </Button>
           </div>

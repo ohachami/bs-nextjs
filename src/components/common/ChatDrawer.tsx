@@ -13,17 +13,25 @@ import Message from '@/components/common/Message';
 import EditorJS, { OutputData } from '@editorjs/editorjs';
 import Editor from '@/components/common/Editor';
 import { Button } from '@/components/ui/button';
-
 import { getFeedbackMocks } from '@/utils/mocks';
 // import { useFeedbacks } from '@/services/feedbacks.service';
 
 export default function ChatDrawer() {
   const [isOpen, setIsOpen] = useState(true); // default to false
   const editorRef = useRef<EditorJS | null>(null);
+  const replyEditorRef = useRef<EditorJS | null>(null);
+  const [displayEd, setDispalyEd] = useState(false);
+
   // useFeedbacks();
   const feedbacks = getFeedbackMocks;
 
-  console.log({ feedbacks: feedbacks.message });
+  const onEnterKeyPress = async () => {
+    if (replyEditorRef && replyEditorRef.current) {
+      const output: OutputData = await replyEditorRef.current.save();
+      replyEditorRef.current.clear();
+      console.log({ output });
+    }
+  };
 
   const onCloseSheet = () => {
     setIsOpen(false);
@@ -35,6 +43,10 @@ export default function ChatDrawer() {
       editorRef.current.clear();
       console.log(output);
     }
+  };
+
+  const onReply = () => {
+    setDispalyEd(!displayEd);
   };
   return (
     <div>
@@ -63,7 +75,14 @@ export default function ChatDrawer() {
             </Button>
           </div>
           <div className="overflow-auto flex flex-col gap-y-2">
-            <Message message={feedbacks} />
+            <Message message={feedbacks} onReply={onReply} />
+            {displayEd && (
+              <Editor
+                editorRef={replyEditorRef}
+                onEnter={onEnterKeyPress}
+                className="ml-10 mt-3"
+              />
+            )}
           </div>
         </SheetContent>
       </Sheet>
