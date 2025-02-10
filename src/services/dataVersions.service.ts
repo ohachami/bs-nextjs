@@ -11,7 +11,7 @@ type DataSourcePatchVersionParams = {
     comment: string
 }
 
-export const usePatchVersion = () => {
+export const usePatchComment = () => {
     const queryClient = useQueryClient();
 
     return useMutation<AxiosResponse, Error, DataSourcePatchVersionParams>({
