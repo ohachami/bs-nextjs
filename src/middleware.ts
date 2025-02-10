@@ -19,7 +19,7 @@ export async function middleware(req: NextRequest) {
    */
 
   // looking for the requested client route configuration
-  const routeConfig = clientRoutes.find((route) => route.route === url);
+  const routeConfig = clientRoutes.find((route) => url.startsWith(route.route));
 
 
   // if user is not authenticated (session null) => redirect to the login page '/'
@@ -63,7 +63,7 @@ export const config = {
      * - _next/image (image optimization files)
      * - favicon.ico, sitemap.xml, robots.txt (metadata files)
      */
-    // '/((?!_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt|login).*)',
+    '/((?!_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt|login).*)',
   ],
-  // runtime: 'experimental-edge',
+  runtime: 'experimental-edge',
 };

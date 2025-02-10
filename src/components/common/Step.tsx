@@ -1,3 +1,5 @@
+'use client';
+
 import { STEP_STATUS } from '@/utils/constants';
 import clsx from 'clsx';
 import { Check } from 'lucide-react';
@@ -14,6 +16,7 @@ export interface StepProps {
   isActive?: boolean;
   isFirst?: boolean;
   isLast?: boolean;
+  isDisabled?: boolean;
 }
 
 function Step({
@@ -25,12 +28,24 @@ function Step({
   isActive,
   isFirst,
   isLast,
+  isDisabled,
 }: StepProps) {
+  // test if click is allowed or not
+  const handleClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
+    if (isDisabled) {
+      event.preventDefault();
+    }
+  };
+
   return (
-    <Link href={redirectUrl}>
+    <Link
+      href={redirectUrl}
+      onClick={handleClick}
+      className={clsx(isDisabled && 'cursor-not-allowed')}
+    >
       <div
         className={clsx(
-          'flex justify-between gap-4 px-10 items-center py-2 rounded-lg cursor-pointer relative bg-white',
+          'flex justify-between gap-4 px-10 items-center py-2 rounded-lg relative bg-white',
           isActive &&
             isFirst &&
             'arrow-bg-first pr-0 pl-8 shadow-lg z-10 scale-[1.1] absolute',
@@ -46,13 +61,13 @@ function Step({
         {/* Number Circle */}
         {
           <div
-            className={`border-2 ${isActive ? 'border-white': status === STEP_STATUS.DONE? 'border-[#57D762] bg-[#6fef7930]': 'border-gray-400'} p-3 rounded-full w-14 h-14 flex items-center justify-center`}
+            className={`border-2 ${isActive ? 'border-white' : status === STEP_STATUS.DONE ? 'border-[#57D762] bg-[#6fef7930]' : 'border-gray-400'} p-3 rounded-full w-14 h-14 flex items-center justify-center`}
           >
             <p
-              className={`font-semibold ${isActive ? 'text-white' : 'text-gray-400'}`}
+              className={`font-semibold ${isActive ? 'text-white': isDisabled? 'text-gray-400': 'text-black'}`}
             >
               {status === STEP_STATUS.DONE ? (
-                <Check color='#57D762' />
+                <Check color="#57D762" />
               ) : status === STEP_STATUS.INACTIVE ? (
                 stepNumber
               ) : (
@@ -64,7 +79,7 @@ function Step({
 
         {/* Text */}
         <p
-          className={`text-sm w-[150px] font-medium ${isActive ? 'text-white' : 'text-gray-400'} uppercase`}
+          className={`text-sm w-[150px] font-medium ${isActive ? 'text-white': isDisabled? 'text-gray-400': 'text-black'} uppercase`}
         >
           {label}
         </p>

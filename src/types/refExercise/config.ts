@@ -1,10 +1,12 @@
 // Type definitions for RefExercise Config
 // Used for The Exercise Section
 
+import { DataVersionIF } from "../collect/datasources";
+
 export type Timestamps = {
   createdAt: Date;
   updatedAt: Date;
-}
+};
 
 interface PeriodIF {
   id: string;
@@ -53,9 +55,25 @@ interface StepConfigIF {
   updatedAt: Date;
 }
 
-export type RefSbu = Timestamps & {
+type RefSbu = Timestamps & {
   id: string;
   name: string;
+  steps?: StepConfigIF[];
+};
+
+interface RefSiteIF {
+  id: string;
+  name: string;
+  code: string | null;
+  dataVersions?: DataVersionIF[];
 }
 
-export type { PeriodConfigIF, PeriodConfigV2IF, ExerciseTypeIF, PeriodIF, StepConfigIF };
+export type {
+  PeriodConfigIF,
+  PeriodConfigV2IF,
+  ExerciseTypeIF,
+  PeriodIF,
+  StepConfigIF,
+  RefSbu,
+  RefSiteIF,
+};

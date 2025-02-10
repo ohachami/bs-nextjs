@@ -3,15 +3,15 @@ import {callAsync} from "@/hooks/useAsync";
 import {AxiosResponse} from "axios";
 import api from "@/api";
 import {apiPaths} from "@/utils/apiPaths";
-import {DatasourceVersion} from "@/types/datasource/datasourceVersion";
+import { DataVersionIF } from "@/types/collect/datasources";
 
 
-export const useDatasourceVersions = (datasourceId: string) => {
-    return useQuery<DatasourceVersion[]>({
-        queryKey: ["datasources", datasourceId],
+export const useDatasourceVersions = (datasourceId: string, siteId?: string) => {
+    return useQuery<DataVersionIF[]>({
+        queryKey: ["datasources", datasourceId, siteId],
         queryFn: async () => {
-            const response = await callAsync<AxiosResponse<DatasourceVersion[]>>(() => api.get(apiPaths.datasourceVersions(datasourceId)));
-            return response.data
+            const response = await callAsync<AxiosResponse<DataVersionIF[]>>(() => api.get(apiPaths.datasourceVersions(datasourceId)));
+            return siteId ? response.data.filter(v => v.site.id === siteId): response.data
         },
     })
 }
