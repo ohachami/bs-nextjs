@@ -1,35 +1,34 @@
 .editorContent p {
-   
+   font-size: 13px;
 }
   
-  .editorContent h2 {
-  
-  }
-  
-  .editorContent h3 {
-   
-  }
-  
-  .editorContent ul {
-   
-  }
-  
-  .editorContent ol {
-   
-  }
-  
-  .editorContent li {
+.editorContent h2 {
+  font-size: 15px;
+}
 
-  }
-  
-  .editorContent a {
-  
-  }
-  
-  .editorContent a:hover {
-  }
-  
-  .editorContent img {
+.editorContent h3 {
+  font-size: 14px;
+}
 
-  }
+.editorContent ul {
   
+}
+
+.editorContent ol {
+  
+}
+
+.editorContent li {
+
+}
+
+.editorContent a {
+
+}
+
+.editorContent a:hover {
+}
+
+.editorContent img {
+
+}
