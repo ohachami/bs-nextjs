@@ -30,6 +30,9 @@ export const formatDate = (date: Date) => {
   return formattedDate.replace(/(\b[a-z])/i, (char) => char.toUpperCase());
 };
 
+export const formatDateAndTime = (date: Date) =>
+    format(date, 'dd MMM yyyy | HH:mm', { locale: fr });
+
 export function truncateString(
   input: Nullable<string>,
   maxLength: number = 16
