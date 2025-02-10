@@ -10,6 +10,7 @@ import Editor from './Editor';
 import { MessageIF } from '@/types/chat';
 import edjsHTML from 'editorjs-html';
 import styles from '@/styles/EditorOutput.module.css';
+import { cn } from '@/lib/utils';
 
 const Message: React.FC<{ message: MessageIF }> = ({ message }) => {
   const replyEditorRef = useRef<EditorJS | null>(null);
@@ -35,19 +36,6 @@ const Message: React.FC<{ message: MessageIF }> = ({ message }) => {
         setDispalyEd={setDispalyEd}
         displayEd={displayEd}
       />
-      {message?.replies?.map((item, index) => (
-        <EditorOutputHtml
-          key={index}
-          message={{
-            userName: item.userName,
-            imageUrl: item.imageUrl,
-            timestamp: item.timestamp,
-            message: item.message,
-          }}
-          displayEd={displayEd}
-          setDispalyEd={setDispalyEd}
-        />
-      ))}
       {displayEd && (
         <Editor
           editorRef={replyEditorRef}
