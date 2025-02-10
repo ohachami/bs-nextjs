@@ -1,7 +1,8 @@
 import { Nullable } from './types';
-import { format } from 'date-fns';
-import { fr } from 'date-fns/locale';
+import { format, formatDistance } from 'date-fns';
+import { enUS, fr } from 'date-fns/locale';
 import { PeriodIF } from '@/types/refExercise/config';
+
 
 export const getFullName = (
   lastname: Nullable<string>,
@@ -108,3 +109,19 @@ export function getElementsByLevel(baseObject: PeriodIF, level: 1 | 2 | 3) {
 
   return [];
 }
+
+
+/**
+ * Returns the relative time distance between a given date and today in the specified language.
+ *
+ * @param {Date} date - The given date to compare with today.
+ * @param {"fr" | "en"} lang - The language code ("fr" for French, "en" for English).
+ * @returns {string} - string indicating the time difference
+ */
+export const formatDistanceDate = (date: Date, lang: "fr" | "en"): string => {
+  const currentDate = new Date();
+  const locale = lang === "fr" ? fr : enUS;
+
+  return formatDistance(date, currentDate, { addSuffix: true, locale });
+};
+

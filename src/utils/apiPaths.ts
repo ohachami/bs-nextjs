@@ -8,5 +8,6 @@ export const apiPaths = {
     stepConfig: () => `/config/steps`,
     exercises: () => `/exercises`,
     exercisesCount: () => `/exercises/count`,
-    currentUser: () => `/users/current`
+    currentUser: () => `/users/current`,
+    feedbacks: () => "" //feedbacks endpoint
 } as const;

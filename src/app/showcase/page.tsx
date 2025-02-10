@@ -1,4 +1,5 @@
 'use client';
+import ChatDrawer from '@/components/common/ChatDrawer';
 import { DataTable } from '@/components/common/DataTable';
 import Stepper from '@/components/common/Stepper';
 import { Button } from '@/components/ui/button';
@@ -31,7 +32,7 @@ export default function Home() {
       enableHiding: false,
     },
     {
-      id: "first_name",
+      id: 'first_name',
       header: ({ column }) => {
         return (
           <Button
@@ -52,19 +53,22 @@ export default function Home() {
     },
   ];
   return (
-    <div className="grid w-full items-center justify-items-center p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col w-1/2 gap-8 row-start-2 items-center sm:items-start">
-      <Stepper/>
-        <div className="w-full">
-          <DataTable
-            data={[
-              { firstName: 'Omar', lastName: 'HACHAMI' },
-              { firstName: 'Nada', lastName: 'Belh.' },
-            ]}
-            columns={columns}
-          />
-        </div>
-      </main>
+    <div>
+      <div className="grid w-full items-center justify-items-center p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
+        <main className="flex flex-col w-1/2 gap-8 row-start-2 items-center sm:items-start">
+          <Stepper />
+          <div className="w-full">
+            <DataTable
+              data={[
+                { firstName: 'Omar', lastName: 'HACHAMI' },
+                { firstName: 'Nada', lastName: 'Belh.' },
+              ]}
+              columns={columns}
+            />
+          </div>
+        </main>
+      </div>
+      <ChatDrawer />
     </div>
   );
 }

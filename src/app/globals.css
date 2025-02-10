@@ -91,3 +91,8 @@ body {
   @apply bg-[#007BFF] text-white font-bold flex items-center justify-center;
   clip-path: polygon(0 0, 100% 0, 100% 50%, 100% 100%, 0 100%, 10% 50%);
 }
+
+.editor-container {
+  font-size: 14px;
+  background: var(--muted-foreground);
+}
