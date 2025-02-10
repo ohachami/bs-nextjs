@@ -5,6 +5,7 @@ import clsx from 'clsx';
 export interface ProcessStepProps {
   title: string;
   description: string;
+  code: string;
   icon: React.ComponentType<{ color?: string }>;
   status: string;
 }

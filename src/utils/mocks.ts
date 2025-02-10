@@ -1,4 +1,4 @@
-import { BookDashed, Dot } from 'lucide-react';
+import { BookDashed, Dot, LayoutList } from 'lucide-react';
 import { STEP_STATUS } from './constants';
 import { DataSourceIF } from '@/types/collect/datasources';
 
@@ -45,12 +45,14 @@ export const getMockSession = async (
 export const STEPS = [
   {
     title: 'Collecte',
+    code: "COLLECT",
     description: 'Collecte de données brutes',
-    icon: BookDashed,
+    icon: LayoutList,
     status: STEP_STATUS.IN_PROGRESS,
   },
   {
     title: 'Consolidation & visualisation',
+    code: "CONSOLIDATION",
     description: 'Consolidation et visualisation de données',
     icon: Dot,
     status: STEP_STATUS.INACTIVE,

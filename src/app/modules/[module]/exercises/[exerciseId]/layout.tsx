@@ -4,9 +4,10 @@ import StepList from '@/components/common/StepList';
 import { useExercises } from '@/services/exercises.service';
 import { Exercise } from '@/types/exercise';
 import { useParams } from 'next/navigation';
-import { useMemo } from 'react';
 import * as LucideIcons from 'lucide-react';
 import ExerciseIdLayoutSkeleton from '@/components/skeletons/ExerciseIdLayoutSkeleton';
+import { useExerciseStore } from '@/store/exercises/useExerciseStore';
+import { useEffect } from 'react';
 
 // used for icons as props
 type IconKey = keyof typeof LucideIcons;
@@ -19,12 +20,13 @@ function ExercisesLayout({
 }>) {
   const { data: exercises, isLoading, isError, isSuccess } = useExercises();
   const params = useParams();
-
-  const exerciseData = useMemo(() => {
+  const { setExercise, currentExercise } = useExerciseStore();
+  useEffect(() => {
     if (exercises) {
-      return exercises.find(
+      const exercise = exercises.find(
         (exercise: Exercise) => exercise.id === params.exerciseId
       );
+      setExercise(exercise);
     }
   }, [exercises, params.exerciseId]);
 
@@ -35,10 +37,10 @@ function ExercisesLayout({
 
   return (
     <div className="p-6 space-y-6">
-      <p className="text-2xl font-bold">{exerciseData?.name}</p>
-      {isSuccess && exerciseData && exerciseData.steps && (
+      <p className="text-2xl font-bold">{currentExercise?.name}</p>
+      {isSuccess && currentExercise && currentExercise.steps && (
         <StepList
-          steps={exerciseData.steps
+          steps={currentExercise.steps
             .map((step) => ({
               label: step.stepConfig.name,
               iconKey:
