@@ -1,3 +1,4 @@
+'use client'
 import ProcessStepWrapper from '@/components/common/ProcessStepWrapper';
 import CollectPage from '@/components/sections/Collect';
 import { STEPS } from '@/utils/mocks';

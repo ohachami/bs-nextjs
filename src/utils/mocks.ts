@@ -1,4 +1,4 @@
-import { BookDashed, Dot, LayoutList } from 'lucide-react';
+import { BookDashed, Dot, LayoutDashboard, LayoutList } from 'lucide-react';
 import { STEP_STATUS } from './constants';
 import { DataSourceIF } from '@/types/collect/datasources';
 
@@ -48,14 +48,14 @@ export const STEPS = [
     code: "COLLECT",
     description: 'Collecte de données brutes',
     icon: LayoutList,
-    status: STEP_STATUS.IN_PROGRESS,
+    status: STEP_STATUS.DONE,
   },
   {
     title: 'Consolidation & visualisation',
     code: "CONSOLIDATION",
     description: 'Consolidation et visualisation de données',
-    icon: Dot,
-    status: STEP_STATUS.INACTIVE,
+    icon: LayoutDashboard,
+    status: STEP_STATUS.IN_PROGRESS,
   }
 ];
 
