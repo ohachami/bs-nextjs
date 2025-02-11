@@ -6,6 +6,7 @@ import { formatDateAndTime } from "@/utils/functions";
 import { ColumnDef } from "@tanstack/react-table";
 import { useDatasourceVersions } from "@/services/dataVersions.service";
 import { DataVersionIF } from "@/types/collect/datasources";
+import { useExerciseStore } from "@/store/exercises/useExerciseStore";
 
 const columns: ColumnDef<DataVersionIF>[] = [
     {
@@ -49,7 +50,8 @@ const columns: ColumnDef<DataVersionIF>[] = [
   ]
 
 export function VersionTable({datasourceId, siteId}: {datasourceId: string; siteId?: string}) {
-    const datasourceVersions = useDatasourceVersions(datasourceId, siteId);
+    const {currentExercise} = useExerciseStore()
+    const datasourceVersions = useDatasourceVersions(datasourceId, currentExercise?.id || "", siteId);
     return (
         <RadioGroup defaultValue="null">
             <DataTable hidePagination columns={columns} data={datasourceVersions.data || []} />
