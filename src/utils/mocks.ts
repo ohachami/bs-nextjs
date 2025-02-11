@@ -1,4 +1,4 @@
-import { BookDashed, Dot, LayoutList } from 'lucide-react';
+import { ChartNoAxesColumn, Dot, LayoutList } from 'lucide-react';
 import { STEP_STATUS } from './constants';
 import { DataSourceIF } from '@/types/collect/datasources';
 
@@ -45,18 +45,25 @@ export const getMockSession = async (
 export const STEPS = [
   {
     title: 'Collecte',
-    code: "COLLECT",
+    code: 'COLLECT',
     description: 'Collecte de données brutes',
     icon: LayoutList,
-    status: STEP_STATUS.IN_PROGRESS,
+    status: STEP_STATUS.DONE,
   },
   {
     title: 'Consolidation & visualisation',
-    code: "CONSOLIDATION",
+    code: 'CONSOLIDATION',
     description: 'Consolidation et visualisation de données',
+    icon: ChartNoAxesColumn,
+    status: STEP_STATUS.IN_PROGRESS,
+  },
+  {
+    title: 'Scénarisation',
+    code: 'SCENARISATION',
+    description: 'Scénarisation de données consolidées',
     icon: Dot,
     status: STEP_STATUS.INACTIVE,
-  }
+  },
 ];
 
 export const mockDataSources: DataSourceIF[] = [
@@ -108,7 +115,7 @@ export const mockDataSources: DataSourceIF[] = [
         name: 'Jorf',
         code: null,
         dataVersions: [],
-      }
+      },
     ],
   },
   {

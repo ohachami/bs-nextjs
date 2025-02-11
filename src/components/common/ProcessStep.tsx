@@ -14,19 +14,23 @@ function ProcessStep({
   title,
   description,
   icon: Icon,
-  status
+  status,
 }: ProcessStepProps) {
   return (
     <div className="flex items-center justify-between gap-4 p-3">
       <div className={`flex gap-3 items-center`}>
         <div
-          className={clsx('border-2 p-3 rounded-full w-14 h-14 flex items-center justify-center',
-            status === STEP_STATUS.IN_PROGRESS && `bg-[#e6f2ff] border-[#007BFF]`,
-            status === STEP_STATUS.DONE && `bg-[${pc.DONE_BG}] border-[${pc.DONE_BORDER}]`,
-            status === STEP_STATUS.INACTIVE && `bg-[${pc.INACTIVE_BG}] border-[${pc.INACTIVE_BORDER}]`
+          className={clsx(
+            'border-2 p-3 rounded-full w-14 h-14 flex items-center justify-center',
+            status === STEP_STATUS.IN_PROGRESS &&
+              `bg-[#e6f2ff] border-[#007BFF]`,
+            status === STEP_STATUS.DONE &&
+              `bg-[${pc.DONE_BG}] border-[${pc.DONE_BORDER}]`,
+            status === STEP_STATUS.INACTIVE &&
+              `bg-[${pc.INACTIVE_BG}] border-[${pc.INACTIVE_BORDER}]`
           )}
         >
-          <Icon 
+          <Icon
             color={
               status === STEP_STATUS.DONE
                 ? pc.DONE_BORDER

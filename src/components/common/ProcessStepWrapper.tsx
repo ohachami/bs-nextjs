@@ -1,16 +1,20 @@
-import ProcessStep, { ProcessStepProps } from "./ProcessStep";
-import { Button } from "../ui/button";
+import ProcessStep, { ProcessStepProps } from './ProcessStep';
+import { Button } from '../ui/button';
 
 interface ProcessStepWrapperProps {
   steps: ProcessStepProps[];
-  onSelect: (code: string) => void
+  onSelect: (code: string) => void;
 }
 
 function ProcessStepWrapper({ steps, onSelect }: ProcessStepWrapperProps) {
   return (
-    <div className="flex justify-center items-center gap-4 border border-gray-300 bg-white rounded-lg">
+    <div className="flex   items-center border border-gray-300 bg-white rounded-lg">
       {steps.map((step: ProcessStepProps, key: number) => (
-        <Button key={key} onClick={() => onSelect(step.code)}>
+        <Button
+          className="w-1/3 bg-transparent h-auto border-0"
+          key={key}
+          onClick={() => onSelect(step.code)}
+        >
           <ProcessStep
             code={step.code}
             title={step.title}
