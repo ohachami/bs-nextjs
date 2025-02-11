@@ -1,5 +1,6 @@
 import ProcessStep, { ProcessStepProps } from "./ProcessStep";
 import { Button } from "../ui/button";
+import { Fragment } from "react";
 
 interface ProcessStepWrapperProps {
   steps: ProcessStepProps[];
@@ -10,7 +11,7 @@ function ProcessStepWrapper({ steps, onSelect }: ProcessStepWrapperProps) {
   return (
     <div className="flex justify-center items-center gap-4 border border-gray-300 bg-white rounded-lg">
       {steps.map((step: ProcessStepProps, key: number) => (
-        <Button key={key} onClick={() => onSelect(step.code)}>
+        <Fragment key={key}>
           <ProcessStep
             code={step.code}
             title={step.title}
@@ -21,7 +22,7 @@ function ProcessStepWrapper({ steps, onSelect }: ProcessStepWrapperProps) {
           {steps.length !== key + 1 && (
             <div className="w-[200px] h-[1px] bg-gray-300 mx-2" />
           )}
-        </Button>
+        </Fragment>
       ))}
     </div>
   );
