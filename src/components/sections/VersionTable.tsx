@@ -7,7 +7,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { DataVersionIF } from "@/types/collect/datasources";
 import { useEffect, useState } from "react";
 import { useDatasourceVersions } from "@/services/dataVersions.service";
-
+import { useExerciseStore } from "@/store/exercises/useExerciseStore";
 
 const columns: ColumnDef<DataVersionIF>[] = [
     {
@@ -68,7 +68,8 @@ export function VersionTable({
     siteId?: string;
     onSelect?: (selected: DataVersionIF[]) => void;
 }) {
-    const datasourceVersions = useDatasourceVersions(datasourceId, siteId);
+    const {currentExercise} = useExerciseStore()
+    const datasourceVersions = useDatasourceVersions(datasourceId, currentExercise?.id || "", siteId);
     const [selectedId, setSelectedId] = useState<string>("");
 
     // When radio selection changes, find the corresponding version and call onSelect
