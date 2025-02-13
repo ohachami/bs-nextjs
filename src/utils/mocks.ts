@@ -1,4 +1,4 @@
-import { BookDashed, Dot, LayoutDashboard, LayoutList } from 'lucide-react';
+import { LayoutDashboard, LayoutList } from 'lucide-react';
 import { STEP_STATUS } from './constants';
 import { DataSourceIF } from '@/types/collect/datasources';
 
@@ -45,18 +45,18 @@ export const getMockSession = async (
 export const STEPS = [
   {
     title: 'Collecte',
-    code: "COLLECT",
+    code: 'COLLECT',
     description: 'Collecte de données brutes',
     icon: LayoutList,
     status: STEP_STATUS.DONE,
   },
   {
     title: 'Consolidation & visualisation',
-    code: "CONSOLIDATION",
+    code: 'CONSOLIDATION',
     description: 'Consolidation et visualisation de données',
     icon: LayoutDashboard,
     status: STEP_STATUS.IN_PROGRESS,
-  }
+  },
 ];
 
 export const mockDataSources: DataSourceIF[] = [
@@ -87,6 +87,14 @@ export const mockDataSources: DataSourceIF[] = [
             version: null,
             path: '/api/random_4',
             name: 'random_4 v1.2',
+            comment: 'sssss',
+            createdAt: new Date(),
+            updatedAt: new Date(),
+            site: {
+              id: '',
+              name: 'string',
+              code: 'string',
+            },
           },
         ],
       },
@@ -108,7 +116,7 @@ export const mockDataSources: DataSourceIF[] = [
         name: 'Jorf',
         code: null,
         dataVersions: [],
-      }
+      },
     ],
   },
   {
