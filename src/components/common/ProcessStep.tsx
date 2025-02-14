@@ -1,23 +1,32 @@
+import { SubSteps } from '@/types/exercise';
 import { ProcessStepColors as pc } from '@/utils/colors';
 import { STEP_STATUS } from '@/utils/constants';
 import clsx from 'clsx';
+import { DynamicIcon } from './DynamicIcon';
+import { cn } from '@/lib/utils';
 
-export interface ProcessStepProps {
-  title: string;
-  description: string;
-  code: string;
-  icon: React.ComponentType<{ color?: string }>;
-  status: string;
-}
+export type ProcessStepProps = SubSteps & {
+  onClick: () => void;
+  disabled: Boolean;
+};
 
 function ProcessStep({
-  title,
+  name,
   description,
-  icon: Icon,
+  icon,
   status,
+  onClick,
+  disabled = false,
 }: ProcessStepProps) {
   return (
-    <div className="flex items-center justify-between gap-4 p-3">
+    <div
+      className={cn(
+        'flex items-center justify-between gap-4 p-3 ',
+        !disabled && 'cursor-pointer active:scale-95 transition-transform'
+      )}
+      onClick={!disabled ? onClick : undefined}
+      role="button"
+    >
       <div className={`flex gap-3 items-center`}>
         <div
           className={clsx(
@@ -30,18 +39,21 @@ function ProcessStep({
               `bg-[${pc.INACTIVE_BG}] border-[${pc.INACTIVE_BORDER}]`
           )}
         >
-          <Icon
-            color={
-              status === STEP_STATUS.DONE
-                ? pc.DONE_BORDER
-                : status === STEP_STATUS.IN_PROGRESS
-                  ? pc.IN_PROGRESS_BORDER
-                  : pc.INACTIVE_BORDER
-            }
-          />
+          {icon && (
+            <DynamicIcon
+              name={icon}
+              color={
+                status === STEP_STATUS.DONE
+                  ? pc.DONE_BORDER
+                  : status === STEP_STATUS.IN_PROGRESS
+                    ? pc.IN_PROGRESS_BORDER
+                    : pc.INACTIVE_BORDER
+              }
+            />
+          )}
         </div>
         <div className={`flex flex-col justify-start items-start`}>
-          <p className="text-md font-medium text-black uppercase">{title}</p>
+          <p className="text-md font-medium text-black uppercase">{name}</p>
           <p className="text-sm text-gray-400 font-normal capitalize">
             {description}
           </p>

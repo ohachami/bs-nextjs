@@ -8,11 +8,10 @@ import { Button } from '../ui/button';
 import { RefreshCcw } from 'lucide-react';
 import { RefSiteIF } from '@/types/refExercise/config';
 import { VersionTable } from './VersionTable';
+import { User } from '@/types/user';
 
-
-function CollectPage() {
+function CollectPage({ user }: { user?: User }) {
   //getting user information
-  const { data: user, isLoading, isError } = useUser();
   // getting datasources related to user's sbu id
   const {
     data: datasources,
@@ -20,20 +19,11 @@ function CollectPage() {
     isError: dsError,
   } = useDataSourceHierarchy(user ? user.sbu.id : '');
 
-  
-
-  if (isError || dsError) return <p>Error !</p>;
-
-  if (isLoading || dsLoading) return <p>Loading...</p>;
-
   return (
     datasources &&
     Array.isArray(datasources) &&
     datasources.length > 0 && (
-      <Tabs
-        defaultValue={`${datasources[0].id}`}
-        orientation="vertical"
-      >
+      <Tabs defaultValue={`${datasources[0].id}`} orientation="vertical">
         <div className="flex items-start gap-4">
           <TabsList className="flex-col w-52 gap-4 h-auto bg-gray-200">
             {datasources.map((dataSource: DataSourceIF, key: number) => (
@@ -77,15 +67,18 @@ function CollectPage() {
                         <RefreshCcw /> Actualiser
                       </Button>
                     </div>
-                      {dataSource.sites.map((site: RefSiteIF, key: number) => (
-                        <TabsContent
-                          key={key}
-                          value={`${site.id}`}
-                          defaultValue={dataSource.sites[0].id}
-                        >
-                          <VersionTable datasourceId={dataSource.id} siteId={site.id} />
-                        </TabsContent>
-                      ))}
+                    {dataSource.sites.map((site: RefSiteIF, key: number) => (
+                      <TabsContent
+                        key={key}
+                        value={`${site.id}`}
+                        defaultValue={dataSource.sites[0].id}
+                      >
+                        <VersionTable
+                          datasourceId={dataSource.id}
+                          siteId={site.id}
+                        />
+                      </TabsContent>
+                    ))}
                   </div>
                 </Tabs>
               ) : (

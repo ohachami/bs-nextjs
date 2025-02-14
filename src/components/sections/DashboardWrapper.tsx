@@ -1,7 +1,7 @@
 import React from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
-interface DashboardWrapperItem {
+export interface DashboardWrapperItem {
   code: string;
   name: string;
   content: React.ReactElement;

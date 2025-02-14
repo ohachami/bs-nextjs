@@ -37,7 +37,6 @@ type DataTableColumns = {
   creator: Nullable<string>;
 };
 
-
 const columns: ColumnDef<DataTableColumns>[] = [
   {
     header: 'Nom',
@@ -62,7 +61,6 @@ const columns: ColumnDef<DataTableColumns>[] = [
   },
 ];
 
-
 const ModuleExercices = () => {
   const { isPending, data } = useExercises();
   const periodQuery = usePeriodsTree();
@@ -76,11 +74,17 @@ const ModuleExercices = () => {
   const router = useRouter();
 
   useEffect(() => {
-    if(data && periodQuery.data) {
-      const yearsSet = new Set(data.map(e => e.year));
+    if (data && periodQuery.data) {
+      console.log({ data });
+      const yearsSet = new Set(data.map((e) => e.year));
       const cyears = Array.from(yearsSet);
 
-      const items = cyears.map(y => (mapPeriodToTreeItem({...periodQuery.data, name: `${y}`} as PeriodIF, y!)))
+      const items = cyears.map((y) =>
+        mapPeriodToTreeItem(
+          { ...periodQuery.data, name: `${y}` } as PeriodIF,
+          y!
+        )
+      );
       setFilter(items);
 
       let newData = [...data];
@@ -97,7 +101,9 @@ const ModuleExercices = () => {
         );
       }
 
-      setOpenEx(newData.filter((ex) => ex.status === EXERCISE_STATUS.IN_PROGRESS));
+      setOpenEx(
+        newData.filter((ex) => ex.status === EXERCISE_STATUS.IN_PROGRESS)
+      );
       setClosedEx(newData.filter((ex) => ex.status === EXERCISE_STATUS.CLOSED));
     }
   }, [data, selectedPeriods, search]);
@@ -136,7 +142,6 @@ const ModuleExercices = () => {
 
   const objectifs = exercise && exercise.target && JSON.parse(exercise.target);
 
-  
   return (
     <div className="flex flex-col p-8 pt-6 gap-4">
       <div className="flex justify-between items-center">

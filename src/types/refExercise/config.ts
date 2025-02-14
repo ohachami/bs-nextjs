@@ -1,7 +1,8 @@
 // Type definitions for RefExercise Config
 // Used for The Exercise Section
 
-import { DataVersionIF } from "../collect/datasources";
+import { CODE_STEPS } from '@/utils/constants';
+import { DataVersionIF } from '../collect/datasources';
 
 export type Timestamps = {
   createdAt: Date;
@@ -53,8 +54,13 @@ interface StepConfigIF {
   mandatory: boolean;
   createdAt: Date;
   updatedAt: Date;
+  sbus: SBUS[];
 }
 
+type SBUS = Timestamps & {
+  id: string;
+  name: string;
+};
 type RefSbu = Timestamps & {
   id: string;
   name: string;
@@ -77,3 +83,5 @@ export type {
   RefSbu,
   RefSiteIF,
 };
+
+export type CodeStepType = (typeof CODE_STEPS)[keyof typeof CODE_STEPS];

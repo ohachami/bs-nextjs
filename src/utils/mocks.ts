@@ -1,4 +1,10 @@
-import { ChartNoAxesColumn, Dot, LayoutList } from 'lucide-react';
+import {
+  BookDashed,
+  ChartNoAxesColumn,
+  Dot,
+  LayoutDashboard,
+  LayoutList,
+} from 'lucide-react';
 import { STEP_STATUS } from './constants';
 import { DataSourceIF } from '@/types/collect/datasources';
 
