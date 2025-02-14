@@ -9,6 +9,7 @@ export const useAggregations = (aggQuery: QueryDefinition) => {
     return useQuery<GroupedData>({
       queryKey: ["aggregations", aggQuery],
       queryFn: async () => {
+        if(!aggQuery) return []
         const response = await callAsync<AxiosResponse<GroupedData>>(() => api.post(apiPaths.aggregations(), {
             ...aggQuery
         }));
