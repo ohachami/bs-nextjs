@@ -3,7 +3,7 @@ import { DataTable } from '@/components/common/DataTable';
 import ExerciseCard from '@/components/common/ExerciseCard';
 import ExerciseStatus from '@/components/common/ExerciseStatus';
 import StepProgress from '@/components/common/ExerciseStepper';
-import TreeCombobox from '@/components/common/TreeCombobox';
+import PeriodFilter from '@/components/common/PeriodFilter';
 import CreateNewExercise from '@/components/modules/exercises/create';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -16,11 +16,7 @@ import {
   SheetTitle,
 } from '@/components/ui/sheet';
 import { useExercises } from '@/services/exercises.service';
-import { mapPeriodToTreeItem } from '@/services/mappers/periodMapper';
-import { usePeriodsTree } from '@/services/refExercise.service';
-import { TreeItem } from '@/types/common/TreeComboboxFilterTypes';
 import { Exercise } from '@/types/exercise';
-import { PeriodIF } from '@/types/refExercise/config';
 import { EXERCISE_STATUS } from '@/utils/constants';
 import { formatDate, getFullName } from '@/utils/functions';
 import { Nullable } from '@/utils/types';
@@ -63,29 +59,19 @@ const columns: ColumnDef<DataTableColumns>[] = [
 
 const ModuleExercices = () => {
   const { isPending, data } = useExercises();
-  const periodQuery = usePeriodsTree();
+  const router = useRouter();
 
   const [selectedPeriods, setSelectedPeriods] = useState<string[]>([]);
-  const [filter, setFilter] = useState<TreeItem[]>([]);
+  const [years, setYears] = useState<number[]>([]);
   const [search, setSearch] = useState<string>('');
   const [openEx, setOpenEx] = useState<Exercise[]>([]);
   const [closedEx, setClosedEx] = useState<Exercise[]>([]);
   const [exercise, setExercise] = useState<Exercise | null>(null);
-  const router = useRouter();
 
   useEffect(() => {
-    if (data && periodQuery.data) {
-      console.log({ data });
+    if (data) {
       const yearsSet = new Set(data.map((e) => e.year));
-      const cyears = Array.from(yearsSet);
-
-      const items = cyears.map((y) =>
-        mapPeriodToTreeItem(
-          { ...periodQuery.data, name: `${y}` } as PeriodIF,
-          y!
-        )
-      );
-      setFilter(items);
+      setYears(Array.from(yearsSet));
 
       let newData = [...data];
 
@@ -107,19 +93,6 @@ const ModuleExercices = () => {
       setClosedEx(newData.filter((ex) => ex.status === EXERCISE_STATUS.CLOSED));
     }
   }, [data, selectedPeriods, search]);
-
-  useEffect(() => {
-    if (data && periodQuery.data) {
-      const cyears = [...new Set(data.map((e) => e.year))];
-      const items = cyears.map((y) =>
-        mapPeriodToTreeItem(
-          { ...periodQuery.data, name: `${y}` } as PeriodIF,
-          y!
-        )
-      );
-      setFilter(items);
-    }
-  }, [data, periodQuery.data]);
 
   if (isPending) {
     return (
@@ -162,15 +135,11 @@ const ModuleExercices = () => {
           />
         </div>
         <div>
-          {periodQuery.isSuccess && (
-            <TreeCombobox
-              items={filter}
-              multiSelect
-              selectChildren={false}
-              defaultValues={selectedPeriods}
-              onSelectionChange={setSelectedPeriods}
-            />
-          )}
+          <PeriodFilter
+            years={years}
+            defaultSelectedPeriods={selectedPeriods}
+            onSelectionChange={setSelectedPeriods}
+          />
         </div>
         <Button
           variant="ghost"

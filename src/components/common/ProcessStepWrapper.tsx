@@ -1,8 +1,6 @@
 import ProcessStep, { ProcessStepProps } from './ProcessStep';
-import { Button } from '../ui/button';
 import { Fragment } from 'react';
 import { SubSteps } from '@/types/exercise';
-import { CodeStepType } from '@/types/refExercise/config';
 
 interface ProcessStepWrapperProps {
   steps: SubSteps[];
