@@ -1,5 +1,5 @@
-export type TOption<T = {}> = {
-    value: string;
+export type TOption<T> = {
+    value: T;
     label: string;
 };
 

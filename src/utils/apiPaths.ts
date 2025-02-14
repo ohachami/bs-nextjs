@@ -13,5 +13,6 @@ export const apiPaths = {
     version: (id: string) => `/datasources/versions/${id}`,
     regions: () => `/referential/regions`,
     products: () => `/referential/products`,
+    productTypes: () => `/referential/product-types`,
     sbus: () => `/referential/sbus`,
 } as const;
