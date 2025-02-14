@@ -8,12 +8,12 @@ import { Button } from '../ui/button';
 import { RefreshCcw } from 'lucide-react';
 import { RefSiteIF } from '@/types/refExercise/config';
 import { VersionTable } from './VersionTable';
-import SelectedVersions from './SelectedVersions';
+import { User } from '@/types/user';
 import { useState } from 'react';
+import SelectedVersions from './SelectedVersions';
 
-function CollectPage() {
+function CollectPage({ user }: { user?: User }) {
   //getting user information
-  const { data: user, isLoading, isError } = useUser();
   // getting datasources related to user's sbu id
   const {
     data: datasources,
@@ -27,7 +27,7 @@ function CollectPage() {
   /**
    * Handling VersionTable Row Selection
    * Updating the CollectPage component selectedVersions state
-   * NB: Making sure no DataVersion Selection Duplication occurs 
+   * NB: Making sure no DataVersion Selection Duplication occurs
    * @param selected: Selected DataVersion Row
    */
   const handleVersionSelect = (selected: DataVersionIF[]) => {
@@ -43,10 +43,6 @@ function CollectPage() {
       });
     }
   };
-
-  if (isError || dsError) return <p>Error !</p>;
-
-  if (isLoading || dsLoading) return <p>Loading...</p>;
 
   return (
     datasources &&

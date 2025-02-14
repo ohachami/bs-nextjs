@@ -1,27 +1,20 @@
 'use client';
-import FilterFactory from '@/components/common/FilterFactory';
-import ProcessStepWrapper from '@/components/common/ProcessStepWrapper';
-import CollectPage from '@/components/sections/Collect';
-import { STEPS } from '@/utils/mocks';
-import { useState } from 'react';
+import HypWrapper from '@/components/sections/HypWrapper';
+import { SBUS, STEP_STATUS } from '@/utils/constants';
 
-function PageHyperManu() {
-  const [selected, setSelected] = useState('COLLECT');
+function Page() {
   return (
-    <div className="space-y-6">
-      <ProcessStepWrapper steps={STEPS} onSelect={setSelected} />
-
-      <div className="flex justify-center gap-10">
-        <FilterFactory module="product" onChange={() => {}} />
-        <FilterFactory module="region" onChange={() => {}} />
-        <div>
-          <FilterFactory module="period" onChange={() => {}} />
-        </div>
-      </div>
-
-      {selected === 'COLLECT' && <CollectPage />}
-    </div>
+    <HypWrapper
+      shouldDisableStep={(_, exerciseStep) =>
+        exerciseStep.status === STEP_STATUS.INACTIVE
+      }
+      shouldDisplayWaitingStep={(user) => user.sbu.name !== SBUS.MANUFACTURING}
+      waitingStepMessage={{
+        title:
+          'Les BUs Manufacturing sont en train d’ajuster les hypothèses Manufacturing',
+      }}
+    ></HypWrapper>
   );
 }
 
-export default PageHyperManu;
+export default Page;
