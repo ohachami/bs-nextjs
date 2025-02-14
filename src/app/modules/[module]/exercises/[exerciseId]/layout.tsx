@@ -35,6 +35,7 @@ function ExercisesLayout({
   // redirect to home in case exerciseId not found
   if (isError) return <p className="p-4">Error Loading Exercise...</p>;
 
+  console.log({ currentExercise });
   return (
     <div className="p-6 space-y-6">
       <p className="text-2xl font-bold">{currentExercise?.name}</p>

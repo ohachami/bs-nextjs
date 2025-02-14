@@ -1,19 +1,27 @@
-'use client'
-import ProcessStepWrapper from '@/components/common/ProcessStepWrapper';
-import CollectPage from '@/components/sections/Collect';
-import SalesConsolidationPage from '@/components/sections/Consolidation';
-import { STEPS } from '@/utils/mocks';
-import { useState } from 'react';
+'use client';
 
-function PageHypSales() {
-  const [selected, setSelected] = useState("CONSOLIDATION")
+import HypWrapper from '@/components/sections/HypWrapper';
+import { SBUS } from '@/utils/constants';
+
+function PageHyperManu() {
   return (
-    <div className='space-y-6'>
-    <ProcessStepWrapper steps={STEPS} onSelect={setSelected} />
-    {selected === "COLLECT" && <CollectPage />}
-    {selected === "CONSOLIDATION" && <SalesConsolidationPage />}
-  </div>
+    <HypWrapper
+      shouldDisableStep={(user) =>
+        ![SBUS.ROCK_SOLUTIONS, SBUS.OCP_NUTRICROPS].includes(
+          user.sbu.name as any
+        )
+      }
+      shouldDisplayWaitingStep={(user) =>
+        ![SBUS.ROCK_SOLUTIONS, SBUS.OCP_NUTRICROPS, SBUS.SPS].includes(
+          user.sbu.name as any
+        )
+      }
+      waitingStepMessage={{
+        title:
+          'Les BUs commerciales sont en train sont en train de terminer leur version',
+      }}
+    ></HypWrapper>
   );
 }
 
-export default PageHypSales;
+export default PageHyperManu;
