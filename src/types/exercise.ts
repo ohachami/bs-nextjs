@@ -12,6 +12,7 @@ export type Exercise = Timestamps & {
   exerciseType: ExerciseType;
   parentPeriod: PeriodIF;
   steps: ExerciseStep[];
+  periods: PeriodIF[];
 };
 
 export type ExerciseType = Timestamps & {
