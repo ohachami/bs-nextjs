@@ -6,11 +6,16 @@ import {apiPaths} from "@/utils/apiPaths";
 import { DataVersionIF } from "@/types/collect/datasources";
 
 
-export const useDatasourceVersions = (datasourceId: string, siteId?: string) => {
+export const useDatasourceVersions = (datasourceId: string, exerciseId: string, siteId?: string) => {
+    console.log("exerciseId", exerciseId)
     return useQuery<DataVersionIF[]>({
-        queryKey: ["datasources", datasourceId, siteId],
+        queryKey: ["datasources", datasourceId, exerciseId, siteId],
         queryFn: async () => {
-            const response = await callAsync<AxiosResponse<DataVersionIF[]>>(() => api.get(apiPaths.datasourceVersions(datasourceId)));
+            const response = await callAsync<AxiosResponse<DataVersionIF[]>>(() => api.get(apiPaths.datasourceVersions(datasourceId), {
+                params: {
+                    exerciseId
+                }
+            }));
             return siteId ? response.data.filter(v => v.site.id === siteId): response.data
         },
     })
