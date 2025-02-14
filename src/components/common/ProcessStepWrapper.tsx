@@ -1,13 +1,12 @@
-import ProcessStep, { ProcessStepProps } from "./ProcessStep";
-import { Button } from "../ui/button";
-import { Fragment } from "react";
+import { Fragment } from 'react';
+import ProcessStep, { ProcessStepProps } from './ProcessStep';
 
 interface ProcessStepWrapperProps {
   steps: ProcessStepProps[];
-  onSelect: (code: string) => void
+  onSelect: (code: string) => void;
 }
 
-function ProcessStepWrapper({ steps, onSelect }: ProcessStepWrapperProps) {
+function ProcessStepWrapper({ steps }: ProcessStepWrapperProps) {
   return (
     <div className="flex justify-center items-center gap-4 border border-gray-300 bg-white rounded-lg">
       {steps.map((step: ProcessStepProps, key: number) => (

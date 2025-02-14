@@ -68,6 +68,20 @@ interface RefSiteIF {
   dataVersions?: DataVersionIF[];
 }
 
+interface ProductTypeIF {
+  id: string;
+  name: string;
+  isDisabled: boolean;
+}
+
+interface RegionTypeIF {
+  id: string;
+  name: string;
+  latitude: number;
+  longitude: number;
+}
+
+
 export type {
   PeriodConfigIF,
   PeriodConfigV2IF,
@@ -76,4 +90,6 @@ export type {
   StepConfigIF,
   RefSbu,
   RefSiteIF,
+  ProductTypeIF,
+  RegionTypeIF
 };
