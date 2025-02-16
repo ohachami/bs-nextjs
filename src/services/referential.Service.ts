@@ -3,7 +3,7 @@ import { apiPaths } from "@/utils/apiPaths";
 import { useQuery } from '@tanstack/react-query';
 import { AxiosResponse } from 'axios';
 import api from "@/api";
-import { ProductTypeIF, RegionTypeIF } from '@/types/refExercise/config';
+import { ProductTypeIF, RefSbu, RegionTypeIF } from '@/types/refExercise/config';
 
 export const useRegions = () => {
   return useQuery<RegionTypeIF[]>({
@@ -37,10 +37,10 @@ export const useProductTypes = () => {
 
 
 export const useSbus = () => {
-  return useQuery<number>({
+  return useQuery<RefSbu[]>({
     queryKey: ["sbus"],
     queryFn: async () => {
-      const response = await callAsync<AxiosResponse<number>>(() => api.get(apiPaths.sbus()));
+      const response = await callAsync<AxiosResponse<RefSbu[]>>(() => api.get(apiPaths.sbus()));
       return response.data
     },
   });
