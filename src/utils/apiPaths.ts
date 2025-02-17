@@ -15,6 +15,7 @@ export const apiPaths = {
     regions: () => `/referential/regions`,
     products: () => `/referential/products`,
     productTypes: () => `/referential/product-types`,
+    groupedProducts: () => `/referential/grouped-products`,
     sbus: () => `/referential/sbus`,
     consolidationVersions: (sbuId?: string) => sbuId? `/consolidation`: `/consolidation?sbuId=${sbuId}`,
 } as const;

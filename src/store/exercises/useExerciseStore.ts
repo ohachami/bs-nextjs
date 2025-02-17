@@ -1,4 +1,4 @@
-import { Exercise, ExerciseStep, SubSteps } from '@/types/exercise';
+import { Exercise, ExerciseStep } from '@/types/exercise';
 import { STEP_STATUS } from '@/utils/constants';
 import { create } from 'zustand';
 
