@@ -11,11 +11,7 @@ interface PeriodFilterProps {
   onSelectionChange: (selectedPeriods: string[]) => void;
 }
 
-const PeriodFilter = ({
-  years,
-  defaultSelectedPeriods = [],
-  onSelectionChange,
-}: PeriodFilterProps) => {
+const PeriodFilter = ({ years, onSelectionChange }: PeriodFilterProps) => {
   const [filter, setFilter] = useState<TreeItem[]>([]);
   const periodQuery = usePeriodsTree();
 
@@ -34,14 +30,12 @@ const PeriodFilter = ({
   if (periodQuery.isLoading) return <div>Loading...</div>;
   if (periodQuery.isError) return <div>Error loading periods</div>;
 
-  console.log(filter);
-
   return (
     <TreeCombobox
+      buttonVariant="default"
       multiSelect
       items={filter}
       selectChildren={false}
-      defaultValues={defaultSelectedPeriods}
       onSelectionChange={onSelectionChange}
     />
   );

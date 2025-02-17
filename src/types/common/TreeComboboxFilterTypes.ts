@@ -4,14 +4,17 @@ interface TreeItem {
   id: string;
   label: string;
   children?: TreeItem[];
+  parent?: TreeItem
 }
 
 interface TreeComboboxProps {
+  buttonVariant: 'default' | 'with-badges'
   items: TreeItem[];
   multiSelect?: boolean;
   title?: string;
+  placeholder?: string;
   selectChildren?: boolean;
-  defaultValues?: string[];
+  defaultValues?: TreeItem[];
   onSelectionChange: (selectedItems: string[]) => void;
 }
 

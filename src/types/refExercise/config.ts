@@ -82,6 +82,12 @@ interface RegionTypeIF {
 }
 
 
+interface ProductGroup {
+  id: string;
+  name: string;
+  products: ProductTypeIF[]
+}
+
 export type {
   PeriodConfigIF,
   PeriodConfigV2IF,
@@ -91,5 +97,6 @@ export type {
   RefSbu,
   RefSiteIF,
   ProductTypeIF,
-  RegionTypeIF
+  RegionTypeIF,
+  ProductGroup
 };

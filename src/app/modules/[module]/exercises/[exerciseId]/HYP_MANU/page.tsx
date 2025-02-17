@@ -7,15 +7,25 @@ import { useState } from 'react';
 
 function PageHyperManu() {
   const [selected, setSelected] = useState('COLLECT');
+
   return (
     <div className="space-y-6">
       <ProcessStepWrapper steps={STEPS} onSelect={setSelected} />
 
       <div className="flex justify-center gap-10">
-        <FilterFactory module="product" onChange={() => {}} />
-        <FilterFactory module="region" onChange={() => {}} />
+        <FilterFactory
+          module="product"
+          onChange={(values) => console.log('selected products: ', values)}
+        />
+        <FilterFactory
+          module="region"
+          onChange={(values) => console.log('selected regions: ', values)}
+        />
         <div>
-          <FilterFactory module="period" onChange={() => {}} />
+          <FilterFactory
+            module="period"
+            onChange={(values) => console.log('selected periods: ', values)}
+          />
         </div>
       </div>
 

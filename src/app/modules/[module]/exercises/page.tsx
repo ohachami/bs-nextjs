@@ -135,16 +135,11 @@ const ModuleExercices = () => {
           />
         </div>
         <div>
-          <PeriodFilter
-            years={years}
-            defaultSelectedPeriods={selectedPeriods}
-            onSelectionChange={setSelectedPeriods}
-          />
+          <PeriodFilter years={years} onSelectionChange={setSelectedPeriods} />
         </div>
         <Button
           variant="ghost"
           onClick={() => {
-            setSelectedPeriods([]);
             setSearch('');
           }}
         >
