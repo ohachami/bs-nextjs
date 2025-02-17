@@ -23,6 +23,7 @@ function ExercisesLayout({
   const { setExercise, currentExercise } = useExerciseStore();
   useEffect(() => {
     if (exercises) {
+      console.log({ exercises });
       const exercise = exercises.find(
         (exercise: Exercise) => exercise.id === params.exerciseId
       );

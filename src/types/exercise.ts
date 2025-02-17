@@ -6,13 +6,22 @@ export type Exercise = Timestamps & {
   name: string;
   target: string;
   year: number;
-  status: string;
+  status: 'IN_PROGRESS' | 'CLOSED';
   description: string;
   creator: User;
   exerciseType: ExerciseType;
   parentPeriod: PeriodIF;
   steps: ExerciseStep[];
-  periods: PeriodIF[];
+  periods: ExercisePeriod[];
+};
+
+export type ExercisePeriod = {
+  id: string;
+  name: string;
+  sortedBy: number;
+  startMonth: number;
+  startDay: number;
+  children: PeriodIF[];
 };
 
 export type ExerciseType = Timestamps & {
@@ -38,4 +47,10 @@ export type SubSteps = Timestamps & {
   status: string;
   code: string;
   sortedBy: number;
+};
+
+export type Section = {
+  id: string;
+  name: string;
+  code: string;
 };

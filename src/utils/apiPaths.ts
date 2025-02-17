@@ -9,14 +9,16 @@ export const apiPaths = {
   currentUser: () => `/users/current`,
   datasources: (sbuId: string) => `/datasources/hierarchy/${sbuId}`,
   dashboardSections: (stepId: string) => `/dashboard/steps/${stepId}/sections`,
-  chartList: (sectionId: string) => `/dashboard/steps/${sectionId}`,
-
   aggregations: () => `/aggregations`,
+  chartList: (sectionId: string) => `/dashboard/sections/${sectionId}`,
   datasourceVersions: (datasourceId: string) =>
     `/datasources/${datasourceId}/versions`,
   version: (id: string) => `/datasources/versions/${id}`,
   regions: () => `/referential/regions`,
   products: () => `/referential/products`,
   productTypes: () => `/referential/product-types`,
+  groupedProducts: () => `/referential/grouped-products`,
   sbus: () => `/referential/sbus`,
+  consolidationVersions: (sbuId?: string) =>
+    sbuId ? `/consolidation` : `/consolidation?sbuId=${sbuId}`,
 } as const;

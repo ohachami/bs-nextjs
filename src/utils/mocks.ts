@@ -1,12 +1,11 @@
 import {
-  BookDashed,
   ChartNoAxesColumn,
   Dot,
-  LayoutDashboard,
   LayoutList,
 } from 'lucide-react';
 import { STEP_STATUS } from './constants';
 import { DataSourceIF } from '@/types/collect/datasources';
+import { ConsolidationVersionsIF } from '@/types/consolidation';
 
 // Interface defining a Mock Session structure
 interface MockSessionIF {
@@ -139,3 +138,27 @@ export const mockDataSources: DataSourceIF[] = [
     sites: [],
   },
 ];
+
+
+export const consoldationVersionMock: ConsolidationVersionsIF[]  = [
+  {
+    id: "0",
+    name: "Données_consolidées_Exercise_Sept_Q4_2024"
+  },
+  {
+    id: "1",
+    name: "Données_consolidées_Exercise_Nov_Q4_2024"
+  },
+  {
+    id: "2",
+    name: "Données_consolidées_Exercise_Jan_Q1_2025"
+  },
+  {
+    id: "3",
+    name: "Données_consolidées_Exercise_Sept_Q4_2026"
+  },
+  {
+    id: "4",
+    name: "Données_consolidées_Exercise_Sept_Q4_2028"
+  },
+]

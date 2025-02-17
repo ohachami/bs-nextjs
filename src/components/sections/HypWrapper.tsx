@@ -41,7 +41,7 @@ function HypWrapper({
 
   // Fetch sub-steps related to the exercise step
   const {
-    data: subSteps,
+    data: sections,
     error,
     isPending,
   } = useSections(exerciseStep?.stepConfig?.id ?? undefined);
@@ -55,6 +55,7 @@ function HypWrapper({
   // Display an error message if there is an error loading the exercise
   if (isError || error) return <p className="p-4">Error Loading Exercise...</p>;
 
+  console.log({ exerciseStep });
   return (
     <div className="space-y-6">
       {/* Check if the waiting step should be displayed */}
@@ -78,7 +79,7 @@ function HypWrapper({
           {/* Conditionally render pages based on the selected step */}
           {selected === CODE_STEPS.COLLECT && <CollectPage user={user} />}
           {selected === CODE_STEPS.CONSOLIDATION && (
-            <SalesConsolidationPage items={subSteps} />
+            <SalesConsolidationPage items={sections} />
           )}
           {children}
         </>
