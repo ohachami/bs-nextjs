@@ -41,7 +41,12 @@ export const STEP_STATUS = {
   IN_PROGRESS: 'IN_PROGRESS',
   CLOSED: 'CLOSED',
 } as const;
-
+// code Steps
+export const CODE_STEPS = {
+  COLLECT: 'COLLECT',
+  CONSOLIDATION: 'CONSOLIDATION',
+  SCENARISATION: 'SCENARISATION',
+} as const;
 // step_config table codes
 export const STEP_CODES = {
   VALIDATION: 'VALIDATION',
@@ -50,4 +55,14 @@ export const STEP_CODES = {
   REPORT: 'REPORT',
   SCENARISATION: 'SCENARISATION',
   HYP_MANU: 'HYP_MANU',
+} as const;
+
+// SBUS
+export const SBUS = {
+  MINING: 'Mining',
+  MANUFACTURING: 'Manufacturing',
+  ROCK_SOLUTIONS: 'Rock solutions',
+  OCP_NUTRICROPS: 'OCP Nutricrops',
+  SPS: 'SPS',
+  CORPORATE: 'Corporate',
 } as const;
