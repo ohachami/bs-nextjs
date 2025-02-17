@@ -20,3 +20,19 @@ export const useSections = (stepId: string | undefined) => {
     enabled: Boolean(stepId), // Ensures query runs only when stepId is available
   });
 };
+
+export const useChartList = (sectionId: string | undefined) => {
+  return useQuery<DashboardWrapperItem[]>({
+    queryKey: ['sections', sectionId],
+    queryFn: async () => {
+      if (!sectionId) {
+        throw new Error('stepId is required'); // Prevents unnecessary API calls
+      }
+      const response = await callAsync<AxiosResponse<DashboardWrapperItem[]>>(
+        () => api.get(apiPaths.dashboardSections(sectionId))
+      );
+      return response.data;
+    },
+    enabled: Boolean(sectionId), // Ensures query runs only when stepId is available
+  });
+};

@@ -9,6 +9,7 @@ interface SalesDashboardProps {
 }
 export default function SalesDashboard(props: SalesDashboardProps) {
   const { exercise } = props;
+  // const {}=useChartList()
   if (!exercise) return <div />;
   return (
     <div className="flex justify-center gap-10">
