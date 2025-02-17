@@ -40,10 +40,11 @@ export default function SalesDashboard({ section }: SalesDashboardProps) {
       </div>
 
       <div className="flex justify-center gap-10"></div>
-      <ChartBox
-        chart={data.find((e) => e.displayType === displayType) as ChartIF}
-        globalFilters={filters}
-      />
+      {data
+        .filter((e) => e.displayType === displayType)
+        .map((chart) => (
+          <ChartBox chart={chart as ChartIF} globalFilters={filters} />
+        ))}
     </div>
   );
 }
