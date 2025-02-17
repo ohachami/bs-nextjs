@@ -66,3 +66,9 @@ export const SBUS = {
   SPS: 'SPS',
   CORPORATE: 'Corporate',
 } as const;
+
+export const SECTIONS = {
+  HYPO_SALES: 'HYPO_SALES',
+  HYPO_MINING: 'HYPO_MINING',
+  HYPO_MANUFACTURING: 'HYPO_MANUFACTURING',
+};

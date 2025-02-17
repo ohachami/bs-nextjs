@@ -1,6 +1,7 @@
 'use client';
 
 import HypWrapper from '@/components/sections/HypWrapper';
+import SalesDashboard from '@/components/sections/SalesDashboard';
 import { SBUS } from '@/utils/constants';
 
 function PageHyperManu() {
@@ -20,7 +21,10 @@ function PageHyperManu() {
         title:
           'Les BUs commerciales sont en train sont en train de terminer leur version',
       }}
-    ></HypWrapper>
+    >
+
+      
+    </HypWrapper>
   );
 }
 

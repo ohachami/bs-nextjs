@@ -7,9 +7,8 @@ type Props = {
 };
 
 const ExercisePeriodFilter: FC<Props> = ({ onChange }) => {
-  const { getExercisePeriods } = useExerciseStore();
-
-  const periods = getExercisePeriods();
+  const { exercisePeriods: periods } = useExerciseStore();
+  if (!periods) return <div />;
   return (
     <Filter
       data={periods}

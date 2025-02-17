@@ -11,18 +11,18 @@ export type Exercise = Timestamps & {
   creator: User;
   exerciseType: ExerciseType;
   parentPeriod: PeriodIF;
-  steps: ExerciseStep[]
-  periods: ExercisePeriod[]
-}
+  steps: ExerciseStep[];
+  periods: ExercisePeriod[];
+};
 
 export type ExercisePeriod = {
-  id: {
-    exerciseId: string;
-    periodId: string;
-  },
-  period: PeriodIF;
-  year: number;
-}
+  id: string;
+  name: string;
+  sortedBy: number;
+  startMonth: number;
+  startDay: number;
+  children: PeriodIF[];
+};
 
 export type ExerciseType = Timestamps & {
   id: string;
@@ -47,4 +47,10 @@ export type SubSteps = Timestamps & {
   status: string;
   code: string;
   sortedBy: number;
+};
+
+export type Section = {
+  id: string;
+  name: string;
+  code: string;
 };

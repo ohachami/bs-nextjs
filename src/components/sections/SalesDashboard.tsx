@@ -1,32 +1,50 @@
-import { Exercise } from '@/types/exercise';
-import React from 'react';
+import { Exercise, Section } from '@/types/exercise';
+import React, { useState } from 'react';
 import FilterFactory from '../common/FilterFactory';
 import ConsolidationCombobox from '../common/ConsolidationCombobox';
+import { useExerciseStore } from '@/store/exercises/useExerciseStore';
+import { CodeStepType } from '@/types/refExercise/config';
+import { useChartList } from '@/services/dashboard.service';
+import { ChartBox } from '../common/ChartBox';
+import { ChartIF } from '@/types/dashboard';
 
 interface SalesDashboardProps {
-  exercise?: Exercise;
+  section: Section;
 }
-export default function SalesDashboard(props: SalesDashboardProps) {
-  const { exercise } = props;
+export default function SalesDashboard({ section }: SalesDashboardProps) {
+  const [displayType, setDisplayType] = useState<String>('VISUALIZE');
+  const [filters, setFilters] = useState<Record<string, string[]>>({});
 
+  const { currentExercise } = useExerciseStore();
+  const { data, isPending, error } = useChartList(section.id);
   /**
    * Selection Event Handling
    * @param selectedValue: new selected value from the list
    */
-  const onSelectHandler = (selectedValue: string) => {
-    console.log(`>>>>>>>> Selected value : ${selectedValue}`);
-  }
+  const onSelectHandler = (selectedValue: string) => {};
 
-  if (!exercise) return <div />;
+  if (!currentExercise || isPending) return <div />;
+
+  if (error) return <p className="p-4">Error Loading Charts...</p>;
+
   return (
-    <div className="flex justify-center gap-10">
-      <FilterFactory module="product" onChange={() => {}} />
-      <FilterFactory module="region" onChange={() => {}} />
-      <div>
-        <FilterFactory module="period" onChange={() => {}} />
+    <div>
+      <div className="flex justify-center gap-10">
+        <FilterFactory module="product" onChange={() => {}} />
+        <FilterFactory module="region" onChange={() => {}} />
+        <div>
+          <FilterFactory module="period" onChange={() => {}} />
+        </div>
+        {/* ConsolidationVersions with User Sbu (default) */}
+        <ConsolidationCombobox onSelect={onSelectHandler} />
       </div>
-      {/* ConsolidationVersions with User Sbu (default) */}
-      <ConsolidationCombobox onSelect={onSelectHandler} />
+
+      <div className="flex justify-center gap-10"></div>
+      {data
+        .filter((e) => e.displayType === displayType)
+        .map((chart) => (
+          <ChartBox chart={chart as ChartIF} globalFilters={filters} />
+        ))}
     </div>
   );
 }
