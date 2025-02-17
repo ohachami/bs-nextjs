@@ -36,10 +36,10 @@ export const useProductTypes = () => {
 };
 
 export const useSbus = () => {
-  return useQuery<number>({
+  return useQuery<RefSbu[]>({
     queryKey: ["sbus"],
     queryFn: async () => {
-      const response = await callAsync<AxiosResponse<number>>(() => api.get(apiPaths.sbus()));
+      const response = await callAsync<AxiosResponse<RefSbu[]>>(() => api.get(apiPaths.sbus()));
       return response.data
     },
   });

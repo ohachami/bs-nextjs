@@ -1,8 +1,25 @@
 'use client';
+import ConsolidationCombobox from '@/components/common/ConsolidationCombobox';
 import HypWrapper from '@/components/sections/HypWrapper';
+import { useSbus } from '@/services/referential.Service';
 import { SBUS, STEP_STATUS } from '@/utils/constants';
 
 function Page() {
+  // loading sbus
+  const { data: sbus, isLoading, isError } = useSbus();
+
+  /**
+   * Selection Event Handling
+   * @param selectedValue: new selected value from the list
+   */
+  const onSelectHandler = (selectedValue: string) => {
+    console.log(`>>>>>>>> Selected value : ${selectedValue}`);
+  };
+
+  if (isLoading) return <p>Loading Sbus...</p>;
+
+  if (isError || !sbus) return <p>Error Loading Sbus!</p>;
+
   return (
     <HypWrapper
       shouldDisableStep={(_, exerciseStep) =>
@@ -13,7 +30,13 @@ function Page() {
         title:
           'Les BUs Manufacturing sont en train d’ajuster les hypothèses Manufacturing',
       }}
-    ></HypWrapper>
+    >
+      {/* ConsolidationVersions with Sbu ID of Manufacturing */}
+      <ConsolidationCombobox
+        onSelect={onSelectHandler}
+        sbuId={sbus.find((sbu) => sbu.name === SBUS.MANUFACTURING)?.id}
+      />
+    </HypWrapper>
   );
 }
 
