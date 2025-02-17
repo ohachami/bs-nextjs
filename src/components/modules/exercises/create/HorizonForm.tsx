@@ -91,7 +91,7 @@ function HorizonForm() {
         break;
     }
   }
-  
+
   return (
     <div className="space-y-6">
       {/* Type d'exercice */}
@@ -135,13 +135,13 @@ function HorizonForm() {
       <section className="space-y-2">
         <Label htmlFor="typeExercice">Période de l&apos;exercice</Label>
         <TreeCombobox
+          buttonVariant="default"
           items={treeData}
           title="Séléctionner une période"
           multiSelect={
             data.exerciceType.split(';')[1] === EXERCISE_TYPES['Ad hoc']
           }
           selectChildren={false}
-          defaultValues={data.periodConfig}
           onSelectionChange={onPeriodConfigChange}
         />
         {errors.periodConfig && (
