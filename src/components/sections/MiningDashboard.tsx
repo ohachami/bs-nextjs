@@ -7,11 +7,11 @@ import { useChartList } from '@/services/dashboard.service';
 import { ChartBox } from '../common/ChartBox';
 import { ChartIF } from '@/types/dashboard';
 
-interface SalesDashboardProps {
+interface MiningDashboardProps {
   section: Section;
 }
-export default function SalesDashboard({ section }: SalesDashboardProps) {
-  const [displayType, setDisplayType] = useState<String>('VISUALIZE');
+export default function MiningDashboard({ section }: MiningDashboardProps) {
+  const [displayType, setDisplayType] = useState<string>('VISUALIZE');
   const [filters, setFilters] = useState<Record<string, string[]>>({});
 
   const { currentExercise } = useExerciseStore();
