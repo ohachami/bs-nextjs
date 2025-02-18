@@ -9,7 +9,7 @@ interface ExerciseState {
   setExercise: (value: Exercise | undefined) => void;
 }
 
-export const useExerciseStore = create<ExerciseState>((set, get) => ({
+export const useExerciseStore = create<ExerciseState>((set, ) => ({
   currentExercise: undefined, // Default value
   exerciseStep: undefined,
   exercisePeriods: undefined,

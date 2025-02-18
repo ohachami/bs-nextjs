@@ -9,12 +9,12 @@ function PageHyperManu() {
     <HypWrapper
       shouldDisableStep={(user) =>{
         return ![SBUS.ROCK_SOLUTIONS, SBUS.OCP_NUTRICROPS].includes(
-          user.sbu.name as any
+          user.sbu.name as never
         )}
       }
       shouldDisplayWaitingStep={(user) =>
         ![SBUS.ROCK_SOLUTIONS, SBUS.OCP_NUTRICROPS, SBUS.SPS].includes(
-          user.sbu.name as any
+          user.sbu.name as never
         )
       }
       waitingStepMessage={{

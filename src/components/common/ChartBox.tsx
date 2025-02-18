@@ -43,7 +43,11 @@ export function ChartBox({chart, globalFilters}: {chart: ChartIF, globalFilters:
         //mutate chart config to send new query
         Object.keys(filters).map(g => {
             const value = [...filters[g]];
-            newQuery.filters[g] = value;
+            const filter = newQuery.filters.find(f => f.name === g)
+            if(filter) {
+                filter.values = value;
+            }
+            
         })
         const periodFilter = newQuery.filters.find(f => f.name === "periods") 
         if(periodFilter) {

@@ -28,11 +28,7 @@ import {
 } from '@/components/ui/table';
 import { Button } from '../ui/button';
 import { useEffect, useState } from 'react';
-import { Input } from '../ui/input';
-
-import { X } from 'lucide-react';
 import { TOption } from '@/utils/types';
-import { DataTableFacetedFilter } from './DataTableFaceted';
 
 export type FacetedConfig = {
   title: string;
@@ -56,10 +52,7 @@ interface DataTableProps<TData, TValue> {
 export function DataTable<TData, TValue>({
   columns,
   data,
-  filterId,
   tableId,
-  actions,
-  facetedConfig,
   onSelect,
   hidePagination,
   displaySelectedOnly,
@@ -113,7 +106,7 @@ export function DataTable<TData, TValue>({
   const rowModel = displaySelectedOnly
     ? table.getFilteredSelectedRowModel()
     : table.getRowModel();
-  const isFiltered = table.getState().columnFilters.length > 0;
+  //const isFiltered = table.getState().columnFilters.length > 0;
 
   if (setTable) setTable(table);
 

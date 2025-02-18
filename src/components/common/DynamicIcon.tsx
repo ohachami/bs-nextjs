@@ -6,6 +6,7 @@ interface DynamicIconProps extends LucideProps {
 }
 
 export const DynamicIcon: React.FC<DynamicIconProps> = ({ name, ...props }) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const IconComponent = (LucideIcons as any)[name];
 
   if (!IconComponent) {

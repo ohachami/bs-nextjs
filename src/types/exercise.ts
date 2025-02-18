@@ -18,6 +18,7 @@ export type Exercise = Timestamps & {
 export type ExercisePeriod = {
   id: string;
   name: string;
+  year: number;
   sortedBy: number;
   startMonth: number;
   startDay: number;

@@ -1,4 +1,4 @@
-import ProcessStep, { ProcessStepProps } from './ProcessStep';
+import ProcessStep from './ProcessStep';
 import { Fragment } from 'react';
 import { SubSteps } from '@/types/exercise';
 

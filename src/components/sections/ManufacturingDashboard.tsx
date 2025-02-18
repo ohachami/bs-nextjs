@@ -1,9 +1,9 @@
-import { Exercise, Section } from '@/types/exercise';
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { Section } from '@/types/exercise';
 import React, { useState } from 'react';
 import FilterFactory from '../common/FilterFactory';
 import ConsolidationCombobox from '../common/ConsolidationCombobox';
 import { useExerciseStore } from '@/store/exercises/useExerciseStore';
-import { CodeStepType } from '@/types/refExercise/config';
 import { useChartList } from '@/services/dashboard.service';
 import { ChartBox } from '../common/ChartBox';
 import { ChartIF } from '@/types/dashboard';
@@ -14,7 +14,7 @@ interface ManufacturingDashboardProps {
 export default function ManufacturingDashboard({
   section,
 }: ManufacturingDashboardProps) {
-  const [displayType, setDisplayType] = useState<String>('VISUALIZE');
+  const [displayType, setDisplayType] = useState<string>('VISUALIZE');
   const [filters, setFilters] = useState<Record<string, string[]>>({});
 
   const { currentExercise } = useExerciseStore();
@@ -45,7 +45,7 @@ export default function ManufacturingDashboard({
       {data
         .filter((e) => e.displayType === displayType)
         .map((chart) => (
-          <ChartBox chart={chart as ChartIF} globalFilters={filters} />
+          <ChartBox key={chart.id} chart={chart as ChartIF} globalFilters={filters} />
         ))}
     </div>
   );

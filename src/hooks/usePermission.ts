@@ -1,6 +1,6 @@
 import { jwtDecode } from "jwt-decode";
 import { cookies } from "next/headers";
-export async function usePermissions(requiredPermissions: string[]): Promise<{ authorized: boolean; }> {
+export async function getPermissions(requiredPermissions: string[]): Promise<{ authorized: boolean; }> {
      const cookieStore = await cookies();
        const token = cookieStore.get("steerlinxJwt")
      

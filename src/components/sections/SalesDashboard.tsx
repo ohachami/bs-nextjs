@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Section } from '@/types/exercise';
 import React, { useState } from 'react';
 import FilterFactory from '../common/FilterFactory';
@@ -11,7 +12,7 @@ interface SalesDashboardProps {
   section: Section;
 }
 export default function SalesDashboard({ section }: SalesDashboardProps) {
-  const [displayType, setDisplayType] = useState<String>('VISUALIZE');
+  const [displayType, setDisplayType] = useState<string>('VISUALIZE');
   const [filters, setFilters] = useState<Record<string, string[]>>({});
 
   const { currentExercise } = useExerciseStore();
@@ -20,7 +21,7 @@ export default function SalesDashboard({ section }: SalesDashboardProps) {
    * Selection Event Handling
    * @param selectedValue: new selected value from the list
    */
-  const onSelectHandler = (selectedValue: string) => {};
+  const onSelectHandler = (selectedValue: string) => {console.log(selectedValue)};
 
   if (!currentExercise || isPending) return <div />;
 

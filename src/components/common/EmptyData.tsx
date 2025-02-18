@@ -10,7 +10,7 @@ export function EmptyData() {
                 <Computer size={56} className="text-border" strokeWidth={1}/>
                 <h3 className="font-semibold">Aucune version de données pour le moment!</h3>
                 <div className="text-muted-foreground">
-                    Veuillez patienter pendant que nous obtenons une version d'ODT ou cliquez pour
+                    {"Veuillez patienter pendant que nous obtenons une version d'ODT ou cliquez pour"}
                     <button
                         className="text-[#007BFF] underline ml-1"
                         onClick={() => router.refresh()}
