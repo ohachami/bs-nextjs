@@ -1,16 +1,16 @@
 'use client';
 
 import HypWrapper from '@/components/sections/HypWrapper';
-import SalesDashboard from '@/components/sections/SalesDashboard';
 import { SBUS } from '@/utils/constants';
 
 function PageHyperManu() {
+  
   return (
     <HypWrapper
-      shouldDisableStep={(user) =>
-        ![SBUS.ROCK_SOLUTIONS, SBUS.OCP_NUTRICROPS].includes(
+      shouldDisableStep={(user) =>{
+        return ![SBUS.ROCK_SOLUTIONS, SBUS.OCP_NUTRICROPS].includes(
           user.sbu.name as any
-        )
+        )}
       }
       shouldDisplayWaitingStep={(user) =>
         ![SBUS.ROCK_SOLUTIONS, SBUS.OCP_NUTRICROPS, SBUS.SPS].includes(

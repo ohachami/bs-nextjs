@@ -5,7 +5,7 @@ import { SubSteps } from '@/types/exercise';
 interface ProcessStepWrapperProps {
   steps: SubSteps[];
   onSelect: (code: string) => void;
-  isDisabled?: Boolean;
+  isDisabled?: boolean;
 }
 
 function ProcessStepWrapper({
@@ -14,7 +14,7 @@ function ProcessStepWrapper({
   isDisabled = false,
 }: ProcessStepWrapperProps) {
   return (
-    <div className="flex   items-center border border-gray-300 bg-white rounded-lg">
+    <div className="flex justify-center items-center border border-gray-300 bg-white rounded-lg">
       {steps.map((step: SubSteps, key: number) => (
         <Fragment key={key}>
           <ProcessStep

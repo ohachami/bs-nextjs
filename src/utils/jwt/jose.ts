@@ -22,7 +22,7 @@ export async function decodeToken(token: string): Promise<JWTClaimsIF | null> {
       permissions: payload.permissions as string[]
     };
   } catch (error: unknown) {
-    console.log('Token decoding error: ', error);
+    console.error('Token decoding error: ', error);
     return null;
   }
 }
