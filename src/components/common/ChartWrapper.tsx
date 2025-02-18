@@ -9,9 +9,8 @@ import {
 import { TOption } from "@/utils/types"
 import { PropsWithChildren, useState } from "react"
 
-export function ChartWrapper({title, subTitle, tabs, handleChange, children}: PropsWithChildren & {handleChange: (tab:TOption<string>) => void; title: string; subTitle: string; tabs: TOption<string>[]}) {
+export function ChartWrapper({title, subTitle, tabs, handleChange,filters, children}: PropsWithChildren & {handleChange: (tab:TOption<string>) => void; title: string; subTitle: string; tabs: TOption<string>[]; filters?: JSX.Element}) {
   const [activeTab, setActiveTab] = useState<TOption<string>>()
-
 
   return (
     <Card className="w-full">
@@ -23,9 +22,11 @@ export function ChartWrapper({title, subTitle, tabs, handleChange, children}: Pr
                     {subTitle}
                 </CardDescription>
             </div>
-            <div>
-                {/** filters here*/}
-            </div>
+            {filters && (
+                <div>
+                    {filters}
+                </div>
+            )}
         </div>
         <div className="flex">
           {tabs.map((p) => {
