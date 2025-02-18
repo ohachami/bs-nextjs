@@ -37,14 +37,14 @@ function DeadlinesForm() {
    * @param date : selected date from the picker
    * @param configId : the step config id
    */
-  const onSelectedDate = (date: Date, configId: string) => {
+  const onSelectedDate = (date: Date, config: StepConfigIF) => {
     // get a state replicate data
     const replicateStepsData = [...data.steps];
     // detect duplicates
     let isFound = false;
     // if the config id already exists, we just replace it's deadline value
     for (let i = 0; i < replicateStepsData.length; i++) {
-      if (replicateStepsData[i].stepConfigId === configId) {
+      if (replicateStepsData[i].stepConfigId === config.id) {
         replicateStepsData[i].deadlineAt = date;
         isFound = true;
         break;
@@ -54,8 +54,9 @@ function DeadlinesForm() {
     // we add it to the list of steps
     if (!isFound) {
       replicateStepsData.push({
-        stepConfigId: configId,
+        stepConfigId: config.id,
         deadlineAt: date,
+        sortedBy: config.sortedBy
       });
     }
     // update global state
@@ -94,7 +95,7 @@ function DeadlinesForm() {
           <Label>{config.name}</Label>
           <div className="col-span-2">
             <DatePicker
-              onSelectedDate={(date: Date) => onSelectedDate(date, config.id)}
+              onSelectedDate={(date: Date) => onSelectedDate(date, config)}
               withClearBtn={!config.mandatory}
               initialDate={getDateWithDay(config.deadlineDay)}
               onDateClear={() => onClearDate(config.id)}

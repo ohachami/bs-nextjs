@@ -1,7 +1,6 @@
 'use client';
 
 import { useDataSourceHierarchy } from '@/services/datasources.service';
-import { useUser } from '@/services/users.service';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { DataSourceIF, DataVersionIF } from '@/types/collect/datasources';
 import { Button } from '../ui/button';
@@ -16,9 +15,7 @@ function CollectPage({ user }: { user?: User }) {
   //getting user information
   // getting datasources related to user's sbu id
   const {
-    data: datasources,
-    isLoading: dsLoading,
-    isError: dsError,
+    data: datasources
   } = useDataSourceHierarchy(user ? user.sbu.id : '');
 
   // Track only version names for each datasource and site combination

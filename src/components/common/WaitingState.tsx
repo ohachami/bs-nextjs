@@ -1,7 +1,7 @@
 import { Clock } from "lucide-react";
 
 interface Props {
-    nextStep: () => {},
+    nextStep: () => null,
 }
 
 export function WaitingState({ nextStep }: Props) {
@@ -13,12 +13,12 @@ export function WaitingState({ nextStep }: Props) {
                     Les BUs industrielles sont en train de terminer leur version
                 </h3>
                 <div className="text-muted-foreground">
-                    Merci de patienter le temps qu'elles finalisent leur version, ou passez à
+                    {"Merci de patienter le temps qu'elles finalisent leur version, ou passez à"}
                     <button
                         className="text-[#007BFF] underline ml-1"
                         onClick={nextStep}
                     >
-                        l’étape suivante
+                        {"l’étape suivante"}
                     </button>
                 </div>
             </div>

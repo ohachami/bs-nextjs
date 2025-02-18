@@ -8,10 +8,12 @@ import { useChartList } from '@/services/dashboard.service';
 import { ChartBox } from '../common/ChartBox';
 import { ChartIF } from '@/types/dashboard';
 
-interface SalesDashboardProps {
+interface ManufacturingDashboardProps {
   section: Section;
 }
-export default function SalesDashboard({ section }: SalesDashboardProps) {
+export default function ManufacturingDashboard({
+  section,
+}: ManufacturingDashboardProps) {
   const [displayType, setDisplayType] = useState<string>('VISUALIZE');
   const [filters, setFilters] = useState<Record<string, string[]>>({});
 
@@ -21,7 +23,7 @@ export default function SalesDashboard({ section }: SalesDashboardProps) {
    * Selection Event Handling
    * @param selectedValue: new selected value from the list
    */
-  const onSelectHandler = (selectedValue: string) => {console.log(selectedValue)};
+  const onSelectHandler = (selectedValue: string) => {};
 
   if (!currentExercise || isPending) return <div />;
 
@@ -42,8 +44,8 @@ export default function SalesDashboard({ section }: SalesDashboardProps) {
       <div className="flex justify-center gap-10"></div>
       {data
         .filter((e) => e.displayType === displayType)
-        .map((chart, key) => (
-          <ChartBox key={key} chart={chart as ChartIF} globalFilters={filters} />
+        .map((chart) => (
+          <ChartBox key={chart.id} chart={chart as ChartIF} globalFilters={filters} />
         ))}
     </div>
   );

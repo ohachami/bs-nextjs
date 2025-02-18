@@ -7,7 +7,7 @@ import { cn } from '@/lib/utils';
 
 export type ProcessStepProps = SubSteps & {
   onClick: () => void;
-  disabled: Boolean;
+  disabled: boolean;
 };
 
 function ProcessStep({

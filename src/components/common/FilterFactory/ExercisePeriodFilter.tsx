@@ -7,9 +7,8 @@ type Props = {
 };
 
 const ExercisePeriodFilter: FC<Props> = ({ onChange }) => {
-  const { getExercisePeriods } = useExerciseStore();
-
-  const periods = getExercisePeriods();
+  const { exercisePeriods: periods } = useExerciseStore();
+  if (!periods) return <div />;
   return (
     <Filter
       data={periods}
@@ -17,8 +16,8 @@ const ExercisePeriodFilter: FC<Props> = ({ onChange }) => {
       title="Périodes"
       placeholder="Chercher"
       mapOption={(p) => ({
-        label: p.period.name + ' ' + p.year,
-        value: p.id.periodId,
+        label: p.name + ' ' + p.year,
+        value: p.id
       })}
       onChange={onChange}
     />

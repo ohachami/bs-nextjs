@@ -8,10 +8,10 @@ import { useChartList } from '@/services/dashboard.service';
 import { ChartBox } from '../common/ChartBox';
 import { ChartIF } from '@/types/dashboard';
 
-interface SalesDashboardProps {
+interface MiningDashboardProps {
   section: Section;
 }
-export default function SalesDashboard({ section }: SalesDashboardProps) {
+export default function MiningDashboard({ section }: MiningDashboardProps) {
   const [displayType, setDisplayType] = useState<string>('VISUALIZE');
   const [filters, setFilters] = useState<Record<string, string[]>>({});
 
@@ -21,7 +21,7 @@ export default function SalesDashboard({ section }: SalesDashboardProps) {
    * Selection Event Handling
    * @param selectedValue: new selected value from the list
    */
-  const onSelectHandler = (selectedValue: string) => {console.log(selectedValue)};
+  const onSelectHandler = (selectedValue: string) => {};
 
   if (!currentExercise || isPending) return <div />;
 

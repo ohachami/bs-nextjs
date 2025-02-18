@@ -4,23 +4,27 @@ import HypWrapper from '@/components/sections/HypWrapper';
 import { SBUS } from '@/utils/constants';
 
 function PageHyperManu() {
+  
   return (
     <HypWrapper
-      shouldDisableStep={(user) =>
-        ![SBUS.ROCK_SOLUTIONS, SBUS.OCP_NUTRICROPS].includes(
-          user.sbu.name as any
-        )
+      shouldDisableStep={(user) =>{
+        return ![SBUS.ROCK_SOLUTIONS, SBUS.OCP_NUTRICROPS].includes(
+          user.sbu.name as never
+        )}
       }
       shouldDisplayWaitingStep={(user) =>
         ![SBUS.ROCK_SOLUTIONS, SBUS.OCP_NUTRICROPS, SBUS.SPS].includes(
-          user.sbu.name as any
+          user.sbu.name as never
         )
       }
       waitingStepMessage={{
         title:
           'Les BUs commerciales sont en train sont en train de terminer leur version',
       }}
-    ></HypWrapper>
+    >
+
+      
+    </HypWrapper>
   );
 }
 

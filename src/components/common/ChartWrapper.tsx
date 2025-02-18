@@ -9,9 +9,8 @@ import {
 import { TOption } from "@/utils/types"
 import { PropsWithChildren, useState } from "react"
 
-export function ChartWrapper({title, subTitle, tabs, handleChange, filters, children}: PropsWithChildren & {handleChange: (tab:TOption) => void; title: string; subTitle: string; tabs: TOption[]; filters?: JSX.Element}) {
-  const [activeTab, setActiveTab] = useState<TOption>()
-
+export function ChartWrapper({title, subTitle, tabs, handleChange,filters, children}: PropsWithChildren & {handleChange: (tab:TOption<string>) => void; title: string; subTitle: string; tabs: TOption<string>[]; filters?: JSX.Element}) {
+  const [activeTab, setActiveTab] = useState<TOption<string>>()
 
   return (
     <Card className="w-full">

@@ -41,7 +41,7 @@ function HypWrapper({
 
   // Fetch sub-steps related to the exercise step
   const {
-    data: subSteps,
+    data: sections,
     error,
     isPending,
   } = useSections(exerciseStep?.stepConfig?.id ?? undefined);
@@ -78,7 +78,7 @@ function HypWrapper({
           {/* Conditionally render pages based on the selected step */}
           {selected === CODE_STEPS.COLLECT && <CollectPage user={user} />}
           {selected === CODE_STEPS.CONSOLIDATION && (
-            <SalesConsolidationPage items={subSteps} />
+            <SalesConsolidationPage items={sections} />
           )}
           {children}
         </>
