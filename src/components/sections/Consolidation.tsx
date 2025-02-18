@@ -2,6 +2,7 @@ import { Section } from '@/types/exercise';
 import DashboardWrapper, { DashboardWrapperItem } from './DashboardWrapper';
 import SalesDashboard from './SalesDashboard';
 import { SECTIONS } from '@/utils/constants';
+import MiningDashboard from './MiningDashboard';
 
 function SalesConsolidationPage({ items = [] }: { items?: Section[] }) {
   const sections: DashboardWrapperItem[] = items.map((section) => ({
@@ -11,6 +12,8 @@ function SalesConsolidationPage({ items = [] }: { items?: Section[] }) {
       switch (section.code) {
         case SECTIONS.HYPO_SALES:
           return <SalesDashboard section={section} />;
+        case SECTIONS.HYPO_MINING:
+          return <MiningDashboard section={section} />;
         default:
           return <div>Not found</div>;
       }
