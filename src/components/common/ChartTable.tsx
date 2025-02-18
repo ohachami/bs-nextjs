@@ -59,19 +59,15 @@ export function ChartTable<TData, TValue>({
   subtitle,
   columns,
   data,
-  filterId,
   tableId,
-  actions,
   facetedConfig,
   onSelect,
-  hidePagination,
   displaySelectedOnly,
   hiddenColumns,
-  setTable,
 }: ChartTableProps<TData, TValue>) {
   const [activePeriod, setActivePeriod] = useState<PeriodIF>();
   const {currentExercise} = useExerciseStore();
-  const periods = currentExercise?.periods.map(({ period }) => period) || [];
+  const periods = currentExercise?.periods || [];
 
 
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -122,9 +118,6 @@ export function ChartTable<TData, TValue>({
   const rowModel = displaySelectedOnly
     ? table.getFilteredSelectedRowModel()
     : table.getRowModel();
-  const isFiltered = table.getState().columnFilters.length > 0;
-
-  if (setTable) setTable(table);
 
   const filtersJsx = facetedConfig ? <>{facetedConfig.map(
       (f) =>
@@ -138,6 +131,8 @@ export function ChartTable<TData, TValue>({
           )
   )}</> : undefined;
 
+  //TODO fire the changes for the selected period
+  console.log("activePeriod", activePeriod)
   return (
     <div>
       <div className="rounded-md border bg-white">
