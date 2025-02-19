@@ -6,6 +6,7 @@ import {
 import { STEP_STATUS } from './constants';
 import { DataSourceIF } from '@/types/collect/datasources';
 import { ConsolidationVersionsIF } from '@/types/consolidation';
+import { NestedOption } from '@/types/common/CollapsibleSelectTypes';
 
 // Interface defining a Mock Session structure
 interface MockSessionIF {
@@ -71,6 +72,7 @@ export const STEPS = [
   },
 ];
 
+// used for Dataources Tabs component test
 export const mockDataSources: DataSourceIF[] = [
   {
     id: '1a2b3c4d-0001-0000-0000-000000000001',
@@ -139,7 +141,7 @@ export const mockDataSources: DataSourceIF[] = [
   },
 ];
 
-
+// used for consoliodationCombobox component test
 export const consoldationVersionMock: ConsolidationVersionsIF[]  = [
   {
     id: "0",
@@ -162,3 +164,63 @@ export const consoldationVersionMock: ConsolidationVersionsIF[]  = [
     name: "Données_consolidées_Exercise_Sept_Q4_2028"
   },
 ]
+
+// used for collaspibleSelect component test
+export const collapsibleSelectMock: NestedOption[] = [
+  {
+    value: 'Actual_Exercice_Q1_2024',
+    label: 'Actual_Exercice_Q1_2024',
+    children: [
+      {
+        value: 'Données_Consolidées_Exercice_Q1_2024',
+        label: 'Données_Consolidées_Exercice_Q1_2024',
+        children: [
+          {
+            value: 'Fichier_Collecte_Jorf_Exercice_Q1_2024.xlsx',
+            label: 'Fichier_Collecte_Jorf_Exercice_Q1_2024.xlsx',
+          },
+          {
+            value: 'Fichier_Collecte_Safi_Exercice_Q1_2024.xlsx',
+            label: 'Fichier_Collecte_Safi_Exercice_Q1_2024.xlsx',
+          },
+          {
+            value: 'Fichier_Collecte_Youssoufia_Exercice_Q1_2024.xlsx',
+            label: 'Fichier_Collecte_Youssoufia_Exercice_Q1_2024.xlsx',
+          },
+          {
+            value: 'Fichier_Collecte_Dakhla_Exercice_Q1_2024.xlsx',
+            label: 'Fichier_Collecte_Dakhla_Exercice_Q1_2024.xlsx',
+          },
+        ],
+      },
+    ],
+  },
+  {
+    value: 'Actual_Exercice_Q3_2024',
+    label: 'Actual_Exercice_Q3_2024',
+    children: [
+      {
+        value: 'Données_Consolidées_Exercice_Q3_2024',
+        label: 'Données_Consolidées_Exercice_Q3_2024',
+        children: [
+          {
+            value: 'Fichier_Collecte_Jorf_Exercice_Q3_2024',
+            label: 'Fichier_Collecte_Jorf_Exercice_Q3_2024',
+          },
+          {
+            value: 'Fichier_Collecte_Safi_Exercice_Q3_2024',
+            label: 'Fichier_Collecte_Safi_Exercice_Q3_2024',
+          },
+          {
+            value: 'Fichier_Collecte_Youssoufia_Exercice_Q3_2024',
+            label: 'Fichier_Collecte_Youssoufia_Exercice_Q3_2024',
+          },
+          {
+            value: 'Fichier_Collecte_Dakhla_Exercice_Q3_2024',
+            label: 'Fichier_Collecte_Dakhla_Exercice_Q3_2024',
+          },
+        ],
+      },
+    ],
+  },
+];
