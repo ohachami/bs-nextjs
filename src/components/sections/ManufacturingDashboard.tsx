@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import FilterFactory from '../common/FilterFactory';
 import ConsolidationCombobox from '../common/ConsolidationCombobox';
 import { useExerciseStore } from '@/store/exercises/useExerciseStore';
-import { CodeStepType } from '@/types/refExercise/config';
 import { useChartList } from '@/services/dashboard.service';
 import { ChartBox } from '../common/ChartBox';
 import { ChartIF } from '@/types/dashboard';

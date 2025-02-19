@@ -25,7 +25,7 @@ export default function SalesDashboard({ section }: SalesDashboardProps) {
   if (!currentExercise || isPending) return <div />;
 
   if (error) return <p className="p-4">Error Loading Charts...</p>;
-
+  console.log({ data });
   return (
     <div>
       <div className="flex justify-center gap-10">
@@ -42,7 +42,11 @@ export default function SalesDashboard({ section }: SalesDashboardProps) {
       {data
         .filter((e) => e.displayType === displayType)
         .map((chart, key) => (
-          <ChartBox key={key} chart={chart as ChartIF} globalFilters={filters} />
+          <ChartBox
+            key={key}
+            chart={chart as ChartIF}
+            globalFilters={filters}
+          />
         ))}
     </div>
   );

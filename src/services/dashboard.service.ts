@@ -3,17 +3,17 @@ import { apiPaths } from '@/utils/apiPaths';
 import { useQuery } from '@tanstack/react-query';
 import { AxiosResponse } from 'axios';
 import api from '@/api';
-import { SubSteps } from '@/types/exercise';
+import { Section } from '@/types/exercise';
 import { ChartIF } from '@/types/dashboard';
 
 export const useSections = (stepId: string | undefined) => {
-  return useQuery<SubSteps[]>({
+  return useQuery<Section[]>({
     queryKey: ['sections', stepId],
     queryFn: async () => {
       if (!stepId) {
         throw new Error('stepId is required'); // Prevents unnecessary API calls
       }
-      const response = await callAsync<AxiosResponse<SubSteps[]>>(() =>
+      const response = await callAsync<AxiosResponse<Section[]>>(() =>
         api.get(apiPaths.dashboardSections(stepId))
       );
       return response.data;
