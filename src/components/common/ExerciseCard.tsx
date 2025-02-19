@@ -1,3 +1,5 @@
+'use client';
+
 import { cn } from '@/lib/utils';
 import { formatDate } from '@/utils/functions';
 import { Nullable } from '@/utils/types';
@@ -6,6 +8,8 @@ import { Badge } from '../ui/badge';
 import { Button } from '../ui/button';
 import ExerciseStatus from './ExerciseStatus';
 import StepProgress from './ExerciseStepper';
+import { Guard } from './Guard';
+import { requiredPermissions } from '@/utils/constants';
 
 type Props = {
   creator: Nullable<string>;
@@ -76,18 +80,21 @@ const ExerciceCard: React.FC<Props> = (props) => {
         )}
 
         <div className="flex gap-3">
+          <Guard permissions={requiredPermissions.VIEW_EXERCISE_SHEET_DETAILS}>
+            <Button
+              variant="ghost"
+              className="px-2 hover:bg-white"
+              onClick={props.onDetailsView}
+            >
+              <EyeIcon />
+            </Button>
+          </Guard>
+
           <Button
             variant="ghost"
             className="px-2 hover:bg-white"
-            onClick={props.onDetailsView}
+            onClick={props.onOpenClick}
           >
-            <EyeIcon />
-          </Button>
-
-          <Button variant="ghost" 
-                className="px-2 hover:bg-white"
-                onClick={props.onOpenClick}
-                >
             <ArrowRightIcon />
           </Button>
         </div>
