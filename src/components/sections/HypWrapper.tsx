@@ -1,7 +1,6 @@
 'use client';
 import ProcessStepWrapper from '@/components/common/ProcessStepWrapper';
-import CollectPage from '@/components/sections/Collect';
-import SalesConsolidationPage from '@/components/sections/Consolidation';
+
 import { useSections } from '@/services/dashboard.service';
 import { useUser } from '@/services/users.service';
 import { useExerciseStore } from '@/store/exercises/useExerciseStore';
@@ -11,6 +10,7 @@ import { User } from '@/types/user';
 import { CODE_SUB_STEPS } from '@/utils/constants';
 import React, { ReactNode, useState } from 'react';
 import WaitingStep from '../common/WaitingStep';
+import { usePathname } from 'next/navigation';
 
 interface ChildredProps {
   subStepSelected: CodeSubStepType;
@@ -42,15 +42,18 @@ function HypWrapper({
   const [subStepSelected, setSubStepSelected] = useState<CodeSubStepType>(
     CODE_SUB_STEPS.COLLECT
   );
-  // Retrieve the current exercise step from the store
-  const exerciseStep = useExerciseStore((state) => state.exerciseStep);
 
+  const pathname = usePathname();
+  // Retrieve the current exercise step from the store
+  const {exerciseStep, currentExercise} = useExerciseStore();
+
+  const step = currentExercise?.steps.find(s => pathname.endsWith(s.stepConfig.code) ) || exerciseStep
   // Fetch sub-steps related to the exercise step
   const {
     data: sections,
     error,
     isPending,
-  } = useSections(exerciseStep?.stepConfig?.id ?? undefined);
+  } = useSections(step?.stepConfig?.id ?? undefined);
 
   // Fetch user data
   const { data: user, isLoading, isError } = useUser();

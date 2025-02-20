@@ -4,3 +4,9 @@ export type TOption<T> = {
 };
 
 export type Nullable<T> = T | null;
+
+export type MarketableConfig = {
+    id?: string;
+    name: string;
+    color: string;
+}

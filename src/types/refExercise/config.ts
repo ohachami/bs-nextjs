@@ -92,10 +92,16 @@ interface RegionTypeIF {
   longitude: number;
 }
 
+interface ProductIF {
+  id: string;
+  name: string;
+}
+
 interface ProductGroup {
   id: string;
   name: string;
-  products: ProductTypeIF[];
+  productType: ProductTypeIF;
+  products: ProductIF[];
 }
 
 export type {
@@ -107,6 +113,7 @@ export type {
   RefSbu,
   RefSiteIF,
   ProductTypeIF,
+  ProductIF,
   RegionTypeIF,
   ProductGroup,
 };

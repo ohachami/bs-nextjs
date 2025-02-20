@@ -1,3 +1,5 @@
+import { MarketableConfig } from "./types";
+
 export const modules = {
   marketSteering: 'marketSteering',
   tacticalPlanning: 'tacticalPlanning',
@@ -72,3 +74,22 @@ export const SECTIONS = {
   HYPO_MINING: 'HYPO_MINING',
   HYPO_MANUFACTURING: 'HYPO_MANUFACTURING',
 };
+
+
+export const MARKETABLE_PRODUCT_TYPES: MarketableConfig[] = [{
+  name: "Marketable Rock",
+  color: "#936646"
+}, {
+  name: "Marketable Acid",
+  color: "#FFAE49"
+}, {
+  name: "Feed",
+  color: "#57D762"
+},{
+  name: "Fertilizer",
+  color: "#007BFF"
+}]
+
+export const getMarketableProductConfig = (name: string) => {
+  return MARKETABLE_PRODUCT_TYPES.find(m => m.name.toLowerCase() === name.toLowerCase());
+} 
