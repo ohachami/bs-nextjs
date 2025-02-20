@@ -5,15 +5,20 @@ import SalesConsolidationPage from '@/components/sections/Consolidation';
 import { useSections } from '@/services/dashboard.service';
 import { useUser } from '@/services/users.service';
 import { useExerciseStore } from '@/store/exercises/useExerciseStore';
-import { ExerciseStep } from '@/types/exercise';
-import { CodeStepType } from '@/types/refExercise/config';
+import { ExerciseStep, Section } from '@/types/exercise';
+import { CodeSubStepType } from '@/types/refExercise/config';
 import { User } from '@/types/user';
-import { CODE_STEPS } from '@/utils/constants';
-import React, { useState } from 'react';
+import { CODE_SUB_STEPS } from '@/utils/constants';
+import React, { ReactNode, useState } from 'react';
 import WaitingStep from '../common/WaitingStep';
 
+interface ChildredProps {
+  subStepSelected: CodeSubStepType;
+  user: User;
+  sections: Section[];
+}
 interface HypWrapperProps {
-  children?: React.ReactNode;
+  children?: ReactNode | ((props: ChildredProps) => ReactNode);
   shouldDisableStep?: (user: User, ExerciseStep: ExerciseStep) => boolean;
   shouldDisplayWaitingStep?: (
     user: User,
@@ -34,8 +39,9 @@ function HypWrapper({
   waitingStepMessage,
 }: HypWrapperProps): JSX.Element {
   // State to keep track of the selected step
-  const [selected, setSelected] = useState<CodeStepType>(CODE_STEPS.COLLECT);
-
+  const [subStepSelected, setSubStepSelected] = useState<CodeSubStepType>(
+    CODE_SUB_STEPS.COLLECT
+  );
   // Retrieve the current exercise step from the store
   const exerciseStep = useExerciseStore((state) => state.exerciseStep);
 
@@ -50,7 +56,7 @@ function HypWrapper({
   const { data: user, isLoading, isError } = useUser();
 
   // Render an empty div when exercise step data is not yet available or still loading
-  if (!exerciseStep || isPending || isLoading) return <div />;
+  if (!exerciseStep || isPending || isLoading || !user) return <div />;
 
   // Display an error message if there is an error loading the exercise
   if (isError || error) return <p className="p-4">Error Loading Exercise...</p>;
@@ -73,14 +79,12 @@ function HypWrapper({
                 ? !shouldDisableStep(user, exerciseStep)
                 : false
             }
-            onSelect={(e) => setSelected(e as CodeStepType)}
+            onSelect={(e) => setSubStepSelected(e as CodeSubStepType)}
           />
-          {/* Conditionally render pages based on the selected step */}
-          {selected === CODE_STEPS.COLLECT && <CollectPage user={user} />}
-          {selected === CODE_STEPS.CONSOLIDATION && (
-            <SalesConsolidationPage items={sections} />
-          )}
-          {children}
+
+          {typeof children === 'function'
+            ? children({ subStepSelected, sections, user })
+            : children}
         </>
       )}
     </div>

@@ -16,13 +16,12 @@ export type Exercise = Timestamps & {
 };
 
 export type ExercisePeriod = {
-  id: string;
-  name: string;
+  id: {
+    exerciseId: string;
+    periodId: string;
+  };
+  period: PeriodIF;
   year: number;
-  sortedBy: number;
-  startMonth: number;
-  startDay: number;
-  children: PeriodIF[];
 };
 
 export type ExerciseType = Timestamps & {

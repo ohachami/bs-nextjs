@@ -42,7 +42,7 @@ export const STEP_STATUS = {
   CLOSED: 'CLOSED',
 } as const;
 // code Steps
-export const CODE_STEPS = {
+export const CODE_SUB_STEPS = {
   COLLECT: 'COLLECT',
   CONSOLIDATION: 'CONSOLIDATION',
   SCENARISATION: 'SCENARISATION',
