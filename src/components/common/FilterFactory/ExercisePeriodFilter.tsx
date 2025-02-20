@@ -16,8 +16,8 @@ const ExercisePeriodFilter: FC<Props> = ({ onChange }) => {
       title="Périodes"
       placeholder="Chercher"
       mapOption={(p) => ({
-        label: p.name + ' ' + p.year,
-        value: p.id
+        label: p.period.name + ' ' + p.year,
+        value: p.id.periodId
       })}
       onChange={onChange}
     />
