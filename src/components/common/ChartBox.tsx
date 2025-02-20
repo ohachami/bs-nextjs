@@ -23,73 +23,67 @@ export function ChartBox({
   const [activePeriod, setActivePeriod] = useState<PeriodIF>();
   const { currentExercise } = useExerciseStore();
   const [periods, setPeriods] = useState<PeriodIF[]>(
-    currentExercise?.periods || []
+    currentExercise?.periods.map((p) => p.period) || []
   );
   //internal filters
   const [filters, setFilters] = useState<Record<string, string[]>>({
-    [CHART_FILTERS.periods]: currentExercise?.periods?.map((p) => p.id) || [],
+    [CHART_FILTERS.periods]:
+      currentExercise?.periods?.map((p) => p.period.id) || [],
   });
   const [query, setQuery] = useState<QueryDefinition>({ ...chart.config });
   //TODO get filters to display from filter factory
   //call api aggregation :
-  const { data, isSuccess, isLoading, error } = useAggregations({
-    entity: '',
-    aggregations: [],
-    groupedBy: ['product'],
-    filters: [
-      {
-        key: 'periods',
-        name: 'periods',
-        values: ['ce089f05-7cea-4dbd-8d22-65004e4aa3e4'],
-      },
-    ],
+  const { data, isSuccess, isLoading, isError } = useAggregations({
+    entity: chart.config.entity,
+    aggregations: chart.config.aggregations,
+    groupedBy: chart.config.groupedBy,
+    filters: [],
   });
-  if (error) return <p>Error</p>;
 
-  // useEffect(() => {
-  //   if (globalFilters) {
-  //     const newFilters = { ...filters };
-  //     Object.keys(globalFilters).map((g) => {
-  //       const value = Array.from(
-  //         new Set([...newFilters[g], ...globalFilters[g]])
-  //       );
-  //       newFilters[g] = value;
-  //     });
-  //     setFilters(newFilters);
-  //   }
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [globalFilters]);
+  useEffect(() => {
+    if (globalFilters) {
+      const newFilters = { ...filters };
+      Object.keys(globalFilters).map((g) => {
+        const value = Array.from(
+          new Set([...newFilters[g], ...globalFilters[g]])
+        );
+        newFilters[g] = value;
+      });
+      setFilters(newFilters);
+    }
+  }, [globalFilters]);
 
-  // useEffect(() => {
-  //   const selectedPeriods =
-  //     currentExercise?.periods?.filter((p) =>
-  //       filters[CHART_FILTERS.periods].includes(p.id)
-  //     ) ||
-  //     currentExercise?.periods ||
-  //     [];
-  //   setPeriods(selectedPeriods);
+  useEffect(() => {
+    const selectedPeriods =
+      currentExercise?.periods
+        ?.filter((p) => filters[CHART_FILTERS.periods].includes(p.period.id))
+        .map((p) => p.period) ||
+      currentExercise?.periods.map((p) => p.period) ||
+      [];
+    setPeriods(selectedPeriods);
 
-  //   const newQuery = { ...query };
-  //   //mutate chart config to send new query
-  //   Object.keys(filters).map((g) => {
-  //     const value = [...filters[g]];
-  //     newQuery.filters[g] = value;
-  //   });
-  //   const periodFilter = newQuery.filters.find((f) => f.name === 'periods');
-  //   if (periodFilter) {
-  //     if (
-  //       activePeriod &&
-  //       selectedPeriods.find((sp) => sp.id === activePeriod.id)
-  //     ) {
-  //       periodFilter.values = [activePeriod.id];
-  //     } else {
-  //       setActivePeriod(selectedPeriods[0]);
-  //       periodFilter.values = [selectedPeriods[0].id];
-  //     }
-  //   }
-  //   setQuery(newQuery);
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [currentExercise, filters]);
+    const newQuery = { ...query };
+    if (newQuery.filters === undefined) newQuery.filters = [];
+    //mutate chart config to send new query
+    Object.keys(filters).map((g) => {
+      const value = [...filters[g]];
+      newQuery.filters.push({ name: g, key: g, values: value });
+    });
+    const periodFilter = newQuery.filters.find((f) => f.name === 'periods');
+    if (periodFilter) {
+      if (
+        activePeriod &&
+        selectedPeriods.find((sp) => sp.id === activePeriod.id)
+      ) {
+        periodFilter.values = [activePeriod.id];
+      } else {
+        setActivePeriod(selectedPeriods[0]);
+        periodFilter.values = [selectedPeriods[0].id];
+      }
+    }
+    setQuery(newQuery);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentExercise, filters]);
 
   const prepareData = (data: DimentionItem[]) => {
     const series: { name: string; data: number[] }[] = [];
@@ -113,7 +107,7 @@ export function ChartBox({
       tabs={periods.map((p) => ({ value: p.id, label: p.name }))}
     >
       {isLoading && <Loading />}
-      {isSuccess && (
+      {isSuccess && Array.isArray(data) && (
         <div className="mixed-chart">
           {data.map((d, index) => {
             const options = {

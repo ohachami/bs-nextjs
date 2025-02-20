@@ -28,7 +28,7 @@ export const useChartList = (sectionId: string | undefined) => {
 
     queryFn: async () => {
       if (!sectionId) {
-        throw new Error('stepId is required'); // Prevents unnecessary API calls
+        throw new Error('sectionId is required'); // Prevents unnecessary API calls
       }
       const response = await callAsync<AxiosResponse<ChartIF[]>>(() =>
         api.get(apiPaths.chartList(sectionId))

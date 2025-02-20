@@ -8,6 +8,11 @@ export type Timestamps = {
   createdAt: Date;
   updatedAt: Date;
 };
+interface PeriodsIF {
+  id: string;
+  period: PeriodIF;
+  year: number;
+}
 
 interface PeriodIF {
   id: string;

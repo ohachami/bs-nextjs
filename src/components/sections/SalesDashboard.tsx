@@ -40,7 +40,7 @@ export default function SalesDashboard({ section }: SalesDashboardProps) {
 
       <div className="flex justify-center gap-10"></div>
       {data
-        .filter((e) => e.displayType === displayType)
+        .filter((e) => e.displayType === displayType && e.config !== null)
         .map((chart, key) => (
           <ChartBox
             key={key}
