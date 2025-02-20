@@ -17,7 +17,7 @@ function Page() {
   return (
     <HypWrapper
       shouldDisableStep={(user) =>
-        SBUS.MANUFACTURING !== (user.sbu.name as any)
+        SBUS.MANUFACTURING !== (user.sbu.name as never)
       }
       shouldDisplayWaitingStep={(user) => user.sbu.name !== SBUS.MANUFACTURING}
       waitingStepMessage={{

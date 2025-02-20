@@ -28,9 +28,9 @@ export default function WaitingStep({
             subtitle
           ) : (
             <>
-              Merci de patienter le temps qu'elles finalisent leur version, ou
+              {"Merci de patienter le temps qu'elles finalisent leur version, ou"}
               passez à{' '}
-              <span className="text-blue-500 underline">l’étape suivante</span>
+              <span className="text-blue-500 underline">{"l’étape suivante"}</span>
             </>
           )}
         </p>

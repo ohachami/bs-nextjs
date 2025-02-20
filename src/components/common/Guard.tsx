@@ -1,8 +1,15 @@
-import { usePermissions } from "@/hooks/usePermission";
-import { PropsWithChildren } from "react"
+import { getPermissions } from "@/hooks/usePermission";
+import { PropsWithChildren, useEffect, useState } from "react"
 
 export function Guard({permissions, children}: {permissions: string[]} & PropsWithChildren) {
-    const {authorized} = usePermissions(permissions);
+    const [authorized, setAuthorized] = useState(false)
+    useEffect(() => {
+        const check = async ()=> {
+            const {authorized: auth} = await getPermissions(permissions);
+            setAuthorized(auth);
+        }
+        check()
+    }, [permissions])
     return (
         <>
             {authorized && children}

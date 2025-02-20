@@ -1,6 +1,6 @@
 import api from "@/api";
 import { callAsync } from '@/hooks/useAsync';
-import { ProductGroup, ProductTypeIF, RegionTypeIF } from '@/types/refExercise/config';
+import { ProductGroup, ProductTypeIF, RefSbu, RegionTypeIF } from '@/types/refExercise/config';
 import { apiPaths } from "@/utils/apiPaths";
 import { useQuery } from '@tanstack/react-query';
 import { AxiosResponse } from 'axios';

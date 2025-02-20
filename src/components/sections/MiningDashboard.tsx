@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Section } from '@/types/exercise';
 import React, { useState } from 'react';
 import FilterFactory from '../common/FilterFactory';
