@@ -1,5 +1,6 @@
 'use client';
 
+import CompareVersions from '@/components/common/CompareVersions';
 import ModuleComponent from '@/components/common/ModuleComponent';
 import { modules } from '@/utils/constants';
 import { ChartLine, ClipboardList, GitCompareArrows } from 'lucide-react';
@@ -18,6 +19,7 @@ const HomePage = () => {
           Nam imperdiet quam fringilla libero rutrum lobortis...
         </p>
       </div>
+      <CompareVersions/>
       <div className="grow grid grid-cols-3 gap-4 h-fit">
         <div className="col-span-1">
           <ModuleComponent

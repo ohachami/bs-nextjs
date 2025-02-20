@@ -27,17 +27,18 @@ import {
 import { ScrollArea } from '@/components/ui/scroll-area';
 import clsx from 'clsx';
 import { NestedOption } from '@/types/common/CollapsibleSelectTypes';
+import { collapsibleSelectColors } from '@/utils/colors';
 
 interface CollapsibleSelectProps {
   collapsibleItems: NestedOption[];
-  tagColor?: string;
-  onSelect?: (selectedItem: string) => void;
+  selectIndex: number;
+  onCompare: (selectedItem: string, selectIndex: number) => void;
 }
 
 export function CollapsibleSelect({
   collapsibleItems: nestedOptions,
-  tagColor,
-  onSelect,
+  selectIndex,
+  onCompare,
 }: CollapsibleSelectProps) {
   const [open, setOpen] = React.useState(false);
   const [search, setSearch] = React.useState('');
@@ -48,11 +49,12 @@ export function CollapsibleSelect({
     // selecting only the items of depth 1 (données consolidées)
     if (depth === 1) {
       // updating the selected item
-      setSelected(value);
-      // sending selected item to parent component
-      if (onSelect) {
-        onSelect(value);
-      }
+      setSelected((p) => {
+        if (p === value) {
+          return '';
+        }
+        return value;
+      });
     }
   };
 
@@ -60,10 +62,6 @@ export function CollapsibleSelect({
     setExpandedItems((prev) =>
       prev.includes(value) ? prev.filter((v) => v !== value) : [...prev, value]
     );
-  };
-
-  const clearSelection = () => {
-    setSelected('');
   };
 
   const renderTreeItems = (items: NestedOption[], depth = 0) => {
@@ -136,8 +134,11 @@ export function CollapsibleSelect({
    * used when "comaparer" button is clicked
    */
   const onCompareHanlder = () => {
-    if (onSelect) {
-      onSelect(selected);
+    // close select Popover first
+    setOpen(false);
+    // send compare event to parent component
+    if (selected.length > 0 && selectIndex !== undefined) {
+      onCompare(selected, selectIndex);
     }
   };
 
@@ -160,7 +161,12 @@ export function CollapsibleSelect({
           <div
             className={'h-full w-2 rounded-lg'}
             style={{
-              backgroundColor: tagColor ? tagColor : 'rgba(59, 130, 246, 1)',
+              backgroundColor:
+                selectIndex !== undefined
+                  ? collapsibleSelectColors[
+                      selectIndex % collapsibleSelectColors.length
+                    ]
+                  : 'rgba(59, 130, 246, 1)',
             }}
           ></div>
           {selected.length > 0
@@ -179,30 +185,26 @@ export function CollapsibleSelect({
           <CommandList className="max-h-fit">
             <CommandEmpty>Aucun élement trouvé.</CommandEmpty>
             <CommandGroup>
-              <ScrollArea className="h-60">
-                {renderTreeItems(filteredItems)}
-              </ScrollArea>
+              {nestedOptions.length === 0 ? (
+                <div className="h-40 w-full flex flex-col items-center justify-center">
+                  <p className='text-sm text-gray-400'>Aucun élement trouvé.</p>
+                </div>
+              ) : (
+                <ScrollArea className="h-60">
+                  {renderTreeItems(filteredItems)}
+                </ScrollArea>
+              )}
             </CommandGroup>
             <CommandSeparator />
             <CommandItem
+              disabled={selected.length === 0}
               onSelect={onCompareHanlder}
-              className="justify-center text-center cursor-pointer"
+              className="justify-center py-2 text-center cursor-pointer"
             >
               <p className="flex gap-3 items-center font-bold text-xs">
                 Comparer <ChevronRight />
               </p>
             </CommandItem>
-            {selected.length > 0 && (
-              <>
-                <CommandSeparator />
-                <CommandItem
-                  onSelect={clearSelection}
-                  className="justify-center text-center"
-                >
-                  <p>Clear selection</p>
-                </CommandItem>
-              </>
-            )}
           </CommandList>
         </Command>
       </PopoverContent>
