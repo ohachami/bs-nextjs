@@ -1,12 +1,12 @@
 'use client';
 
 import StepList from '@/components/common/StepList';
-import { useExercises } from '@/services/exercises.service';
-import { Exercise } from '@/types/exercise';
-import { useParams } from 'next/navigation';
-import * as LucideIcons from 'lucide-react';
 import ExerciseIdLayoutSkeleton from '@/components/skeletons/ExerciseIdLayoutSkeleton';
+import { useExercises } from '@/services/exercises.service';
 import { useExerciseStore } from '@/store/exercises/useExerciseStore';
+import { Exercise } from '@/types/exercise';
+import * as LucideIcons from 'lucide-react';
+import { useParams } from 'next/navigation';
 import { useEffect } from 'react';
 
 // used for icons as props
@@ -21,6 +21,7 @@ function ExercisesLayout({
   const { data: exercises, isLoading, isError, isSuccess } = useExercises();
   const params = useParams();
   const { setExercise, currentExercise } = useExerciseStore();
+
   useEffect(() => {
     if (exercises) {
       const exercise = exercises.find(
