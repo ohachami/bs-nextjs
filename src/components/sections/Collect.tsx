@@ -11,7 +11,7 @@ import { User } from '@/types/user';
 import { useState } from 'react';
 import SelectedVersions from './SelectedVersions';
 
-function CollectPage({ user }: { user?: User }) {
+function CollectPage({ user }: { user: User }) {
   //getting user information
   // getting datasources related to user's sbu id
   const {

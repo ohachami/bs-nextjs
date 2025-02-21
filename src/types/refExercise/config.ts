@@ -1,13 +1,18 @@
 // Type definitions for RefExercise Config
 // Used for The Exercise Section
 
-import { CODE_STEPS } from '@/utils/constants';
+import { CODE_SUB_STEPS } from '@/utils/constants';
 import { DataVersionIF } from '../collect/datasources';
 
 export type Timestamps = {
   createdAt: Date;
   updatedAt: Date;
 };
+interface PeriodsIF {
+  id: string;
+  period: PeriodIF;
+  year: number;
+}
 
 interface PeriodIF {
   id: string;
@@ -87,11 +92,16 @@ interface RegionTypeIF {
   longitude: number;
 }
 
+interface ProductIF {
+  id: string;
+  name: string;
+}
 
 interface ProductGroup {
   id: string;
   name: string;
-  products: ProductTypeIF[]
+  productType: ProductTypeIF;
+  products: ProductIF[];
 }
 
 export type {
@@ -103,8 +113,10 @@ export type {
   RefSbu,
   RefSiteIF,
   ProductTypeIF,
+  ProductIF,
   RegionTypeIF,
-  ProductGroup
+  ProductGroup,
 };
 
-export type CodeStepType = (typeof CODE_STEPS)[keyof typeof CODE_STEPS];
+export type CodeSubStepType =
+  (typeof CODE_SUB_STEPS)[keyof typeof CODE_SUB_STEPS];

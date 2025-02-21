@@ -1,4 +1,5 @@
 import { PermissionKey } from "@/types/user";
+import { MarketableConfig } from "./types";
 
 export const modules = {
   marketSteering: 'marketSteering',
@@ -62,7 +63,7 @@ export const STEP_STATUS = {
 } as const;
 
 // code Steps
-export const CODE_STEPS = {
+export const CODE_SUB_STEPS = {
   COLLECT: 'COLLECT',
   CONSOLIDATION: 'CONSOLIDATION',
   SCENARISATION: 'SCENARISATION',
@@ -93,3 +94,22 @@ export const SECTIONS = {
   HYPO_MINING: 'HYPO_MINING',
   HYPO_MANUFACTURING: 'HYPO_MANUFACTURING',
 };
+
+
+export const MARKETABLE_PRODUCT_TYPES: MarketableConfig[] = [{
+  name: "Marketable Rock",
+  color: "#936646"
+}, {
+  name: "Marketable Acid",
+  color: "#FFAE49"
+}, {
+  name: "Feed",
+  color: "#57D762"
+}, {
+  name: "Fertilizer",
+  color: "#007BFF"
+}]
+
+export const getMarketableProductConfig = (name: string) => {
+  return MARKETABLE_PRODUCT_TYPES.find(m => m.name.toLowerCase() === name.toLowerCase());
+} 

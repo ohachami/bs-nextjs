@@ -18,16 +18,24 @@ import {
 } from '@/components/ui/popover';
 import { useConsolidationVersions } from '@/services/consolidation.service';
 import { ConsolidationVersionsIF } from '@/types/consolidation';
+import { useSbus } from '@/services/referential.Service';
 
 interface ConsolidationComboboxProps {
-  sbuId?: string;
   onSelect: (selectedValue: string) => void;
 }
 
-function ConsolidationCombobox({
-  sbuId,
-  onSelect,
-}: ConsolidationComboboxProps) {
+function ConsolidationCombobox({ onSelect }: ConsolidationComboboxProps) {
+  const {
+    data: sbus,
+    isLoading: isLoadingSbu,
+    isError: isErrorSbu,
+  } = useSbus();
+  const sbuId = React.useMemo(() => {
+    if (sbus && sbus.length > 0) {
+      return sbus[0].id;
+    }
+    return null;
+  }, [sbus]);
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState('');
   // fetching consolidated versions by SbuID
@@ -44,9 +52,9 @@ function ConsolidationCombobox({
     onSelect(currentValue);
   };
 
-  if (isLoading) return <p>Loading...</p>;
+  if (isLoading || isLoadingSbu) return <p>Loading...</p>;
 
-  if (isError || !data) return <p>Error...</p>;
+  if (isError || !data || !sbus) return <p>Error...</p>;
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
