@@ -12,7 +12,6 @@ import { PeriodIF } from '@/types/refExercise/config';
 import { useEffect, useState } from 'react';
 import Chart from 'react-apexcharts';
 import { ChartWrapper } from './ChartWrapper';
-import { object } from 'zod';
 
 const getGridColsClass = (length: number) => {
   if (length <= 1) return 'grid-cols-1';
