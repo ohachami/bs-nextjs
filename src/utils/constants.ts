@@ -1,3 +1,4 @@
+import { PermissionKey } from "@/types/user";
 import { MarketableConfig } from "./types";
 
 export const modules = {
@@ -8,17 +9,34 @@ export const modules = {
 
 // Constant list of permissions excpected for a user
 export const permissions = {
-  // Administarator Role
-  ROLE_ADMIN: 'ROLE_ADMIN',
-  // User Create Role
-  ROLE_USERS_C: 'ROLE_USERS_C',
-  // User Read Role
-  ROLE_USERS_R: 'ROLE_USERS_R',
-  // User Update Role
-  ROLE_USERS_U: 'ROLE_USERS_U',
-  // User Delete Role
-  ROLE_USERS_D: 'ROLE_USERS_D',
-  ROLE_EXERCISE_LIST_R: 'ROLE_EXERCISES_LIST_R',
+  ROLE_ADMIN: 'ROLE_ADMIN', // Administarator Role
+  ROLE_USERS_C: 'ROLE_USERS_C', // User Create Role
+  ROLE_USERS_R: 'ROLE_USERS_R', // User Read Role
+  ROLE_USERS_U: 'ROLE_USERS_U', // User Update Role
+  ROLE_USERS_D: 'ROLE_USERS_D', // User Delete Role
+  ROLE_EXERCISES_LIST_R: 'ROLE_EXERCISES_LIST_R', // Voir la liste des exercices - routes.ts
+  ROLE_EXERCISE_R: 'ROLE_EXERCISE_R', // Voir les détails d'un exercice - ExerciseCard sheet
+  ROLE_EXERCISE_W: 'ROLE_EXERCISE_W', // Créer un exercice - Exercise list create new exercise btn
+  ROLE_HYPO_COLLECT_R: 'ROLE_HYPO_COLLECT_R', // Voir la liste des versions collectées
+  ROLE_HYPO_CONSOLID_W: 'ROLE_HYPO_CONSOLID_W', // Consolider les données collectées
+  ROLE_CONSO_DASHBOARD_R: 'ROLE_CONSO_DASHBOARD_R', // Visualiser les données consolidées
+  ROLE_CONSO_VALIDATE_W: 'ROLE_CONSO_VALIDATE_W', // Valider une version consolidée
+  ROLE_CONSO_COMPARE_R: 'ROLE_CONSO_COMPARE_R', // Comparer des versions consolidées
+  ROLE_LOCAL_SCENARISATION_W: 'ROLE_LOCAL_SCENARISATION_W', // Executer des scénario locaux
+  ROLE_LOCAL_SCENARIO_LIST_R: 'ROLE_LOCAL_SCENARIO_LIST_R', // Voir la liste des scénarios locaux
+  ROLE_LOCAL_SCENARIO_R: 'ROLE_LOCAL_SCENARIO_R', // Voir le résultat d'un scénario local
+  ROLE_USERS_LIST_R: 'ROLE_USERS_LIST_R', // Voir la liste des utilisateurs
+  ROLE_USER_W: 'ROLE_USER_W', // Créer / modifier un utilisateur
+  ROLE_PROFILE_LIST_R: 'ROLE_PROFILE_LIST_R', // Voir la liste des profils
+  ROLE_PROFILE_W: 'ROLE_PROFILE_W', // Créer / modifier un profile
+} as const;
+
+export const requiredPermissions: {
+  READ_EXERCISES_LIST: PermissionKey[],
+  VIEW_EXERCISE_SHEET_DETAILS: PermissionKey[],
+} = {
+  READ_EXERCISES_LIST: ['ROLE_EXERCISES_LIST_R'],
+  VIEW_EXERCISE_SHEET_DETAILS: ['ROLE_EXERCISE_R']
 } as const;
 
 // Exercice Types
@@ -43,12 +61,14 @@ export const STEP_STATUS = {
   IN_PROGRESS: 'IN_PROGRESS',
   CLOSED: 'CLOSED',
 } as const;
+
 // code Steps
 export const CODE_SUB_STEPS = {
   COLLECT: 'COLLECT',
   CONSOLIDATION: 'CONSOLIDATION',
   SCENARISATION: 'SCENARISATION',
 } as const;
+
 // step_config table codes
 export const STEP_CODES = {
   VALIDATION: 'VALIDATION',
@@ -85,7 +105,7 @@ export const MARKETABLE_PRODUCT_TYPES: MarketableConfig[] = [{
 }, {
   name: "Feed",
   color: "#57D762"
-},{
+}, {
   name: "Fertilizer",
   color: "#007BFF"
 }]

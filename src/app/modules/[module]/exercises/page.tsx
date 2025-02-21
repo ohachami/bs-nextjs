@@ -4,7 +4,7 @@ import ExerciseCard from '@/components/common/ExerciseCard';
 import ExerciseStatus from '@/components/common/ExerciseStatus';
 import StepProgress from '@/components/common/ExerciseStepper';
 import PeriodFilter from '@/components/common/PeriodFilter';
-import CreateNewExercise from '@/components/modules/exercises/create';
+import GuardedCreateNewExercise from '@/components/modules/exercises/create';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -121,7 +121,8 @@ const ModuleExercices = () => {
         <h1 className="text-2xl text-card-foreground font-semibold font-geist tracking-tight">
           Liste des exercices
         </h1>
-        <CreateNewExercise />
+
+        <GuardedCreateNewExercise />
       </div>
 
       <div className="flex flex-nowrap gap-2.5">

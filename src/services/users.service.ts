@@ -6,7 +6,6 @@ import { useQuery } from "@tanstack/react-query";
 import { AxiosResponse } from "axios";
 
 export const useUser = () => {
-  
   return useQuery({
     queryKey: ["currentUser"],
     queryFn: async () => {
@@ -15,7 +14,6 @@ export const useUser = () => {
     },
   });
 };
-
 
 export const useUsers = () => {
   return useQuery({

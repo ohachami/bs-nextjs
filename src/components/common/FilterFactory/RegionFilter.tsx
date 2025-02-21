@@ -5,6 +5,7 @@ import { FC } from 'react';
 type Props = {
   onChange: (values: string[]) => void;
 };
+
 const RegionFilter: FC<Props> = ({ onChange }) => {
   const { data, status } = useRegions();
 

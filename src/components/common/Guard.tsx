@@ -1,18 +1,18 @@
-import { getPermissions } from "@/hooks/usePermission";
-import { PropsWithChildren, useEffect, useState } from "react"
+'use client';
 
-export function Guard({permissions, children}: {permissions: string[]} & PropsWithChildren) {
-    const [authorized, setAuthorized] = useState(false)
-    useEffect(() => {
-        const check = async ()=> {
-            const {authorized: auth} = await getPermissions(permissions);
-            setAuthorized(auth);
-        }
-        check()
-    }, [permissions])
-    return (
-        <>
-            {authorized && children}
-        </>
-    )
+import usePermissions from '@/hooks/usePermissions';
+import { PermissionKey } from '@/types/user';
+import { PropsWithChildren } from 'react';
+
+export function Guard({
+  permissions,
+  children,
+}: { permissions: PermissionKey[] } & PropsWithChildren) {
+  const { isAuthorized } = usePermissions(permissions);
+
+  if (isAuthorized) {
+    return children;
+  }
+
+  return null;
 }

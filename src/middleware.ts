@@ -21,7 +21,6 @@ export async function middleware(req: NextRequest) {
   // looking for the requested client route configuration
   const routeConfig = clientRoutes.find((route) => url.startsWith(route.route));
 
-
   // if user is not authenticated (session null) => redirect to the login page '/'
   if (!JWTClaims) {
     return NextResponse.redirect(new URL('/login', req.url));
