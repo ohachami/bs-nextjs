@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Section } from '@/types/exercise';
 import React, { useState } from 'react';
 import FilterFactory from '../common/FilterFactory';
@@ -12,7 +11,7 @@ interface SalesDashboardProps {
   section: Section;
 }
 export default function SalesDashboard({ section }: SalesDashboardProps) {
-  const [displayType, setDisplayType] = useState<string>('VISUALIZE');
+  const [displayType, setDisplayType] = useState<String>('VISUALIZE');
   const [filters, setFilters] = useState<Record<string, string[]>>({});
 
   const { currentExercise } = useExerciseStore();
@@ -21,7 +20,7 @@ export default function SalesDashboard({ section }: SalesDashboardProps) {
    * Selection Event Handling
    * @param selectedValue: new selected value from the list
    */
-  const onSelectHandler = (selectedValue: string) => {console.log(selectedValue)};
+  const onSelectHandler = (selectedValue: string) => {};
 
   if (!currentExercise || isPending) return <div />;
 
@@ -29,19 +28,14 @@ export default function SalesDashboard({ section }: SalesDashboardProps) {
   console.log({ data });
   return (
     <div>
-      <div className="flex justify-center gap-10">
-        <FilterFactory module="product" onChange={() => {}} />
-        <FilterFactory module="region" onChange={() => {}} />
-        <div>
-          <FilterFactory module="period" onChange={() => {}} />
-        </div>
-        {/* ConsolidationVersions with User Sbu (default) */}
-        <ConsolidationCombobox onSelect={onSelectHandler} />
-      </div>
-
       <div className="flex justify-center gap-10"></div>
       {data
-        .filter((e) => e.displayType === displayType && e.config !== null)
+        .filter(
+          (e) =>
+            e.displayType === displayType &&
+            e.config !== null &&
+            ['bar', 'line'].includes(e.chartType)
+        )
         .map((chart, key) => (
           <ChartBox
             key={key}

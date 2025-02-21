@@ -4,15 +4,15 @@ import RegionFilter from './RegionFilter';
 import ExercisePeriodFilter from './ExercisePeriodFilter';
 
 type Props = {
-  module: 'product' | 'region' | 'period';
+  module: 'products' | 'regions' | 'periods';
   onChange: (values: string[]) => void;
 };
 
 const FilterFactory: React.FC<Props> = ({ module, onChange }) => {
   switch (module) {
-    case 'product':
+    case 'products':
       return <ProductFilter onChange={onChange} />;
-    case 'region':
+    case 'regions':
       return <RegionFilter onChange={onChange} />;
     default:
       return <ExercisePeriodFilter onChange={onChange} />;
