@@ -5,15 +5,15 @@ export const CHART_FILTERS = {
 };
 
 interface Metrics {
-  sum: number;
-  max: number;
-  min: number;
-  avg: number;
+  SUM: number;
+  MAX: number;
+  MIN: number;
+  AVG: number;
 }
 
 export interface DimentionItem {
   label: string;
-  values: Metrics;
+  values: Record<string, number>;
 }
 
 interface GroupingItem {
@@ -27,7 +27,7 @@ interface GroupedDataItem {
 
 interface Aggregation {
   metric: string;
-  operation: 'sum' | 'max' | 'min' | 'avg';
+  operation: 'SUM' | 'MAX' | 'MIN' | 'AVG';
 }
 
 interface Filter {
@@ -41,6 +41,7 @@ export type QueryDefinition = {
   aggregations: Aggregation[];
   groupedBy: string[];
   filters: Filter[];
+  formula: Record<string, string>[];
 };
 
 export type ChartIF = {
