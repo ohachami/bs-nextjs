@@ -1,28 +1,19 @@
 'use client';
 
-import { callAsync } from '@/hooks/useAsync';
-import { getPermissions } from '@/hooks/usePermission';
+import usePermissions from '@/hooks/usePermissions';
 import { PermissionKey } from '@/types/user';
-import { ComponentType, PropsWithChildren, useEffect, useState } from 'react';
+import { ComponentType, PropsWithChildren } from 'react';
 
 export function withGuard(permissions: PermissionKey[]) {
   return function <P extends object>(WrappedComponent: ComponentType<P>) {
     const GuardedComponent = (props: P & PropsWithChildren) => {
-      const [authorized, setAuthorized] = useState<boolean>(false);
+      const { isAuthorized } = usePermissions(permissions);
 
-      useEffect(() => {
-        const handleAuthorization = async () => {
-          const userPermissions =
-            await callAsync<PermissionKey[]>(getPermissions);
+      if (isAuthorized) {
+        return <WrappedComponent {...props} />;
+      }
 
-          setAuthorized(permissions.some((rp) => userPermissions.includes(rp)));
-        };
-
-        handleAuthorization();
-      }, []);
-
-      // Check if data and authorized are available before rendering children
-      return authorized && <WrappedComponent {...props} />;
+      return null;
     };
 
     GuardedComponent.displayName = `withGuard(${WrappedComponent.displayName || WrappedComponent.name || 'Component'})`;
