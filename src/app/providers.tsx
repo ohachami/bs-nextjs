@@ -1,12 +1,24 @@
 'use client';
-
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { useEffect } from 'react';
 
-export default function Providers({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+function MockProvider() {
+  useEffect(() => {
+    if (typeof window != 'undefined') {
+      import('@/mocks')
+        .then(({ setupMocks }) => {
+          setupMocks();
+        })
+        .catch((error) => {
+          console.error('Failed to initialize MSW:', error);
+        });
+    }
+  }, []);
+
+  return null;
+}
+
+export default function Providers({ children }: { children: React.ReactNode }) {
   const queryClient = new QueryClient({
     defaultOptions: {
       queries: {
@@ -17,6 +29,9 @@ export default function Providers({
   });
 
   return (
-    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+    <QueryClientProvider client={queryClient}>
+      <MockProvider />
+      {children}
+    </QueryClientProvider>
   );
 }
