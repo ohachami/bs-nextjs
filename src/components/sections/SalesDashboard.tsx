@@ -50,9 +50,24 @@ export default function SalesDashboard({ section }: SalesDashboardProps) {
               ))}
           </TabsList>
 
-          <FilterFactory module="products" onChange={() => {}} />
-          <FilterFactory module="regions" onChange={() => {}} />
-          <FilterFactory module="periods" onChange={() => {}} />
+          <FilterFactory
+            module="products"
+            onChange={(e) => {
+              setFilters({ ...filters, products: e });
+            }}
+          />
+          <FilterFactory
+            module="regions"
+            onChange={(e) => {
+              setFilters({ ...filters, regions: e });
+            }}
+          />
+          <FilterFactory
+            module="periods"
+            onChange={(e) => {
+              setFilters({ ...filters, periods: e });
+            }}
+          />
         </div>
         {marketableTypes &&
           marketableTypes.length > 0 &&
@@ -61,7 +76,10 @@ export default function SalesDashboard({ section }: SalesDashboardProps) {
               <div className="flex justify-center gap-10"></div>
               {data
                 .filter(
-                  (e) => e.displayType === displayType && e.config !== null
+                  (e) =>
+                    e.displayType === displayType &&
+                    e.config !== null &&
+                    ['bar', 'line'].includes(e.chartType)
                 )
                 .map((chart, key) => (
                   <ChartBox
@@ -77,7 +95,10 @@ export default function SalesDashboard({ section }: SalesDashboardProps) {
             <>
               {data
                 .filter(
-                  (e) => e.displayType === displayType && e.config !== null
+                  (e) =>
+                    e.displayType === displayType &&
+                    e.config !== null &&
+                    ['bar', 'line'].includes(e.chartType)
                 )
                 .map((chart, key) => (
                   <ChartBox

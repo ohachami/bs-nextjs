@@ -7,6 +7,7 @@ import {
   CHART_FILTERS,
   DimentionItem,
   QueryDefinition,
+  Filter,
 } from '@/types/dashboard';
 import { PeriodIF } from '@/types/refExercise/config';
 import { useEffect, useState } from 'react';
@@ -21,6 +22,25 @@ const getGridColsClass = (length: number) => {
   if (length >= 5) return 'grid-cols-2 md:grid-cols-3 lg:grid-cols-4'; // Dynamic responsiveness
   return 'grid-cols-3'; // Default case
 };
+
+const filterBuilder = (
+  filters: Record<string, string[]>,
+  filterConfig: Filter[]
+) => {
+  console.log({ filterConfig });
+  var filterChart: Filter[] = [];
+  Object.keys(filters).map((name) => {
+    let currentFilter = filterConfig.find((f) => f.name == name);
+    if (!currentFilter) return;
+    filterChart.push({
+      name,
+      key: `${filterConfig.find((f) => f.name == name)?.key}`,
+      values: filters[name],
+    });
+  });
+
+  return filterChart;
+};
 export function ChartBox({
   chart,
   globalFilters,
@@ -33,66 +53,62 @@ export function ChartBox({
   const [periods, setPeriods] = useState<PeriodIF[]>(
     currentExercise?.periods.map((p) => p.period) || []
   );
+
   //internal filters
   const [filters, setFilters] = useState<Record<string, string[]>>({
     [CHART_FILTERS.periods]:
       currentExercise?.periods?.map((p) => p.period.id) || [],
   });
-  const [query, setQuery] = useState<QueryDefinition>({ ...chart.config });
   //TODO get filters to display from filter factory
   //call api aggregation :
   const { data, isSuccess, isLoading, isError } = useAggregations({
     entity: chart.config.entity,
     aggregations: chart.config.aggregations,
     groupedBy: chart.config.groupedBy,
-    filters: chart.config.filters,
+    filters: filterBuilder(filters, chart.config.filters),
     formula: chart.config.formula,
   });
 
-  // useEffect(() => {
-  //   if (globalFilters) {
-  //     const newFilters = { ...filters };
-  //     Object.keys(globalFilters).map((g) => {
-  //       const value = Array.from(
-  //         new Set([...newFilters[g], ...globalFilters[g]])
-  //       );
-  //       newFilters[g] = value;
-  //     });
-  //     setFilters(newFilters);
-  //   }
-  // }, [globalFilters]);
+  useEffect(() => {
+    if (globalFilters) {
+      const newFilters = { ...filters };
+      Object.keys(globalFilters).map((g) => {
+        if (!newFilters[g]) return;
 
-  // useEffect(() => {
-  //   const selectedPeriods =
-  //     currentExercise?.periods
-  //       ?.filter((p) => filters[CHART_FILTERS.periods].includes(p.period.id))
-  //       .map((p) => p.period) ||
-  //     currentExercise?.periods.map((p) => p.period) ||
-  //     [];
-  //   setPeriods(selectedPeriods);
+        const value = Array.from(
+          new Set([...newFilters[g], ...globalFilters[g]])
+        );
+        newFilters[g] = value;
+      });
+      setFilters(newFilters);
+    }
+  }, [globalFilters]);
 
-  //   const newQuery = { ...query };
-  //   if (newQuery.filters === undefined) newQuery.filters = [];
-  //   //mutate chart config to send new query
-  //   Object.keys(filters).map((g) => {
-  //     const value = [...filters[g]];
-  //     newQuery.filters.push({ name: g, key: g, values: value });
-  //   });
-  //   const periodFilter = newQuery.filters.find((f) => f.name === 'periods');
-  //   if (periodFilter) {
-  //     if (
-  //       activePeriod &&
-  //       selectedPeriods.find((sp) => sp.id === activePeriod.id)
-  //     ) {
-  //       periodFilter.values = [activePeriod.id];
-  //     } else {
-  //       setActivePeriod(selectedPeriods[0]);
-  //       periodFilter.values = [selectedPeriods[0].id];
-  //     }
-  //   }
-  //   setQuery(newQuery);
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [currentExercise, filters]);
+  const handleChangeFilter = (name: string, values: string[]) => {
+    if (!filters[name]) return;
+    const newFilters = { ...filters };
+    const value = Array.from(new Set([...newFilters[name], ...values]));
+    setFilters({ ...newFilters, [name]: value });
+  };
+  useEffect(() => {
+    const selectedPeriods =
+      currentExercise?.periods
+        ?.filter((p) => filters[CHART_FILTERS.periods].includes(p.period.id))
+        .map((p) => p.period) ||
+      currentExercise?.periods.map((p) => p.period) ||
+      [];
+    setPeriods(selectedPeriods);
+
+    const newFilter = { ...filters };
+    //mutate chart config to send new query
+    Object.keys(filters).map((g) => {
+      const value = [...filters[g]];
+      newFilter[g] = value;
+    });
+
+    setFilters(newFilter);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentExercise]);
 
   const prepareData = (
     data: DimentionItem[]
@@ -120,11 +136,14 @@ export function ChartBox({
 
     return series;
   };
+  if (!['bar', 'line'].includes(chart.chartType)) return <div />;
   return (
     <ChartWrapper
       handleChange={(tab) =>
         setActivePeriod(periods.find((p) => p.id === tab.value))
       }
+      filters={chart.config.filters}
+      handleChangeFilter={handleChangeFilter}
       title={chart.name}
       subTitle={chart.subTitle}
       tabs={periods.map((p) => ({ value: p.id, label: p.name }))}

@@ -6,34 +6,47 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
+import { Filter } from '@/types/dashboard';
 import { TOption } from '@/utils/types';
 import { PropsWithChildren, useState } from 'react';
+import FilterFactory from './FilterFactory';
 
 export function ChartWrapper({
   title,
   subTitle,
   tabs,
   handleChange,
+  handleChangeFilter,
   filters,
   children,
 }: PropsWithChildren & {
   handleChange: (tab: TOption<string>) => void;
+  handleChangeFilter: (name: string, values: string[]) => void;
   title: string;
   subTitle: string;
   tabs: TOption<string>[];
-  filters?: JSX.Element;
+  filters?: Filter[];
 }) {
   const [activeTab, setActiveTab] = useState<TOption<string>>();
 
   return (
     <Card className="w-full">
-      <CardHeader className="flex  justify-between flex-col items-stretch space-y-0 border-b p-0 sm:flex-row">
-        <div className="flex justify-between">
+      <CardHeader className="flex  justify-between   flex-col items-stretch space-y-0 border-b p-0 sm:flex-row">
+        <div className="flex justify-between items-center">
           <div className="flex flex-1 flex-col justify-center gap-1 px-6 py-5 sm:py-6">
             <CardTitle>{title}</CardTitle>
             <CardDescription>{subTitle}</CardDescription>
           </div>
-          {filters && <div>{filters}</div>}
+          {filters && (
+            <div className="flex items-center justify-center ">
+              {filters.map((e) => (
+                <FilterFactory
+                  module={e.name}
+                  onChange={(v) => handleChangeFilter(e.name, v)}
+                />
+              ))}
+            </div>
+          )}
         </div>
         <div className="flex">
           {tabs.map((p) => {

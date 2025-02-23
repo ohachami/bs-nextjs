@@ -30,7 +30,7 @@ interface Aggregation {
   operation: 'SUM' | 'MAX' | 'MIN' | 'AVG';
 }
 
-interface Filter {
+export interface Filter {
   name: string;
   key: string;
   values: string[];

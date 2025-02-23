@@ -45,7 +45,11 @@ export default function ManufacturingDashboard({
       {data
         .filter((e) => e.displayType === displayType)
         .map((chart) => (
-          <ChartBox key={chart.id} chart={chart as ChartIF} globalFilters={filters} />
+          <ChartBox
+            key={chart.id}
+            chart={chart as ChartIF}
+            globalFilters={filters}
+          />
         ))}
     </div>
   );
