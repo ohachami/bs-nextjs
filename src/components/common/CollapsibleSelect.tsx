@@ -42,19 +42,21 @@ export function CollapsibleSelect({
 }: CollapsibleSelectProps) {
   const [open, setOpen] = React.useState(false);
   const [search, setSearch] = React.useState('');
-  const [selected, setSelected] = React.useState<string>('');
+  const [selected, setSelected] = React.useState<{value: string, label: string}>({value: '', label: ''});
   const [expandedItems, setExpandedItems] = React.useState<string[]>([]);
 
-  const toggleItem = (depth: number, value: string) => {
+  const toggleItem = (depth: number, value: string, label: string) => {
     // selecting only the items of depth 1 (données consolidées)
     if (depth === 1) {
-      // updating the selected item
       setSelected((p) => {
-        if (p === value) {
-          return '';
+        if(p.value === value) return {
+          value: '', label: ''
         }
-        return value;
-      });
+        return {
+          value,
+          label
+        }
+      })
     }
   };
 
@@ -68,7 +70,7 @@ export function CollapsibleSelect({
     return items.map((item) => {
       const isExpanded = expandedItems.includes(item.value);
       const hasChildren = item.children && item.children.length > 0;
-      const isSelected = selected === item.value;
+      const isSelected = selected.value === item.value;
 
       if (
         search &&
@@ -81,7 +83,7 @@ export function CollapsibleSelect({
       return (
         <React.Fragment key={item.value}>
           <CommandItem
-            onSelect={() => toggleItem(depth, item.value)}
+            onSelect={() => toggleItem(depth, item.value, item.label)}
             className={cn('flex items-center gap-2', depth > 0 && 'ml-4')}
           >
             {hasChildren && (
@@ -137,8 +139,8 @@ export function CollapsibleSelect({
     // close select Popover first
     setOpen(false);
     // send compare event to parent component
-    if (selected.length > 0 && selectIndex !== undefined) {
-      onCompare(selected, selectIndex);
+    if (selected.value.length > 0 && selectIndex !== undefined) {
+      onCompare(selected.value, selectIndex);
     }
   };
 
@@ -169,8 +171,8 @@ export function CollapsibleSelect({
                   : 'rgba(59, 130, 246, 1)',
             }}
           ></div>
-          {selected.length > 0
-            ? `${selected}`
+          {selected.value.length > 0
+            ? `${selected.label}`
             : 'Selectionner une donnée consolidée...'}
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
@@ -197,7 +199,7 @@ export function CollapsibleSelect({
             </CommandGroup>
             <CommandSeparator />
             <CommandItem
-              disabled={selected.length === 0}
+              disabled={selected.value.length === 0}
               onSelect={onCompareHanlder}
               className="justify-center py-2 text-center cursor-pointer"
             >

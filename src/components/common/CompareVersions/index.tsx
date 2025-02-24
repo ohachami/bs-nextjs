@@ -7,11 +7,24 @@ import { useState } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import ComapreVersionsSkeleton from '@/components/skeletons/CompareVersionSkeleton';
 import { useComparaisonVersionIds } from '@/store/consolidation/comparaisonVersionIds';
+import { useExerciseConsolidationVersions } from '@/services/consolidation.service';
+import { mapDataToNestedOptions } from '@/services/mappers/exerciseConsolidationMapper';
 
 // comparaison limit
 const COMPARAISON_LIMIT = 4;
 
-function CompareVersions() {
+interface CompareVersionsProps {
+  sbuId: string;
+  exerciseId?: string;
+}
+
+function CompareVersions({ sbuId, exerciseId }: CompareVersionsProps) {
+  // fetching backend data
+  const { data, isLoading, isError } = useExerciseConsolidationVersions(
+    sbuId,
+    exerciseId
+  );
+
   // sync data with zustand store
   const { insertOrReplaceVersionId } = useComparaisonVersionIds();
   // comparaison collapsible selects management
@@ -53,7 +66,14 @@ function CompareVersions() {
     setCompareItems((p) => ++p);
   };
 
-  if (0) return <ComapreVersionsSkeleton />;
+  if (isLoading || !data) return <ComapreVersionsSkeleton />;
+
+  if (isError)
+    return (
+      <p className="text-red-500">
+        Error Loading Exercises Consololidation Data for collapsibleSelect
+      </p>
+    );
 
   return (
     <div className="flex justify-between items-center">
@@ -64,7 +84,7 @@ function CompareVersions() {
             <CollapsibleSelect
               key={key}
               selectIndex={key}
-              collapsibleItems={[]}
+              collapsibleItems={mapDataToNestedOptions(data)}
               onCompare={onApplyCompareHandler}
             />
           ))}
