@@ -12,9 +12,7 @@ interface Props {
 }
 
 function DashboardWrapper({ items }: Props) {
-  console.log({ items });
   const defaultItem = items[0];
-  console.log({ defaultItem });
   return (
     <Tabs defaultValue={defaultItem.code} className="rounded">
       <TabsList variant="link">
