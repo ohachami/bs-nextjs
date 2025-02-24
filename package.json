@@ -42,6 +42,7 @@
     "clsx": "^2.1.1",
     "cmdk": "1.0.0",
     "date-fns": "^4.1.0",
+    "jest-fixed-jsdom": "^0.0.9",
     "jose": "^5.9.6",
     "jwt-decode": "^4.0.0",
     "lucide-react": "^0.472.0",

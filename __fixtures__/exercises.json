@@ -1,0 +1,1012 @@
+[
+    {
+      "id": "9883fd44-0c9a-4f31-a103-b80336d3ca9d",
+      "createdAt": "2025-02-20T13:59:13.402458",
+      "updatedAt": "2025-02-20T13:59:13.568015",
+      "name": "MBR Décembre 2024",
+      "year": 2024,
+      "status": "IN_PROGRESS",
+      "description": null,
+      "creator": {
+        "id": "b1dc5e94-c1eb-4cdf-9a88-4bae0bbcbb45",
+        "createdAt": null,
+        "updatedAt": null,
+        "email": "steerlinx@ocp.ma",
+        "firstName": "SteerLinx",
+        "lastName": null,
+        "profileImage": null,
+        "lastLogin": null,
+        "sbu": {
+          "id": "de5af152-09ae-4876-89f2-d687e2abba91",
+          "createdAt": null,
+          "updatedAt": null,
+          "name": "Corporate"
+        },
+        "profile": null
+      },
+      "exerciseType": {
+        "id": "bb292489-e1c6-4c79-9a97-fec59299d18d",
+        "createdAt": null,
+        "updatedAt": null,
+        "name": "MBR",
+        "monthOffset": 2,
+        "horizon": "Mensuel"
+      },
+      "parentPeriod": {
+        "id": "781c65bc-1bcb-455b-9542-89327ba22901",
+        "createdAt": null,
+        "updatedAt": null,
+        "name": "Décembre",
+        "sortedBy": 17,
+        "startMonth": 12,
+        "startDay": 1,
+        "children": []
+      },
+      "periods": [
+        {
+          "id": {
+            "exerciseId": "9883fd44-0c9a-4f31-a103-b80336d3ca9d",
+            "periodId": "e6c2dcdb-e84c-461c-b9d1-cbb818e69212"
+          },
+          "period": {
+            "id": "e6c2dcdb-e84c-461c-b9d1-cbb818e69212",
+            "createdAt": null,
+            "updatedAt": null,
+            "name": "Février",
+            "sortedBy": 7,
+            "startMonth": 2,
+            "startDay": 1,
+            "children": []
+          },
+          "year": 2025
+        },
+        {
+          "id": {
+            "exerciseId": "9883fd44-0c9a-4f31-a103-b80336d3ca9d",
+            "periodId": "781c65bc-1bcb-455b-9542-89327ba22901"
+          },
+          "period": {
+            "id": "781c65bc-1bcb-455b-9542-89327ba22901",
+            "createdAt": null,
+            "updatedAt": null,
+            "name": "Décembre",
+            "sortedBy": 17,
+            "startMonth": 12,
+            "startDay": 1,
+            "children": []
+          },
+          "year": 2024
+        },
+        {
+          "id": {
+            "exerciseId": "9883fd44-0c9a-4f31-a103-b80336d3ca9d",
+            "periodId": "b27de3aa-d863-4036-8604-15186ed769c8"
+          },
+          "period": {
+            "id": "b27de3aa-d863-4036-8604-15186ed769c8",
+            "createdAt": null,
+            "updatedAt": null,
+            "name": "Janvier",
+            "sortedBy": 6,
+            "startMonth": 1,
+            "startDay": 1,
+            "children": []
+          },
+          "year": 2025
+        }
+      ],
+      "steps": [
+        {
+          "id": "d2565fa7-a54c-492c-8aad-bce6c4413ba2",
+          "createdAt": "2025-02-20T13:59:13.417725",
+          "updatedAt": "2025-02-20T13:59:13.56808",
+          "status": "INACTIVE",
+          "deadlineAt": "2024-12-20T00:00:00",
+          "stepConfig": {
+            "id": "228f59ac-b16d-4161-a826-94cfe8c9d9ac",
+            "createdAt": null,
+            "updatedAt": "2025-02-24T10:28:12.460034",
+            "name": "TopLine & UpSide",
+            "code": "HYP_SALES",
+            "iconKey": "layout-list",
+            "sortedBy": 2,
+            "deadlineDay": 20,
+            "mandatory": true,
+            "sbus": [
+              {
+                "id": "49e00608-f1bb-4e09-b350-e482eeeea7e4",
+                "createdAt": null,
+                "updatedAt": null,
+                "name": "Rock solutions"
+              }
+            ]
+          },
+          "subSteps": [
+            {
+              "id": "59e80ee1-ad6d-4d9b-895f-b9d5e4cbdfd5",
+              "name": "Collect",
+              "description": "Collecte de données brutes",
+              "icon": "LayoutList",
+              "status": "IN_PROGRESS",
+              "code": "COLLECT",
+              "sortedBy": 1,
+              "createdAt": "2025-02-20T13:59:13.417818",
+              "updatedAt": "2025-02-20T13:59:13.417818"
+            },
+            {
+              "id": "7b37e87c-1ea3-44a8-b9ef-19bddf05fcae",
+              "name": "Consolidation & visualisation",
+              "description": "Consolidation et visualisation de données",
+              "icon": "ChartNoAxesCombined",
+              "status": "INACTIVE",
+              "code": "CONSOLIDATION",
+              "sortedBy": 2,
+              "createdAt": "2025-02-20T13:59:13.417998",
+              "updatedAt": "2025-02-20T13:59:13.417998"
+            },
+            {
+              "id": "8ad88685-9d2a-480e-bc60-6f5f8328576a",
+              "name": "Scénarisation",
+              "description": "Scénarisation de données consolidées",
+              "icon": "ChartNoAxesCombined",
+              "status": "INACTIVE",
+              "code": "SCENARISATION",
+              "sortedBy": 3,
+              "createdAt": "2025-02-20T13:59:13.41808",
+              "updatedAt": "2025-02-20T13:59:13.41808"
+            }
+          ]
+        },
+        {
+          "id": "d65c8317-70a9-43b5-86b2-d925c1f24944",
+          "createdAt": "2025-02-20T13:59:13.418734",
+          "updatedAt": "2025-02-20T13:59:13.418734",
+          "status": "INACTIVE",
+          "deadlineAt": null,
+          "stepConfig": {
+            "id": "16e0a214-2fe3-42d1-8a9b-8a9db6b1e61c",
+            "createdAt": null,
+            "updatedAt": null,
+            "name": "Arbitrage & Validation",
+            "code": "VALIDATION",
+            "iconKey": null,
+            "sortedBy": 5,
+            "deadlineDay": null,
+            "mandatory": false,
+            "sbus": [
+              {
+                "id": "0a218efb-87e8-4bfc-aad9-d195a4e29d43",
+                "createdAt": null,
+                "updatedAt": null,
+                "name": "Mining"
+              }
+            ]
+          },
+          "subSteps": []
+        },
+        {
+          "id": "80675bd4-7d3f-40be-b2bf-b437027941d2",
+          "createdAt": "2025-02-20T13:59:13.418203",
+          "updatedAt": "2025-02-20T13:59:13.568131",
+          "status": "IN_PROGRESS",
+          "deadlineAt": "2024-12-18T00:00:00",
+          "stepConfig": {
+            "id": "ef7ca7c5-7ff3-4e01-99f8-647fb3ffc93b",
+            "createdAt": null,
+            "updatedAt": "2025-02-24T10:28:12.459748",
+            "name": "Hypothèses Manufacuring",
+            "code": "HYP_MANU",
+            "iconKey": "layout-list",
+            "sortedBy": 1,
+            "deadlineDay": 18,
+            "mandatory": true,
+            "sbus": [
+              {
+                "id": "e42e7f19-757e-4489-bf7b-9b3c3f1d6275",
+                "createdAt": null,
+                "updatedAt": null,
+                "name": "Manufacturing"
+              }
+            ]
+          },
+          "subSteps": [
+            {
+              "id": "230eaecd-9a37-4dae-abec-be746955eaaf",
+              "name": "Collect",
+              "description": "Collecte de données brutes",
+              "icon": "LayoutList",
+              "status": "IN_PROGRESS",
+              "code": "COLLECT",
+              "sortedBy": 1,
+              "createdAt": "2025-02-20T13:59:13.418293",
+              "updatedAt": "2025-02-20T13:59:13.418293"
+            },
+            {
+              "id": "7e277260-3b8d-4334-9f34-daae474357f0",
+              "name": "Consolidation & visualisation",
+              "description": "Consolidation et visualisation de données",
+              "icon": "ChartNoAxesCombined",
+              "status": "INACTIVE",
+              "code": "CONSOLIDATION",
+              "sortedBy": 2,
+              "createdAt": "2025-02-20T13:59:13.418381",
+              "updatedAt": "2025-02-20T13:59:13.418381"
+            }
+          ]
+        },
+        {
+          "id": "fac3d292-4626-4396-8906-ff4809a47bd2",
+          "createdAt": "2025-02-20T13:59:13.418839",
+          "updatedAt": "2025-02-20T13:59:13.568193",
+          "status": "INACTIVE",
+          "deadlineAt": "2024-12-22T00:00:00",
+          "stepConfig": {
+            "id": "1845e2c9-2500-4a17-bb11-a98d1735cded",
+            "createdAt": null,
+            "updatedAt": "2025-02-24T10:28:12.459926",
+            "name": "Ajustement des hypothèses Manufacturing",
+            "code": "HYP_MANU_ADJ",
+            "iconKey": "sliders-horizontal",
+            "sortedBy": 3,
+            "deadlineDay": 22,
+            "mandatory": true,
+            "sbus": [
+              {
+                "id": "e42e7f19-757e-4489-bf7b-9b3c3f1d6275",
+                "createdAt": null,
+                "updatedAt": null,
+                "name": "Manufacturing"
+              }
+            ]
+          },
+          "subSteps": [
+            {
+              "id": "6ee9f5ab-48ce-4e90-adf8-2666c3715ad4",
+              "name": "Collect",
+              "description": "Collecte de données brutes",
+              "icon": "LayoutList",
+              "status": "IN_PROGRESS",
+              "code": "COLLECT",
+              "sortedBy": 1,
+              "createdAt": "2025-02-20T13:59:13.418937",
+              "updatedAt": "2025-02-20T13:59:13.418937"
+            },
+            {
+              "id": "8be5a5ac-9962-42e3-bde5-eac1ca1e6ebe",
+              "name": "Consolidation & visualisation",
+              "description": "Consolidation et visualisation de données",
+              "icon": "ChartNoAxesCombined",
+              "status": "INACTIVE",
+              "code": "CONSOLIDATION",
+              "sortedBy": 2,
+              "createdAt": "2025-02-20T13:59:13.419032",
+              "updatedAt": "2025-02-20T13:59:13.419032"
+            },
+            {
+              "id": "40f5ec9e-108a-4147-a2a7-1df0f95a9e89",
+              "name": "Scénarisation",
+              "description": "Scénarisation de données consolidées",
+              "icon": "ChartNoAxesCombined",
+              "status": "INACTIVE",
+              "code": "SCENARISATION",
+              "sortedBy": 3,
+              "createdAt": "2025-02-20T13:59:13.419132",
+              "updatedAt": "2025-02-20T13:59:13.419132"
+            }
+          ]
+        },
+        {
+          "id": "a9049a68-3d28-4481-8c14-261fb064ba31",
+          "createdAt": "2025-02-20T13:59:13.417616",
+          "updatedAt": "2025-02-20T13:59:13.417616",
+          "status": "INACTIVE",
+          "deadlineAt": "2024-12-25T00:00:00",
+          "stepConfig": {
+            "id": "450052c4-62fb-4c53-b88c-cb9f059792c8",
+            "createdAt": null,
+            "updatedAt": null,
+            "name": "Scénarisation",
+            "code": "SCENARISATION",
+            "iconKey": null,
+            "sortedBy": 4,
+            "deadlineDay": 25,
+            "mandatory": true,
+            "sbus": [
+              {
+                "id": "0a218efb-87e8-4bfc-aad9-d195a4e29d43",
+                "createdAt": null,
+                "updatedAt": null,
+                "name": "Mining"
+              }
+            ]
+          },
+          "subSteps": []
+        },
+        {
+          "id": "b948ffca-5588-4146-b609-9bf8543c2aba",
+          "createdAt": "2025-02-20T13:59:13.418511",
+          "updatedAt": "2025-02-20T13:59:13.418511",
+          "status": "INACTIVE",
+          "deadlineAt": null,
+          "stepConfig": {
+            "id": "3a44ca3a-a9b1-416e-a778-572fb130b53b",
+            "createdAt": null,
+            "updatedAt": null,
+            "name": "Reporting",
+            "code": "REPORT",
+            "iconKey": null,
+            "sortedBy": 6,
+            "deadlineDay": null,
+            "mandatory": false,
+            "sbus": [
+              {
+                "id": "0a218efb-87e8-4bfc-aad9-d195a4e29d43",
+                "createdAt": null,
+                "updatedAt": null,
+                "name": "Mining"
+              }
+            ]
+          },
+          "subSteps": []
+        }
+      ]
+    },
+    {
+      "id": "aac035c8-5fae-4447-adfd-f73c24db5ac5",
+      "createdAt": "2025-02-20T13:59:13.360969",
+      "updatedAt": "2025-02-20T13:59:13.370355",
+      "name": "Budget 2025",
+      "year": 2025,
+      "status": "IN_PROGRESS",
+      "description": null,
+      "creator": {
+        "id": "b1dc5e94-c1eb-4cdf-9a88-4bae0bbcbb45",
+        "createdAt": null,
+        "updatedAt": null,
+        "email": "steerlinx@ocp.ma",
+        "firstName": "SteerLinx",
+        "lastName": null,
+        "profileImage": null,
+        "lastLogin": null,
+        "sbu": {
+          "id": "de5af152-09ae-4876-89f2-d687e2abba91",
+          "createdAt": null,
+          "updatedAt": null,
+          "name": "Corporate"
+        },
+        "profile": null
+      },
+      "exerciseType": {
+        "id": "dd1b7851-f47c-48c4-98d0-6b882e20b4fe",
+        "createdAt": null,
+        "updatedAt": null,
+        "name": "Budget",
+        "monthOffset": 3,
+        "horizon": "Annuel"
+      },
+      "parentPeriod": {
+        "id": "bda1bb83-aa6c-4ede-9ec8-b29c5d73bc9e",
+        "createdAt": null,
+        "updatedAt": null,
+        "name": "Budget",
+        "sortedBy": 1,
+        "startMonth": 1,
+        "startDay": 1,
+        "children": [
+          {
+            "id": "f16d5ebe-0414-417c-8078-964689851219",
+            "createdAt": null,
+            "updatedAt": null,
+            "name": "Q1",
+            "sortedBy": 2,
+            "startMonth": 1,
+            "startDay": 1,
+            "children": [
+              {
+                "id": "b27de3aa-d863-4036-8604-15186ed769c8",
+                "createdAt": null,
+                "updatedAt": null,
+                "name": "Janvier",
+                "sortedBy": 6,
+                "startMonth": 1,
+                "startDay": 1,
+                "children": []
+              },
+              {
+                "id": "e6c2dcdb-e84c-461c-b9d1-cbb818e69212",
+                "createdAt": null,
+                "updatedAt": null,
+                "name": "Février",
+                "sortedBy": 7,
+                "startMonth": 2,
+                "startDay": 1,
+                "children": []
+              },
+              {
+                "id": "396118b4-421a-454b-8371-256d79f8a1ff",
+                "createdAt": null,
+                "updatedAt": null,
+                "name": "Mars",
+                "sortedBy": 8,
+                "startMonth": 3,
+                "startDay": 1,
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": "ef06b441-206b-4b68-9136-879283aaf6d8",
+            "createdAt": null,
+            "updatedAt": null,
+            "name": "Q2",
+            "sortedBy": 3,
+            "startMonth": 4,
+            "startDay": 1,
+            "children": [
+              {
+                "id": "1b38a02a-1952-44ba-b6d3-7869f87ec010",
+                "createdAt": null,
+                "updatedAt": null,
+                "name": "Avril",
+                "sortedBy": 9,
+                "startMonth": 4,
+                "startDay": 1,
+                "children": []
+              },
+              {
+                "id": "409a7ee6-0ab9-4ebf-8670-23ba8d50b7e3",
+                "createdAt": null,
+                "updatedAt": null,
+                "name": "Mai",
+                "sortedBy": 10,
+                "startMonth": 5,
+                "startDay": 1,
+                "children": []
+              },
+              {
+                "id": "8b32b4c8-d8cb-4847-bf9d-564e442bdca8",
+                "createdAt": null,
+                "updatedAt": null,
+                "name": "Juin",
+                "sortedBy": 11,
+                "startMonth": 6,
+                "startDay": 1,
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": "fc5e55c2-6a63-4017-bf73-ec5584b3126c",
+            "createdAt": null,
+            "updatedAt": null,
+            "name": "Q3",
+            "sortedBy": 4,
+            "startMonth": 7,
+            "startDay": 1,
+            "children": [
+              {
+                "id": "9e8959f9-c68c-4842-9a5a-845afcea0b08",
+                "createdAt": null,
+                "updatedAt": null,
+                "name": "Juillet",
+                "sortedBy": 12,
+                "startMonth": 7,
+                "startDay": 1,
+                "children": []
+              },
+              {
+                "id": "72816a1a-d0f7-4593-ad29-3eeac9fc3b3c",
+                "createdAt": null,
+                "updatedAt": null,
+                "name": "Août",
+                "sortedBy": 13,
+                "startMonth": 8,
+                "startDay": 1,
+                "children": []
+              },
+              {
+                "id": "3aca92f0-d3cd-4f88-a909-10596dafa075",
+                "createdAt": null,
+                "updatedAt": null,
+                "name": "Septembre",
+                "sortedBy": 14,
+                "startMonth": 9,
+                "startDay": 1,
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": "d7096cb9-ba4c-4c18-bc97-700e6ea4389e",
+            "createdAt": null,
+            "updatedAt": null,
+            "name": "Q4",
+            "sortedBy": 5,
+            "startMonth": 10,
+            "startDay": 1,
+            "children": [
+              {
+                "id": "72fe7f53-3dc2-46d0-8cb1-e41417bc2c42",
+                "createdAt": null,
+                "updatedAt": null,
+                "name": "Octobre",
+                "sortedBy": 15,
+                "startMonth": 10,
+                "startDay": 1,
+                "children": []
+              },
+              {
+                "id": "e500cba1-f2e6-40c5-8d60-d2d6ec127ffd",
+                "createdAt": null,
+                "updatedAt": null,
+                "name": "Novembre",
+                "sortedBy": 16,
+                "startMonth": 11,
+                "startDay": 1,
+                "children": []
+              },
+              {
+                "id": "781c65bc-1bcb-455b-9542-89327ba22901",
+                "createdAt": null,
+                "updatedAt": null,
+                "name": "Décembre",
+                "sortedBy": 17,
+                "startMonth": 12,
+                "startDay": 1,
+                "children": []
+              }
+            ]
+          }
+        ]
+      },
+      "periods": [
+        {
+          "id": {
+            "exerciseId": "aac035c8-5fae-4447-adfd-f73c24db5ac5",
+            "periodId": "f16d5ebe-0414-417c-8078-964689851219"
+          },
+          "period": {
+            "id": "f16d5ebe-0414-417c-8078-964689851219",
+            "createdAt": null,
+            "updatedAt": null,
+            "name": "Q1",
+            "sortedBy": 2,
+            "startMonth": 1,
+            "startDay": 1,
+            "children": [
+              {
+                "id": "b27de3aa-d863-4036-8604-15186ed769c8",
+                "createdAt": null,
+                "updatedAt": null,
+                "name": "Janvier",
+                "sortedBy": 6,
+                "startMonth": 1,
+                "startDay": 1,
+                "children": []
+              },
+              {
+                "id": "e6c2dcdb-e84c-461c-b9d1-cbb818e69212",
+                "createdAt": null,
+                "updatedAt": null,
+                "name": "Février",
+                "sortedBy": 7,
+                "startMonth": 2,
+                "startDay": 1,
+                "children": []
+              },
+              {
+                "id": "396118b4-421a-454b-8371-256d79f8a1ff",
+                "createdAt": null,
+                "updatedAt": null,
+                "name": "Mars",
+                "sortedBy": 8,
+                "startMonth": 3,
+                "startDay": 1,
+                "children": []
+              }
+            ]
+          },
+          "year": 2025
+        },
+        {
+          "id": {
+            "exerciseId": "aac035c8-5fae-4447-adfd-f73c24db5ac5",
+            "periodId": "ef06b441-206b-4b68-9136-879283aaf6d8"
+          },
+          "period": {
+            "id": "ef06b441-206b-4b68-9136-879283aaf6d8",
+            "createdAt": null,
+            "updatedAt": null,
+            "name": "Q2",
+            "sortedBy": 3,
+            "startMonth": 4,
+            "startDay": 1,
+            "children": [
+              {
+                "id": "1b38a02a-1952-44ba-b6d3-7869f87ec010",
+                "createdAt": null,
+                "updatedAt": null,
+                "name": "Avril",
+                "sortedBy": 9,
+                "startMonth": 4,
+                "startDay": 1,
+                "children": []
+              },
+              {
+                "id": "409a7ee6-0ab9-4ebf-8670-23ba8d50b7e3",
+                "createdAt": null,
+                "updatedAt": null,
+                "name": "Mai",
+                "sortedBy": 10,
+                "startMonth": 5,
+                "startDay": 1,
+                "children": []
+              },
+              {
+                "id": "8b32b4c8-d8cb-4847-bf9d-564e442bdca8",
+                "createdAt": null,
+                "updatedAt": null,
+                "name": "Juin",
+                "sortedBy": 11,
+                "startMonth": 6,
+                "startDay": 1,
+                "children": []
+              }
+            ]
+          },
+          "year": 2025
+        },
+        {
+          "id": {
+            "exerciseId": "aac035c8-5fae-4447-adfd-f73c24db5ac5",
+            "periodId": "fc5e55c2-6a63-4017-bf73-ec5584b3126c"
+          },
+          "period": {
+            "id": "fc5e55c2-6a63-4017-bf73-ec5584b3126c",
+            "createdAt": null,
+            "updatedAt": null,
+            "name": "Q3",
+            "sortedBy": 4,
+            "startMonth": 7,
+            "startDay": 1,
+            "children": [
+              {
+                "id": "9e8959f9-c68c-4842-9a5a-845afcea0b08",
+                "createdAt": null,
+                "updatedAt": null,
+                "name": "Juillet",
+                "sortedBy": 12,
+                "startMonth": 7,
+                "startDay": 1,
+                "children": []
+              },
+              {
+                "id": "72816a1a-d0f7-4593-ad29-3eeac9fc3b3c",
+                "createdAt": null,
+                "updatedAt": null,
+                "name": "Août",
+                "sortedBy": 13,
+                "startMonth": 8,
+                "startDay": 1,
+                "children": []
+              },
+              {
+                "id": "3aca92f0-d3cd-4f88-a909-10596dafa075",
+                "createdAt": null,
+                "updatedAt": null,
+                "name": "Septembre",
+                "sortedBy": 14,
+                "startMonth": 9,
+                "startDay": 1,
+                "children": []
+              }
+            ]
+          },
+          "year": 2025
+        },
+        {
+          "id": {
+            "exerciseId": "aac035c8-5fae-4447-adfd-f73c24db5ac5",
+            "periodId": "d7096cb9-ba4c-4c18-bc97-700e6ea4389e"
+          },
+          "period": {
+            "id": "d7096cb9-ba4c-4c18-bc97-700e6ea4389e",
+            "createdAt": null,
+            "updatedAt": null,
+            "name": "Q4",
+            "sortedBy": 5,
+            "startMonth": 10,
+            "startDay": 1,
+            "children": [
+              {
+                "id": "72fe7f53-3dc2-46d0-8cb1-e41417bc2c42",
+                "createdAt": null,
+                "updatedAt": null,
+                "name": "Octobre",
+                "sortedBy": 15,
+                "startMonth": 10,
+                "startDay": 1,
+                "children": []
+              },
+              {
+                "id": "e500cba1-f2e6-40c5-8d60-d2d6ec127ffd",
+                "createdAt": null,
+                "updatedAt": null,
+                "name": "Novembre",
+                "sortedBy": 16,
+                "startMonth": 11,
+                "startDay": 1,
+                "children": []
+              },
+              {
+                "id": "781c65bc-1bcb-455b-9542-89327ba22901",
+                "createdAt": null,
+                "updatedAt": null,
+                "name": "Décembre",
+                "sortedBy": 17,
+                "startMonth": 12,
+                "startDay": 1,
+                "children": []
+              }
+            ]
+          },
+          "year": 2025
+        }
+      ],
+      "steps": [
+        {
+          "id": "0d51fe60-6fc3-4945-b856-dc9308c051b5",
+          "createdAt": "2025-02-20T13:59:13.366093",
+          "updatedAt": "2025-02-20T13:59:13.366093",
+          "status": "INACTIVE",
+          "deadlineAt": "2025-01-25T00:00:00",
+          "stepConfig": {
+            "id": "450052c4-62fb-4c53-b88c-cb9f059792c8",
+            "createdAt": null,
+            "updatedAt": null,
+            "name": "Scénarisation",
+            "code": "SCENARISATION",
+            "iconKey": null,
+            "sortedBy": 4,
+            "deadlineDay": 25,
+            "mandatory": true,
+            "sbus": [
+              {
+                "id": "0a218efb-87e8-4bfc-aad9-d195a4e29d43",
+                "createdAt": null,
+                "updatedAt": null,
+                "name": "Mining"
+              }
+            ]
+          },
+          "subSteps": []
+        },
+        {
+          "id": "b27a0e58-23f1-4ca5-8cbf-0205e429b3f3",
+          "createdAt": "2025-02-20T13:59:13.36839",
+          "updatedAt": "2025-02-20T13:59:13.36839",
+          "status": "INACTIVE",
+          "deadlineAt": null,
+          "stepConfig": {
+            "id": "16e0a214-2fe3-42d1-8a9b-8a9db6b1e61c",
+            "createdAt": null,
+            "updatedAt": null,
+            "name": "Arbitrage & Validation",
+            "code": "VALIDATION",
+            "iconKey": null,
+            "sortedBy": 5,
+            "deadlineDay": null,
+            "mandatory": false,
+            "sbus": [
+              {
+                "id": "0a218efb-87e8-4bfc-aad9-d195a4e29d43",
+                "createdAt": null,
+                "updatedAt": null,
+                "name": "Mining"
+              }
+            ]
+          },
+          "subSteps": []
+        },
+        {
+          "id": "d2b4beb2-771b-4ea8-8b58-4342547426a4",
+          "createdAt": "2025-02-20T13:59:13.368456",
+          "updatedAt": "2025-02-20T13:59:13.368456",
+          "status": "IN_PROGRESS",
+          "deadlineAt": "2025-01-18T00:00:00",
+          "stepConfig": {
+            "id": "ef7ca7c5-7ff3-4e01-99f8-647fb3ffc93b",
+            "createdAt": null,
+            "updatedAt": "2025-02-24T10:28:12.459748",
+            "name": "Hypothèses Manufacuring",
+            "code": "HYP_MANU",
+            "iconKey": "layout-list",
+            "sortedBy": 1,
+            "deadlineDay": 18,
+            "mandatory": true,
+            "sbus": [
+              {
+                "id": "e42e7f19-757e-4489-bf7b-9b3c3f1d6275",
+                "createdAt": null,
+                "updatedAt": null,
+                "name": "Manufacturing"
+              }
+            ]
+          },
+          "subSteps": [
+            {
+              "id": "a321747f-e12d-426d-a504-fb44cb713eb2",
+              "name": "Consolidation & visualisation",
+              "description": "Consolidation et visualisation de données",
+              "icon": "ChartNoAxesCombined",
+              "status": "INACTIVE",
+              "code": "CONSOLIDATION",
+              "sortedBy": 2,
+              "createdAt": "2025-02-20T13:59:13.368602",
+              "updatedAt": "2025-02-20T13:59:13.368602"
+            },
+            {
+              "id": "af3c1bb3-9c3c-474f-890f-6f548446fb0a",
+              "name": "Collect",
+              "description": "Collecte de données brutes",
+              "icon": "LayoutList",
+              "status": "IN_PROGRESS",
+              "code": "COLLECT",
+              "sortedBy": 1,
+              "createdAt": "2025-02-20T13:59:13.368534",
+              "updatedAt": "2025-02-20T13:59:13.368534"
+            }
+          ]
+        },
+        {
+          "id": "534a6e7c-996c-4eba-b57e-558853c4e521",
+          "createdAt": "2025-02-20T13:59:13.368113",
+          "updatedAt": "2025-02-20T13:59:13.368113",
+          "status": "INACTIVE",
+          "deadlineAt": "2025-01-20T00:00:00",
+          "stepConfig": {
+            "id": "228f59ac-b16d-4161-a826-94cfe8c9d9ac",
+            "createdAt": null,
+            "updatedAt": "2025-02-24T10:28:12.460034",
+            "name": "TopLine & UpSide",
+            "code": "HYP_SALES",
+            "iconKey": "layout-list",
+            "sortedBy": 2,
+            "deadlineDay": 20,
+            "mandatory": true,
+            "sbus": [
+              {
+                "id": "49e00608-f1bb-4e09-b350-e482eeeea7e4",
+                "createdAt": null,
+                "updatedAt": null,
+                "name": "Rock solutions"
+              }
+            ]
+          },
+          "subSteps": [
+            {
+              "id": "16fc693d-1623-4b75-a0f4-fe6d971831d2",
+              "name": "Scénarisation",
+              "description": "Scénarisation de données consolidées",
+              "icon": "ChartNoAxesCombined",
+              "status": "INACTIVE",
+              "code": "SCENARISATION",
+              "sortedBy": 3,
+              "createdAt": "2025-02-20T13:59:13.368327",
+              "updatedAt": "2025-02-20T13:59:13.368327"
+            },
+            {
+              "id": "e397588b-0d82-4de4-8b86-1ca18159b407",
+              "name": "Collect",
+              "description": "Collecte de données brutes",
+              "icon": "LayoutList",
+              "status": "IN_PROGRESS",
+              "code": "COLLECT",
+              "sortedBy": 1,
+              "createdAt": "2025-02-20T13:59:13.368196",
+              "updatedAt": "2025-02-20T13:59:13.368196"
+            },
+            {
+              "id": "77aa942d-2d2c-4581-b53d-1665c1514ee7",
+              "name": "Consolidation & visualisation",
+              "description": "Consolidation et visualisation de données",
+              "icon": "ChartNoAxesCombined",
+              "status": "INACTIVE",
+              "code": "CONSOLIDATION",
+              "sortedBy": 2,
+              "createdAt": "2025-02-20T13:59:13.368263",
+              "updatedAt": "2025-02-20T13:59:13.368263"
+            }
+          ]
+        },
+        {
+          "id": "df5f66fd-f5b8-4255-a798-62af4174ed16",
+          "createdAt": "2025-02-20T13:59:13.368678",
+          "updatedAt": "2025-02-20T13:59:13.368678",
+          "status": "INACTIVE",
+          "deadlineAt": null,
+          "stepConfig": {
+            "id": "3a44ca3a-a9b1-416e-a778-572fb130b53b",
+            "createdAt": null,
+            "updatedAt": null,
+            "name": "Reporting",
+            "code": "REPORT",
+            "iconKey": null,
+            "sortedBy": 6,
+            "deadlineDay": null,
+            "mandatory": false,
+            "sbus": [
+              {
+                "id": "0a218efb-87e8-4bfc-aad9-d195a4e29d43",
+                "createdAt": null,
+                "updatedAt": null,
+                "name": "Mining"
+              }
+            ]
+          },
+          "subSteps": []
+        },
+        {
+          "id": "bd5041ad-cdee-428c-99bc-49399ceab13c",
+          "createdAt": "2025-02-20T13:59:13.366723",
+          "updatedAt": "2025-02-20T13:59:13.366723",
+          "status": "INACTIVE",
+          "deadlineAt": "2025-01-22T00:00:00",
+          "stepConfig": {
+            "id": "1845e2c9-2500-4a17-bb11-a98d1735cded",
+            "createdAt": null,
+            "updatedAt": "2025-02-24T10:28:12.459926",
+            "name": "Ajustement des hypothèses Manufacturing",
+            "code": "HYP_MANU_ADJ",
+            "iconKey": "sliders-horizontal",
+            "sortedBy": 3,
+            "deadlineDay": 22,
+            "mandatory": true,
+            "sbus": [
+              {
+                "id": "e42e7f19-757e-4489-bf7b-9b3c3f1d6275",
+                "createdAt": null,
+                "updatedAt": null,
+                "name": "Manufacturing"
+              }
+            ]
+          },
+          "subSteps": [
+            {
+              "id": "17aa8e69-6112-42ff-8d0b-73c86152a66a",
+              "name": "Scénarisation",
+              "description": "Scénarisation de données consolidées",
+              "icon": "ChartNoAxesCombined",
+              "status": "INACTIVE",
+              "code": "SCENARISATION",
+              "sortedBy": 3,
+              "createdAt": "2025-02-20T13:59:13.368035",
+              "updatedAt": "2025-02-20T13:59:13.368035"
+            },
+            {
+              "id": "0a1b95d1-3580-47ec-80c1-89e2b17ce706",
+              "name": "Consolidation & visualisation",
+              "description": "Consolidation et visualisation de données",
+              "icon": "ChartNoAxesCombined",
+              "status": "INACTIVE",
+              "code": "CONSOLIDATION",
+              "sortedBy": 2,
+              "createdAt": "2025-02-20T13:59:13.367969",
+              "updatedAt": "2025-02-20T13:59:13.367969"
+            },
+            {
+              "id": "9d8753dc-5d10-4191-b1f1-3559c093a702",
+              "name": "Collect",
+              "description": "Collecte de données brutes",
+              "icon": "LayoutList",
+              "status": "IN_PROGRESS",
+              "code": "COLLECT",
+              "sortedBy": 1,
+              "createdAt": "2025-02-20T13:59:13.367206",
+              "updatedAt": "2025-02-20T13:59:13.367206"
+            }
+          ]
+        }
+      ]
+    }
+  ]
