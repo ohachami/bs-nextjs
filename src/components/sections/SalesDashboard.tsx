@@ -21,14 +21,13 @@ export default function SalesDashboard({ section }: SalesDashboardProps) {
   const { data: userData, isLoading, isError } = useUser();
   const { data, isPending, error } = useChartList(section.id);
   const { data: marketableTypes } = useMarketableProductTypes();
-  
 
-  if (!currentExercise || !userData || isPending || isLoading) return <Loading />;
+  if (!currentExercise || !userData || isPending || isLoading)
+    return <Loading />;
 
   if (error) return <p className="p-4">Error Loading Charts...</p>;
 
   if (isError) return <p className="p-4">Error Loading User Sbu...</p>;
-
   const defaultItem =
     marketableTypes && marketableTypes?.length > 0
       ? marketableTypes[0].name
@@ -37,7 +36,10 @@ export default function SalesDashboard({ section }: SalesDashboardProps) {
     <div className="flex flex-col gap-4">
       {/* ConsolidationVersions with User Sbu (default) */}
       <div>
-        <CompareVersions sbuId={userData.sbu.id} exerciseId={currentExercise.id} />
+        <CompareVersions
+          sbuId={userData.sbu.id}
+          exerciseId={currentExercise.id}
+        />
       </div>
       <Tabs defaultValue={defaultItem} className="rounded">
         <div className="flex justify-between gap-4">
@@ -69,9 +71,8 @@ export default function SalesDashboard({ section }: SalesDashboardProps) {
             }}
           />
         </div>
-        {marketableTypes &&
-          marketableTypes.length > 0 &&
-          marketableTypes.map(({ id, name }) => (
+        {marketableTypes && marketableTypes.length > 0 ? (
+          marketableTypes.map(({ id, name, color }) => (
             <TabsContent key={id} value={name}>
               <div className="flex justify-center gap-10"></div>
               {data
@@ -83,32 +84,32 @@ export default function SalesDashboard({ section }: SalesDashboardProps) {
                 )
                 .map((chart, key) => (
                   <ChartBox
+                    marketableType={{ id, name, color }}
                     key={key}
                     chart={chart as ChartIF}
                     globalFilters={filters}
                   />
                 ))}
             </TabsContent>
-          ))}
-        {!marketableTypes ||
-          (marketableTypes.length === 0 && (
-            <div className='flex flex-col gap-4'>
-              {data
-                .filter(
-                  (e) =>
-                    e.displayType === displayType &&
-                    e.config !== null &&
-                    ['bar', 'line'].includes(e.chartType)
-                )
-                .map((chart, key) => (
-                  <ChartBox
-                    key={key}
-                    chart={chart as ChartIF}
-                    globalFilters={filters}
-                  />
-                ))}
-            </div>
-          ))}
+          ))
+        ) : (
+          <div className="flex flex-col gap-4">
+            {data
+              .filter(
+                (e) =>
+                  e.displayType === displayType &&
+                  e.config !== null &&
+                  ['bar', 'line'].includes(e.chartType)
+              )
+              .map((chart, key) => (
+                <ChartBox
+                  key={key}
+                  chart={chart as ChartIF}
+                  globalFilters={filters}
+                />
+              ))}
+          </div>
+        )}
       </Tabs>
     </div>
   );
