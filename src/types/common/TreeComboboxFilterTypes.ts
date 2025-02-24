@@ -15,6 +15,7 @@ interface TreeComboboxProps {
   placeholder?: string;
   selectChildren?: boolean;
   defaultValues?: TreeItem[];
+  selectParent?: boolean;
   onSelectionChange: (selectedItems: string[]) => void;
 }
 

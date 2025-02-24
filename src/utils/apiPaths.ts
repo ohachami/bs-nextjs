@@ -7,6 +7,7 @@ export const apiPaths = {
   exercises: () => `/exercises`,
   exercisesCount: () => `/exercises/count`,
   currentUser: () => `/users/current`,
+  users: () => `/users`,
   datasources: (sbuId: string) => `/datasources/hierarchy/${sbuId}`,
   dashboardSections: (stepId: string) => `/dashboard/steps/${stepId}/sections`,
   aggregations: () => `/aggregations`,

@@ -19,3 +19,4 @@ export async function callAsync<T>(asyncFunction: AsyncFunction<T>) {
   } finally {
   }
 }
+

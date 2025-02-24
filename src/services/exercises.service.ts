@@ -1,17 +1,17 @@
-import { callAsync } from '@/hooks/useAsync';
-import { ExercisePayload } from '@/types/exercises/createExercise';
+import { callApi } from '@/hooks/useApi';
 import { Exercise } from "@/types/exercise";
+import { ExercisePayload } from '@/types/exercises/createExercise';
 import { apiPaths } from "@/utils/apiPaths";
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { AxiosResponse } from 'axios';
-import api from "@/api";
 
 export const useExercisesCount = () => {
   return useQuery<number>({
     queryKey: ["exercises", "count"],
     queryFn: async () => {
-      const response = await callAsync<AxiosResponse<number>>(() => api.get(apiPaths.exercisesCount()));
-      return response.data
+      return await callApi<number>({
+        method: 'GET',
+        url: apiPaths.exercisesCount(),
+      });
     },
   });
 };
@@ -20,8 +20,10 @@ export const useExercises = () => {
   return useQuery<Exercise[]>({
     queryKey: ["exercises"],
     queryFn: async () => {
-      const response = await callAsync<AxiosResponse<Exercise[]>>(() => api.get(`${apiPaths.exercises()}`));
-      return response.data;
+      return await callApi<Exercise[]>({
+        method: 'GET',
+        url: apiPaths.exercises(),
+      });
     }
   })
 };
@@ -30,11 +32,13 @@ export const useExercises = () => {
 export const useCreateExercise = () => {
   const queryClient = useQueryClient();
 
-  return useMutation<AxiosResponse, Error, ExercisePayload>({
+  return useMutation<void, Error, ExercisePayload>({
     mutationFn: async (exerciseData) => {
-      return callAsync<AxiosResponse>(() =>
-        api.post(apiPaths.exercises(), exerciseData)
-      );
+      return callApi<void>({
+        method: 'POST',
+        url: apiPaths.exercises(),
+        data: exerciseData,
+      });
     },
     onSuccess: () => {
       // Invalidate and refetch exercises query after successful creation

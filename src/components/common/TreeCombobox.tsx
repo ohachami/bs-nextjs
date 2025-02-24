@@ -65,13 +65,14 @@ const collectChildItems = (node: TreeItem) => {
 };
 
 const TreeCombobox: React.FC<TreeComboboxProps> = ({
-  buttonVariant = 'default',
+  buttonVariant,
   items,
   multiSelect,
   defaultValues,
   title,
   placeholder,
   selectChildren,
+  selectParent,
   onSelectionChange,
 }) => {
   const [open, setOpen] = React.useState(false);
@@ -80,6 +81,10 @@ const TreeCombobox: React.FC<TreeComboboxProps> = ({
   const [selected, setSelected] = React.useState<TreeItem[]>(
     defaultValues || []
   );
+
+  React.useEffect(() => {
+    onSelectionChange(selected.map((val) => val.id));
+  }, [selected]); // Run after `selected` changes
 
   const handleSelect = (item: TreeItem) => {
     setSelected((prev) => {
@@ -111,7 +116,6 @@ const TreeCombobox: React.FC<TreeComboboxProps> = ({
           newSelected = [...prev, ...toAdd];
         }
 
-        onSelectionChange(newSelected.map((val) => val.id));
         return newSelected;
       } else {
         // Single select mode
@@ -143,7 +147,13 @@ const TreeCombobox: React.FC<TreeComboboxProps> = ({
         <React.Fragment key={item.id}>
           <CommandItem
             value={item.id}
-            onSelect={() => handleSelect(item)}
+            onSelect={() => {
+              if (hasChildren && !selectParent) {
+                toggleExpand(item);
+              } else {
+                handleSelect(item);
+              }
+            }}
             className={cn('flex items-center gap-2')}
             style={{ paddingLeft: `${paddingLeft * 4}px` }} // Tailwind spacing units
           >
