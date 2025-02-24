@@ -2,6 +2,7 @@ export const CHART_FILTERS = {
   regions: 'regions',
   periods: 'periods',
   products: 'products',
+  productType: 'product_type',
 };
 
 interface Metrics {
@@ -34,6 +35,7 @@ export interface Filter {
   name: string;
   key: string;
   values: string[];
+  hidden?: boolean;
 }
 
 export type QueryDefinition = {

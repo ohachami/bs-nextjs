@@ -14,6 +14,10 @@ export const useAggregations = (aggQuery: QueryDefinition) => {
       );
       return response.data;
     },
-    enabled: Boolean(aggQuery && Object.keys(aggQuery).length > 0 && aggQuery.dataVersionsIds.length>0),
+    enabled: Boolean(
+      aggQuery &&
+        Object.keys(aggQuery).length > 0 &&
+        aggQuery.dataVersionsIds.length > 0
+    ),
   });
 };

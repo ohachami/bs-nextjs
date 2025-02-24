@@ -3,7 +3,7 @@
 import { Button } from '@/components/ui/button';
 import { Split } from 'lucide-react';
 import { CollapsibleSelect } from '../CollapsibleSelect';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import ComapreVersionsSkeleton from '@/components/skeletons/CompareVersionSkeleton';
 import { useComparaisonVersionIds } from '@/store/consolidation/comparaisonVersionIds';
@@ -24,9 +24,20 @@ function CompareVersions({ sbuId, exerciseId }: CompareVersionsProps) {
     sbuId,
     exerciseId
   );
+  const { insertOrReplaceVersionId } = useComparaisonVersionIds();
+
+  useEffect(() => {
+    if (
+      Array.isArray(data) &&
+      data.length > 0 &&
+      data[0].consolidatedData &&
+      data[0].consolidatedData.length > 0
+    ) {
+      insertOrReplaceVersionId(0, data[0].consolidatedData[0].id);
+    }
+  }, [data]);
 
   // sync data with zustand store
-  const { insertOrReplaceVersionId } = useComparaisonVersionIds();
   // comparaison collapsible selects management
   const [compareItems, setCompareItems] = useState<number>(1);
   // toaster
