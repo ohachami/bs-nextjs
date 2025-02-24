@@ -4,7 +4,7 @@ import RegionFilter from './RegionFilter';
 import ExercisePeriodFilter from './ExercisePeriodFilter';
 
 type Props = {
-  module: 'products' | 'regions' | 'periods';
+  module: string;
   onChange: (values: string[]) => void;
 };
 

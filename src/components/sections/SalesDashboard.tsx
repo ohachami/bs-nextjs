@@ -1,33 +1,33 @@
 import { Section } from '@/types/exercise';
 import React, { useState } from 'react';
 import FilterFactory from '../common/FilterFactory';
-import ConsolidationCombobox from '../common/ConsolidationCombobox';
 import { useExerciseStore } from '@/store/exercises/useExerciseStore';
 import { useChartList } from '@/services/dashboard.service';
 import { ChartBox } from '../common/ChartBox';
 import { ChartIF } from '@/types/dashboard';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useMarketableProductTypes } from '@/services/referential.Service';
+import CompareVersions from '../common/CompareVersions';
+import { useUser } from '@/services/users.service';
+import Loading from '@/app/loading';
 interface SalesDashboardProps {
   section: Section;
 }
 export default function SalesDashboard({ section }: SalesDashboardProps) {
-  const [displayType, setDisplayType] = useState<String>('VISUALIZE');
+  const [displayType] = useState<string>('VISUALIZE');
   const [filters, setFilters] = useState<Record<string, string[]>>({});
 
   const { currentExercise } = useExerciseStore();
+  const { data: userData, isLoading, isError } = useUser();
   const { data, isPending, error } = useChartList(section.id);
   const { data: marketableTypes } = useMarketableProductTypes();
+  
 
-  /**
-   * Selection Event Handling
-   * @param selectedValue: new selected value from the list
-   */
-  const onSelectHandler = (selectedValue: string) => {};
-
-  if (!currentExercise || isPending) return <div />;
+  if (!currentExercise || !userData || isPending || isLoading) return <Loading />;
 
   if (error) return <p className="p-4">Error Loading Charts...</p>;
+
+  if (isError) return <p className="p-4">Error Loading User Sbu...</p>;
 
   const defaultItem =
     marketableTypes && marketableTypes?.length > 0
@@ -37,7 +37,7 @@ export default function SalesDashboard({ section }: SalesDashboardProps) {
     <div className="flex flex-col gap-4">
       {/* ConsolidationVersions with User Sbu (default) */}
       <div>
-        <ConsolidationCombobox onSelect={onSelectHandler} />
+        <CompareVersions sbuId={userData.sbu.id} exerciseId={currentExercise.id} />
       </div>
       <Tabs defaultValue={defaultItem} className="rounded">
         <div className="flex justify-between gap-4">
@@ -50,18 +50,36 @@ export default function SalesDashboard({ section }: SalesDashboardProps) {
               ))}
           </TabsList>
 
-          <FilterFactory module="products" onChange={() => {}} />
-          <FilterFactory module="regions" onChange={() => {}} />
-          <FilterFactory module="periods" onChange={() => {}} />
+          <FilterFactory
+            module="products"
+            onChange={(e) => {
+              setFilters({ ...filters, products: e });
+            }}
+          />
+          <FilterFactory
+            module="regions"
+            onChange={(e) => {
+              setFilters({ ...filters, regions: e });
+            }}
+          />
+          <FilterFactory
+            module="periods"
+            onChange={(e) => {
+              setFilters({ ...filters, periods: e });
+            }}
+          />
         </div>
         {marketableTypes &&
           marketableTypes.length > 0 &&
-          marketableTypes.map(({ id, name, color }) => (
+          marketableTypes.map(({ id, name }) => (
             <TabsContent key={id} value={name}>
               <div className="flex justify-center gap-10"></div>
               {data
                 .filter(
-                  (e) => e.displayType === displayType && e.config !== null
+                  (e) =>
+                    e.displayType === displayType &&
+                    e.config !== null &&
+                    ['bar', 'line'].includes(e.chartType)
                 )
                 .map((chart, key) => (
                   <ChartBox
@@ -74,10 +92,13 @@ export default function SalesDashboard({ section }: SalesDashboardProps) {
           ))}
         {!marketableTypes ||
           (marketableTypes.length === 0 && (
-            <>
+            <div className='flex flex-col gap-4'>
               {data
                 .filter(
-                  (e) => e.displayType === displayType && e.config !== null
+                  (e) =>
+                    e.displayType === displayType &&
+                    e.config !== null &&
+                    ['bar', 'line'].includes(e.chartType)
                 )
                 .map((chart, key) => (
                   <ChartBox
@@ -86,7 +107,7 @@ export default function SalesDashboard({ section }: SalesDashboardProps) {
                     globalFilters={filters}
                   />
                 ))}
-            </>
+            </div>
           ))}
       </Tabs>
     </div>

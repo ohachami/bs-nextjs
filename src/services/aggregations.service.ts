@@ -13,6 +13,6 @@ export const useAggregations = (aggQuery: QueryDefinition) => {
         data: aggQuery,
       });
     },
-    enabled: Boolean(aggQuery && Object.keys(aggQuery).length > 0),
+    enabled: Boolean(aggQuery && Object.keys(aggQuery).length > 0 && aggQuery.dataVersionsIds.length>0),
   });
 };

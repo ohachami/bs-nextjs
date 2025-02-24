@@ -8,7 +8,7 @@ const createJestConfig = nextJest({
 // Add any custom config to be passed to Jest
 const config: Config = {
     coverageProvider: 'v8',
-    testEnvironment: 'jsdom',
+    testEnvironment: 'jest-fixed-jsdom',
     setupFilesAfterEnv: ['<rootDir>/setup-jest.ts'],
     moduleNameMapper: {
         '^@/(.*)$': '<rootDir>/src/$1',
@@ -16,6 +16,7 @@ const config: Config = {
         '^lucide-react$': '<rootDir>/__mocks__/lucide-react.js',
     },
 }
+
 
 
 export default createJestConfig(config)

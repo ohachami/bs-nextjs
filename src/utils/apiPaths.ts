@@ -21,5 +21,9 @@ export const apiPaths = {
   groupedProducts: () => `/referential/grouped-products`,
   sbus: () => `/referential/sbus`,
   consolidationVersions: (sbuId?: string) =>
-    sbuId ? `/consolidation` : `/consolidation?sbuId=${sbuId}`,
+    !sbuId ? `/consolidation` : `/consolidation?sbuId=${sbuId}`,
+  consolidationHierarchy: (sbuId: string, exerciseId?: string) =>
+    exerciseId
+      ? `/consolidation/hierarchy?sbuId=${sbuId}&exerciseId=${exerciseId}`
+      : `/consolidation/hierarchy?sbuId=${sbuId}`,
 } as const;

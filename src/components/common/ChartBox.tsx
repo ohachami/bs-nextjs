@@ -7,11 +7,13 @@ import {
   CHART_FILTERS,
   DimentionItem,
   QueryDefinition,
+  Filter,
 } from '@/types/dashboard';
 import { PeriodIF } from '@/types/refExercise/config';
 import { useEffect, useState } from 'react';
 import Chart from 'react-apexcharts';
 import { ChartWrapper } from './ChartWrapper';
+import { useComparaisonVersionIds } from '@/store/consolidation/comparaisonVersionIds';
 
 const getGridColsClass = (length: number) => {
   if (length <= 1) return 'grid-cols-1';
@@ -20,6 +22,25 @@ const getGridColsClass = (length: number) => {
   if (length === 4) return 'grid-cols-2 md:grid-cols-4'; // 2 on small screens, 4 on medium+
   if (length >= 5) return 'grid-cols-2 md:grid-cols-3 lg:grid-cols-4'; // Dynamic responsiveness
   return 'grid-cols-3'; // Default case
+};
+
+const filterBuilder = (
+  filters: Record<string, string[]>,
+  filterConfig: Filter[]
+) => {
+  
+  const filterChart: Filter[] = [];
+  Object.keys(filters).map((name) => {
+    const currentFilter = filterConfig.find((f) => f.name == name);
+    if (!currentFilter) return;
+    filterChart.push({
+      name,
+      key: `${filterConfig.find((f) => f.name == name)?.key}`,
+      values: filters[name],
+    });
+  });
+
+  return filterChart;
 };
 export function ChartBox({
   chart,
@@ -33,66 +54,65 @@ export function ChartBox({
   const [periods, setPeriods] = useState<PeriodIF[]>(
     currentExercise?.periods.map((p) => p.period) || []
   );
+
+  const { versionIds } = useComparaisonVersionIds();
+
   //internal filters
   const [filters, setFilters] = useState<Record<string, string[]>>({
     [CHART_FILTERS.periods]:
       currentExercise?.periods?.map((p) => p.period.id) || [],
   });
-  const [query, setQuery] = useState<QueryDefinition>({ ...chart.config });
   //TODO get filters to display from filter factory
   //call api aggregation :
-  const { data, isSuccess, isLoading, isError } = useAggregations({
+  const { data, isSuccess, isLoading } = useAggregations({
     entity: chart.config.entity,
     aggregations: chart.config.aggregations,
     groupedBy: chart.config.groupedBy,
-    filters: chart.config.filters,
+    filters: filterBuilder(filters, chart.config.filters),
     formula: chart.config.formula,
+    dataVersionsIds: versionIds
   });
 
-  // useEffect(() => {
-  //   if (globalFilters) {
-  //     const newFilters = { ...filters };
-  //     Object.keys(globalFilters).map((g) => {
-  //       const value = Array.from(
-  //         new Set([...newFilters[g], ...globalFilters[g]])
-  //       );
-  //       newFilters[g] = value;
-  //     });
-  //     setFilters(newFilters);
-  //   }
-  // }, [globalFilters]);
+  useEffect(() => {
+    if (globalFilters) {
+      const newFilters = { ...filters };
+      Object.keys(globalFilters).map((g) => {
+        if (!newFilters[g]) return;
 
-  // useEffect(() => {
-  //   const selectedPeriods =
-  //     currentExercise?.periods
-  //       ?.filter((p) => filters[CHART_FILTERS.periods].includes(p.period.id))
-  //       .map((p) => p.period) ||
-  //     currentExercise?.periods.map((p) => p.period) ||
-  //     [];
-  //   setPeriods(selectedPeriods);
+        const value = Array.from(
+          new Set([...newFilters[g], ...globalFilters[g]])
+        );
+        newFilters[g] = value;
+      });
+      setFilters(newFilters);
+    }
+  }, [globalFilters]);
 
-  //   const newQuery = { ...query };
-  //   if (newQuery.filters === undefined) newQuery.filters = [];
-  //   //mutate chart config to send new query
-  //   Object.keys(filters).map((g) => {
-  //     const value = [...filters[g]];
-  //     newQuery.filters.push({ name: g, key: g, values: value });
-  //   });
-  //   const periodFilter = newQuery.filters.find((f) => f.name === 'periods');
-  //   if (periodFilter) {
-  //     if (
-  //       activePeriod &&
-  //       selectedPeriods.find((sp) => sp.id === activePeriod.id)
-  //     ) {
-  //       periodFilter.values = [activePeriod.id];
-  //     } else {
-  //       setActivePeriod(selectedPeriods[0]);
-  //       periodFilter.values = [selectedPeriods[0].id];
-  //     }
-  //   }
-  //   setQuery(newQuery);
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [currentExercise, filters]);
+  const handleChangeFilter = (name: string, values: string[]) => {
+    if (!filters[name]) return;
+    const newFilters = { ...filters };
+    const value = Array.from(new Set([...newFilters[name], ...values]));
+    setFilters({ ...newFilters, [name]: value });
+  };
+  useEffect(() => {
+    const selectedPeriods =
+      currentExercise?.periods
+        ?.filter((p) => filters[CHART_FILTERS.periods].includes(p.period.id))
+        .map((p) => p.period) ||
+      currentExercise?.periods.map((p) => p.period) ||
+      [];
+    setPeriods(selectedPeriods);
+
+    const newFilter = { ...filters };
+    //mutate chart config to send new query
+    Object.keys(filters).map((g) => {
+      const value = [...filters[g]];
+      newFilter[g] = value;
+    });
+
+    setFilters(newFilter);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentExercise]);
 
   const prepareData = (
     data: DimentionItem[]
@@ -110,7 +130,7 @@ export function ChartBox({
         });
     } else {
       chart.config.formula.forEach((m, index) => {
-        let key = Object.keys(m).pop() as string;
+        const key = Object.keys(m).pop() as string;
         series.push({
           name: `Serie ${index}`,
           data: data.map((d) => d.values[key]),
@@ -120,18 +140,21 @@ export function ChartBox({
 
     return series;
   };
+  if (!['bar', 'line'].includes(chart.chartType)) return <div />;
   return (
     <ChartWrapper
       handleChange={(tab) =>
         setActivePeriod(periods.find((p) => p.id === tab.value))
       }
+      filters={chart.config.filters}
+      handleChangeFilter={handleChangeFilter}
       title={chart.name}
       subTitle={chart.subTitle}
       tabs={periods.map((p) => ({ value: p.id, label: p.name }))}
     >
       {isLoading && <Loading />}
       {isSuccess && Array.isArray(data) && (
-        <div className="container mx-auto p-4">
+        <div className={`grid ${getGridColsClass(data.length)} gap-6 mx-auto p-4`}>
           {data.map((d, index) => {
             const options: ApexCharts.ApexOptions = {
               chart: {
@@ -149,13 +172,13 @@ export function ChartBox({
             };
 
             return (
-              <div className={`grid ${getGridColsClass(data.length)} gap-6`}>
+              <div key={d.groupedBy.label + '-' + index} >
                 <Chart
-                  key={d.groupedBy.label + '-' + index}
+                  
                   options={options}
                   series={prepareData(d.groupedBy.data)}
                   type={chart.chartType}
-                  height={450}
+                  height={170}
                 />
               </div>
             );

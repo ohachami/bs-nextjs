@@ -39,12 +39,18 @@ export default function MiningDashboard({ section }: MiningDashboardProps) {
         <ConsolidationCombobox onSelect={onSelectHandler} />
       </div>
 
-      <div className="flex justify-center gap-10"></div>
+      
+      <div className='flex flex-col gap-4'>
       {data
         .filter((e) => e.displayType === displayType)
         .map((chart, key) => (
-          <ChartBox key={key} chart={chart as ChartIF} globalFilters={filters} />
+          <ChartBox
+            key={key}
+            chart={chart as ChartIF}
+            globalFilters={filters}
+          />
         ))}
+        </div>
     </div>
   );
 }

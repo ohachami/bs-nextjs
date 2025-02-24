@@ -30,7 +30,7 @@ interface Aggregation {
   operation: 'SUM' | 'MAX' | 'MIN' | 'AVG';
 }
 
-interface Filter {
+export interface Filter {
   name: string;
   key: string;
   values: string[];
@@ -42,6 +42,7 @@ export type QueryDefinition = {
   groupedBy: string[];
   filters: Filter[];
   formula: Record<string, string>[];
+  dataVersionsIds: string[];
 };
 
 export type ChartIF = {
