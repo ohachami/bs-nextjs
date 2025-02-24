@@ -45,9 +45,11 @@ function HypWrapper({
 
   const pathname = usePathname();
   // Retrieve the current exercise step from the store
-  const {exerciseStep, currentExercise} = useExerciseStore();
+  const { exerciseStep, currentExercise } = useExerciseStore();
 
-  const step = currentExercise?.steps.find(s => pathname.endsWith(s.stepConfig.code) ) || exerciseStep
+  const step =
+    currentExercise?.steps.find((s) => pathname.endsWith(s.stepConfig.code)) ||
+    exerciseStep;
   // Fetch sub-steps related to the exercise step
   const {
     data: sections,
@@ -63,7 +65,6 @@ function HypWrapper({
 
   // Display an error message if there is an error loading the exercise
   if (isError || error) return <p className="p-4">Error Loading Exercise...</p>;
-
   return (
     <div className="space-y-6">
       {/* Check if the waiting step should be displayed */}

@@ -43,7 +43,11 @@ export default function MiningDashboard({ section }: MiningDashboardProps) {
       {data
         .filter((e) => e.displayType === displayType)
         .map((chart, key) => (
-          <ChartBox key={key} chart={chart as ChartIF} globalFilters={filters} />
+          <ChartBox
+            key={key}
+            chart={chart as ChartIF}
+            globalFilters={filters}
+          />
         ))}
     </div>
   );

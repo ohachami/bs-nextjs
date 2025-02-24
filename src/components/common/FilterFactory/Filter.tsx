@@ -37,7 +37,7 @@ const Filter = <T,>(props: Filter<T>) => {
 
   useEffect(() => {
     onChange(values.map((o) => o.value));
-  }, [onChange, values]);
+  }, [values]);
 
   if (basecomp === 'treecombobox') {
     const { selectChildren, multiSelect } = props;
