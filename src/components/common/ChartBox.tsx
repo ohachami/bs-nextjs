@@ -13,6 +13,7 @@ import { PeriodIF } from '@/types/refExercise/config';
 import { useEffect, useState } from 'react';
 import Chart from 'react-apexcharts';
 import { ChartWrapper } from './ChartWrapper';
+import { useComparaisonVersionIds } from '@/store/consolidation/comparaisonVersionIds';
 
 const getGridColsClass = (length: number) => {
   if (length <= 1) return 'grid-cols-1';
@@ -54,6 +55,8 @@ export function ChartBox({
     currentExercise?.periods.map((p) => p.period) || []
   );
 
+  const { versionIds } = useComparaisonVersionIds();
+
   //internal filters
   const [filters, setFilters] = useState<Record<string, string[]>>({
     [CHART_FILTERS.periods]:
@@ -67,6 +70,7 @@ export function ChartBox({
     groupedBy: chart.config.groupedBy,
     filters: filterBuilder(filters, chart.config.filters),
     formula: chart.config.formula,
+    dataVersionsIds: versionIds
   });
 
   useEffect(() => {

@@ -42,6 +42,7 @@ export type QueryDefinition = {
   groupedBy: string[];
   filters: Filter[];
   formula: Record<string, string>[];
+  dataVersionsIds: string[];
 };
 
 export type ChartIF = {
