@@ -43,7 +43,7 @@ function CompareVersions({ sbuId, exerciseId }: CompareVersionsProps) {
       // alert showing that the limit of comparaisons is 4!
       toast({
         variant: 'destructive',
-        title: 'Nombre Limite de comparaison dépasser!',
+        title: 'Nombre Limite de comparaison dépassé!',
         description: 'Vous nous pouvez pas dépasser 4 comparaisons!',
       });
     }
