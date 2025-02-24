@@ -12,7 +12,7 @@ interface SalesDashboardProps {
   section: Section;
 }
 export default function SalesDashboard({ section }: SalesDashboardProps) {
-  const [displayType, setDisplayType] = useState<String>('VISUALIZE');
+  const [displayType, setDisplayType] = useState<string>('VISUALIZE');
   const [filters, setFilters] = useState<Record<string, string[]>>({});
 
   const { currentExercise } = useExerciseStore();
@@ -92,7 +92,7 @@ export default function SalesDashboard({ section }: SalesDashboardProps) {
           ))}
         {!marketableTypes ||
           (marketableTypes.length === 0 && (
-            <>
+            <div className='flex flex-col gap-4'>
               {data
                 .filter(
                   (e) =>
@@ -107,7 +107,7 @@ export default function SalesDashboard({ section }: SalesDashboardProps) {
                     globalFilters={filters}
                   />
                 ))}
-            </>
+            </div>
           ))}
       </Tabs>
     </div>

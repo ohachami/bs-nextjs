@@ -27,10 +27,10 @@ const filterBuilder = (
   filters: Record<string, string[]>,
   filterConfig: Filter[]
 ) => {
-  console.log({ filterConfig });
-  var filterChart: Filter[] = [];
+  
+  const filterChart: Filter[] = [];
   Object.keys(filters).map((name) => {
-    let currentFilter = filterConfig.find((f) => f.name == name);
+    const currentFilter = filterConfig.find((f) => f.name == name);
     if (!currentFilter) return;
     filterChart.push({
       name,
@@ -61,7 +61,7 @@ export function ChartBox({
   });
   //TODO get filters to display from filter factory
   //call api aggregation :
-  const { data, isSuccess, isLoading, isError } = useAggregations({
+  const { data, isSuccess, isLoading } = useAggregations({
     entity: chart.config.entity,
     aggregations: chart.config.aggregations,
     groupedBy: chart.config.groupedBy,
@@ -126,7 +126,7 @@ export function ChartBox({
         });
     } else {
       chart.config.formula.forEach((m, index) => {
-        let key = Object.keys(m).pop() as string;
+        const key = Object.keys(m).pop() as string;
         series.push({
           name: `Serie ${index}`,
           data: data.map((d) => d.values[key]),
@@ -150,7 +150,7 @@ export function ChartBox({
     >
       {isLoading && <Loading />}
       {isSuccess && Array.isArray(data) && (
-        <div className="container mx-auto p-4">
+        <div className={`grid ${getGridColsClass(data.length)} gap-6 mx-auto p-4`}>
           {data.map((d, index) => {
             const options: ApexCharts.ApexOptions = {
               chart: {
@@ -168,13 +168,13 @@ export function ChartBox({
             };
 
             return (
-              <div className={`grid ${getGridColsClass(data.length)} gap-6`}>
+              <div key={d.groupedBy.label + '-' + index} >
                 <Chart
-                  key={d.groupedBy.label + '-' + index}
+                  
                   options={options}
                   series={prepareData(d.groupedBy.data)}
                   type={chart.chartType}
-                  height={450}
+                  height={170}
                 />
               </div>
             );
