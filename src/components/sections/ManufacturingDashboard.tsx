@@ -41,12 +41,17 @@ export default function ManufacturingDashboard({
         <ConsolidationCombobox onSelect={onSelectHandler} />
       </div>
 
-      <div className="flex justify-center gap-10"></div>
+      <div className='flex flex-col gap-4'>
       {data
         .filter((e) => e.displayType === displayType)
         .map((chart) => (
-          <ChartBox key={chart.id} chart={chart as ChartIF} globalFilters={filters} />
+          <ChartBox
+            key={chart.id}
+            chart={chart as ChartIF}
+            globalFilters={filters}
+          />
         ))}
+        </div>
     </div>
   );
 }

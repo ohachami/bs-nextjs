@@ -1,31 +1,31 @@
 'use client';
 import FormStepper from '@/components/common/FormStepper';
-import React, { useState } from 'react';
-import { PlusIcon } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 import {
   Dialog,
+  DialogClose,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogDescription,
   DialogTrigger,
-  DialogClose,
 } from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
-import { X } from 'lucide-react';
-import HorizonForm from './HorizonForm';
-import ObjectifsForm from './ObjectifsForms';
-import DeadlinesForm from './DeadlinesForm';
+import { withGuard } from '@/hoc/withGuard';
+import { toast } from '@/hooks/use-toast';
+import { useCreateExercise } from '@/services/exercises.service';
 import {
   ExerciseCreationFormData,
   useExerciseCreationStore,
 } from '@/store/exercises/create';
 import { Step } from '@/types/common/FormStepperTypes';
-import ExerciseSuccess from './ExerciseSuccess';
-import { EXERCISE_STATUS, STEP_STATUS } from '@/utils/constants';
-import { useCreateExercise } from '@/services/exercises.service';
 import { ExercisePayload } from '@/types/exercises/createExercise';
-import { toast } from '@/hooks/use-toast';
+import { EXERCISE_STATUS, STEP_STATUS } from '@/utils/constants';
+import { PlusIcon, X } from 'lucide-react';
+import React, { useState } from 'react';
+import DeadlinesForm from './DeadlinesForm';
+import ExerciseSuccess from './ExerciseSuccess';
+import HorizonForm from './HorizonForm';
+import ObjectifsForm from './ObjectifsForms';
 
 const steps: Step[] = [
   {
@@ -82,7 +82,6 @@ function CreateNewExercise() {
    * @returns STATUS CODE Example: 200OK
    */
   function preprocessData(data: ExerciseCreationFormData): ExercisePayload {
-    
     return {
       name: '',
       year: +data.periodConfig[0].split(';')[0],
@@ -95,7 +94,8 @@ function CreateNewExercise() {
         id: data.periodConfig[0].split(';')[1],
       },
       steps: data.steps.map((step) => ({
-        status: step.sortedBy === 1 ? STEP_STATUS.IN_PROGRESS: STEP_STATUS.INACTIVE,
+        status:
+          step.sortedBy === 1 ? STEP_STATUS.IN_PROGRESS : STEP_STATUS.INACTIVE,
         deadlineAt: step.deadlineAt ? step.deadlineAt?.toISOString() : '',
         stepConfig: {
           id: step.stepConfigId,
@@ -149,4 +149,8 @@ function CreateNewExercise() {
   );
 }
 
-export default CreateNewExercise;
+const GuardedCreateNewExercise = withGuard(['ROLE_EXERCISE_W'])(
+  CreateNewExercise
+);
+
+export default GuardedCreateNewExercise;

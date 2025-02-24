@@ -15,11 +15,12 @@ export const useConsolidationVersions = (sbuId?: string) => {
   return useQuery<ConsolidationVersionsIF[]>({
     queryKey: ['consolidation-versions', sbuId],
     queryFn: async () => {
-      const response = await callAsync<AxiosResponse<ConsolidationVersionsIF[]>>(() =>
-        api.get(apiPaths.consolidationVersions(sbuId))
-      );
+      const response = await callAsync<
+        AxiosResponse<ConsolidationVersionsIF[]>
+      >(() => api.get(apiPaths.consolidationVersions(sbuId)));
       return response.data;
-    }
+    },
+    enabled: !!sbuId,
   });
 };
 

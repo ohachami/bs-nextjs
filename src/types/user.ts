@@ -1,3 +1,4 @@
+import { permissions } from "@/utils/constants";
 import { RefSbu, Timestamps } from "./refExercise/config";
 
 export type User = Timestamps & {
@@ -22,3 +23,5 @@ export type Permission = Timestamps & {
     name: string;
     description: string;
 }
+
+export type PermissionKey = keyof typeof permissions;
