@@ -1,7 +1,7 @@
 'use client';
 
 import CollectPage from '@/components/sections/Collect';
-import SalesConsolidationPage from '@/components/sections/Consolidation';
+import ConsolidationPage from '@/components/sections/Consolidation';
 import HypWrapper from '@/components/sections/HypWrapper';
 import { CODE_SUB_STEPS, SBUS } from '@/utils/constants';
 
@@ -28,7 +28,7 @@ function PageHyperManu() {
           case CODE_SUB_STEPS.COLLECT:
             return <CollectPage sbuId={user.sbu.id} />;
           case CODE_SUB_STEPS.CONSOLIDATION:
-            return <SalesConsolidationPage items={sections} />;
+            return <ConsolidationPage items={sections} user={user} />;
           case CODE_SUB_STEPS.SCENARISATION:
             return <div />;
           default:

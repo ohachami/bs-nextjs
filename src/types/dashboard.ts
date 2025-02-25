@@ -1,3 +1,6 @@
+import { ExerciseStep, Section } from './exercise';
+import { User } from './user';
+
 export const CHART_FILTERS = {
   regions: 'regions',
   periods: 'periods',
@@ -77,3 +80,9 @@ export type ChartIF = {
 
 export type GroupedData = GroupedDataItem[];
 export type MetricsData = Metrics;
+
+export interface DashboardProps {
+  section: Section;
+  user: User;
+  disableCompare?: boolean;
+}

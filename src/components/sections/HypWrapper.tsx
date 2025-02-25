@@ -16,6 +16,7 @@ interface ChildredProps {
   subStepSelected: CodeSubStepType;
   user: User;
   sections: Section[];
+  step?: ExerciseStep;
 }
 interface HypWrapperProps {
   children?: ReactNode | ((props: ChildredProps) => ReactNode);
@@ -59,7 +60,6 @@ function HypWrapper({
 
   // Fetch user data
   const { data: user, isLoading, isError } = useUser();
-
   // Render an empty div when exercise step data is not yet available or still loading
   if (!exerciseStep || isPending || isLoading || !user) return <div />;
 
@@ -80,14 +80,14 @@ function HypWrapper({
             steps={exerciseStep.subSteps}
             isDisabled={
               shouldDisableStep && user && exerciseStep
-                ? !shouldDisableStep(user, exerciseStep)
+                ? shouldDisableStep(user, exerciseStep)
                 : false
             }
             onSelect={(e) => setSubStepSelected(e as CodeSubStepType)}
           />
 
           {typeof children === 'function'
-            ? children({ subStepSelected, sections, user })
+            ? children({ subStepSelected, sections, user, step })
             : children}
         </>
       )}
