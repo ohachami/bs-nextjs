@@ -1,7 +1,9 @@
 'use client';
 import ConsolidationCombobox from '@/components/common/ConsolidationCombobox';
+import ScenarioCard from '@/components/common/ScenarioCard';
 import CollectPage from '@/components/sections/Collect';
 import HypWrapper from '@/components/sections/HypWrapper';
+import Scenarisation from '@/components/sections/Scenarisation';
 import { useSbus } from '@/services/referential.Service';
 import { CODE_SUB_STEPS, SBUS } from '@/utils/constants';
 
@@ -31,7 +33,7 @@ function Page() {
           case CODE_SUB_STEPS.CONSOLIDATION:
             return <ConsolidationCombobox onSelect={onSelectHandler} />;
           case CODE_SUB_STEPS.SCENARISATION:
-            return <div />;
+            return <Scenarisation />;
           default:
             return <div />;
         }
