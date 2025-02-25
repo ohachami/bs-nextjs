@@ -6,7 +6,7 @@ export const mapPeriodToTreeItem = (
   year: number
 ): TreeItem => {
   return {
-    id: `${year}-${periodDTO.id}`,
+    id: `${year};${periodDTO.id}`,
     label: periodDTO.name,
     ...(periodDTO.children?.length > 0 && {
       children: periodDTO.children.map((c) => mapPeriodToTreeItem(c, year)),
