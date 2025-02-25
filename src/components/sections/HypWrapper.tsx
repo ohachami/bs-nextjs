@@ -80,7 +80,7 @@ function HypWrapper({
             steps={exerciseStep.subSteps}
             isDisabled={
               shouldDisableStep && user && exerciseStep
-                ? !shouldDisableStep(user, exerciseStep)
+                ? shouldDisableStep(user, exerciseStep)
                 : false
             }
             onSelect={(e) => setSubStepSelected(e as CodeSubStepType)}

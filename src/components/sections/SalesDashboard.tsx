@@ -4,30 +4,29 @@ import FilterFactory from '../common/FilterFactory';
 import { useExerciseStore } from '@/store/exercises/useExerciseStore';
 import { useChartList } from '@/services/dashboard.service';
 import { ChartBox } from '../common/ChartBox';
-import { ChartIF } from '@/types/dashboard';
+import { ChartIF, DashboardProps } from '@/types/dashboard';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useMarketableProductTypes } from '@/services/referential.Service';
 import CompareVersions from '../common/CompareVersions';
 import { useUser } from '@/services/users.service';
 import Loading from '@/app/loading';
-interface SalesDashboardProps {
-  section: Section;
-}
-export default function SalesDashboard({ section }: SalesDashboardProps) {
+import { User } from '@/types/user';
+
+export default function SalesDashboard({
+  section,
+  user: userData,
+}: DashboardProps) {
   const [displayType] = useState<string>('VISUALIZE');
   const [filters, setFilters] = useState<Record<string, string[]>>({});
 
   const { currentExercise } = useExerciseStore();
-  const { data: userData, isLoading, isError } = useUser();
   const { data, isPending, error } = useChartList(section.id);
   const { data: marketableTypes } = useMarketableProductTypes();
 
-  if (!currentExercise || !userData || isPending || isLoading)
-    return <Loading />;
+  if (!currentExercise || isPending) return <Loading />;
 
   if (error) return <p className="p-4">Error Loading Charts...</p>;
 
-  if (isError) return <p className="p-4">Error Loading User Sbu...</p>;
   const defaultItem =
     marketableTypes && marketableTypes?.length > 0
       ? marketableTypes[0].name

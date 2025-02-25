@@ -34,7 +34,7 @@ function ConsolidationCombobox({ onSelect }: ConsolidationComboboxProps) {
     if (sbus && sbus.length > 0) {
       return sbus[0].id;
     }
-    return null;
+    return undefined;
   }, [sbus]);
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState('');

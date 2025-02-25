@@ -4,19 +4,26 @@ import SalesDashboard from './SalesDashboard';
 import { SECTIONS } from '@/utils/constants';
 import MiningDashboard from './MiningDashboard';
 import ManufacturingDashboard from './ManufacturingDashboard';
+import { User } from '@/types/user';
 
-function SalesConsolidationPage({ items = [] }: { items?: Section[] }) {
+function SalesConsolidationPage({
+  items = [],
+  user,
+}: {
+  items?: Section[];
+  user: User;
+}) {
   const sections: DashboardWrapperItem[] = items.map((section) => ({
     code: section.code,
     name: section.name,
     content: (() => {
       switch (section.code) {
         case SECTIONS.HYPO_SALES:
-          return <SalesDashboard section={section} />;
+          return <SalesDashboard section={section} user={user} />;
         case SECTIONS.HYPO_MINING:
-          return <MiningDashboard section={section} />;
-        case SECTIONS.HYPO_MANUFACTURING:  
-          return <ManufacturingDashboard section={section} />
+          return <MiningDashboard section={section} user={user} />;
+        case SECTIONS.HYPO_MANUFACTURING:
+          return <ManufacturingDashboard section={section} user={user} />;
         default:
           return <div>Not found</div>;
       }

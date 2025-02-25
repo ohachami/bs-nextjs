@@ -6,12 +6,9 @@ import ConsolidationCombobox from '../common/ConsolidationCombobox';
 import { useExerciseStore } from '@/store/exercises/useExerciseStore';
 import { useChartList } from '@/services/dashboard.service';
 import { ChartBox } from '../common/ChartBox';
-import { ChartIF } from '@/types/dashboard';
+import { ChartIF, DashboardProps } from '@/types/dashboard';
 
-interface MiningDashboardProps {
-  section: Section;
-}
-export default function MiningDashboard({ section }: MiningDashboardProps) {
+export default function MiningDashboard({ section }: DashboardProps) {
   const [displayType, setDisplayType] = useState<string>('VISUALIZE');
   const [filters, setFilters] = useState<Record<string, string[]>>({});
 
@@ -39,18 +36,17 @@ export default function MiningDashboard({ section }: MiningDashboardProps) {
         <ConsolidationCombobox onSelect={onSelectHandler} />
       </div>
 
-      
-      <div className='flex flex-col gap-4'>
-      {data
-        .filter((e) => e.displayType === displayType)
-        .map((chart, key) => (
-          <ChartBox
-            key={key}
-            chart={chart as ChartIF}
-            globalFilters={filters}
-          />
-        ))}
-        </div>
+      <div className="flex flex-col gap-4">
+        {data
+          .filter((e) => e.displayType === displayType)
+          .map((chart, key) => (
+            <ChartBox
+              key={key}
+              chart={chart as ChartIF}
+              globalFilters={filters}
+            />
+          ))}
+      </div>
     </div>
   );
 }

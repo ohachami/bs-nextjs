@@ -1,6 +1,7 @@
 'use client';
 import ConsolidationCombobox from '@/components/common/ConsolidationCombobox';
 import CollectPage from '@/components/sections/Collect';
+import SalesConsolidationPage from '@/components/sections/Consolidation';
 import HypWrapper from '@/components/sections/HypWrapper';
 import { useSbus } from '@/services/referential.Service';
 import { CODE_SUB_STEPS, SBUS } from '@/utils/constants';
@@ -24,12 +25,12 @@ function Page() {
         title: 'Les BUs Industrielles sont en train de terminer leur version',
       }}
     >
-      {({ subStepSelected, user }) => {
+      {({ subStepSelected, user, sections }) => {
         switch (subStepSelected) {
           case CODE_SUB_STEPS.COLLECT:
             return <CollectPage user={user} />;
           case CODE_SUB_STEPS.CONSOLIDATION:
-            return <ConsolidationCombobox onSelect={onSelectHandler} />;
+            return <SalesConsolidationPage items={sections} />;
           case CODE_SUB_STEPS.SCENARISATION:
             return <div />;
           default:

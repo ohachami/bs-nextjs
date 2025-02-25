@@ -6,14 +6,9 @@ import ConsolidationCombobox from '../common/ConsolidationCombobox';
 import { useExerciseStore } from '@/store/exercises/useExerciseStore';
 import { useChartList } from '@/services/dashboard.service';
 import { ChartBox } from '../common/ChartBox';
-import { ChartIF } from '@/types/dashboard';
+import { ChartIF, DashboardProps } from '@/types/dashboard';
 
-interface ManufacturingDashboardProps {
-  section: Section;
-}
-export default function ManufacturingDashboard({
-  section,
-}: ManufacturingDashboardProps) {
+export default function ManufacturingDashboard({ section }: DashboardProps) {
   const [displayType, setDisplayType] = useState<string>('VISUALIZE');
   const [filters, setFilters] = useState<Record<string, string[]>>({});
 
@@ -41,17 +36,17 @@ export default function ManufacturingDashboard({
         <ConsolidationCombobox onSelect={onSelectHandler} />
       </div>
 
-      <div className='flex flex-col gap-4'>
-      {data
-        .filter((e) => e.displayType === displayType)
-        .map((chart) => (
-          <ChartBox
-            key={chart.id}
-            chart={chart as ChartIF}
-            globalFilters={filters}
-          />
-        ))}
-        </div>
+      <div className="flex flex-col gap-4">
+        {data
+          .filter((e) => e.displayType === displayType)
+          .map((chart) => (
+            <ChartBox
+              key={chart.id}
+              chart={chart as ChartIF}
+              globalFilters={filters}
+            />
+          ))}
+      </div>
     </div>
   );
 }
