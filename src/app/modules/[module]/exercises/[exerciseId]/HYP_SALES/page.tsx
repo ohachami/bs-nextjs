@@ -26,7 +26,7 @@ function PageHyperManu() {
       {({ subStepSelected, sections, user }) => {
         switch (subStepSelected) {
           case CODE_SUB_STEPS.COLLECT:
-            return <CollectPage user={user} />;
+            return <CollectPage sbuId={user.sbu.id} />;
           case CODE_SUB_STEPS.CONSOLIDATION:
             return <SalesConsolidationPage items={sections} />;
           case CODE_SUB_STEPS.SCENARISATION:

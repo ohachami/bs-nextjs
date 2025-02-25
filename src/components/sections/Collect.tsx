@@ -7,16 +7,19 @@ import { Button } from '../ui/button';
 import { RefreshCcw } from 'lucide-react';
 import { RefSiteIF } from '@/types/refExercise/config';
 import { VersionTable } from './VersionTable';
-import { User } from '@/types/user';
 import { useState } from 'react';
 import SelectedVersions from './SelectedVersions';
 
-function CollectPage({ user }: { user: User }) {
+interface Props {
+  sbuId?: string;
+}
+
+function CollectPage({ sbuId }: Props) {
   //getting user information
   // getting datasources related to user's sbu id
   const {
     data: datasources
-  } = useDataSourceHierarchy(user ? user.sbu.id : '');
+  } = useDataSourceHierarchy(sbuId ?? '');
 
   // Track only version names for each datasource and site combination
   const [selectedVersions, setSelectedVersions] = useState<DataVersionIF[]>([]);
