@@ -39,12 +39,15 @@ export function ChartWrapper({
           </div>
           {filters && (
             <div className="flex items-center justify-center ">
-              {filters.map((e) => (
-                <FilterFactory
-                  module={e.name}
-                  onChange={(v) => handleChangeFilter(e.name, v)}
-                />
-              ))}
+              {filters
+                .filter((e) => !e.hidden)
+                .map((e, key) => (
+                  <FilterFactory
+                    key={key}
+                    module={e.name}
+                    onChange={(v) => handleChangeFilter(e.name, v)}
+                  />
+                ))}
             </div>
           )}
         </div>

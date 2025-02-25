@@ -1,9 +1,7 @@
-import api from '@/api';
-import { callAsync } from '@/hooks/useAsync';
+import { callApi } from '@/hooks/useApi';
 import { DataSourceIF } from '@/types/collect/datasources';
 import { apiPaths } from '@/utils/apiPaths';
 import { useQuery } from '@tanstack/react-query';
-import { AxiosResponse } from 'axios';
 
 /**
  * Fetching the list of datasources for a given sbuId
@@ -14,10 +12,10 @@ export const useDataSourceHierarchy = (sbuId: string) => {
   return useQuery<DataSourceIF[]>({
     queryKey: ['datasources', sbuId],
     queryFn: async () => {
-      const response = await callAsync<AxiosResponse<DataSourceIF[]>>(() =>
-        api.get(apiPaths.datasources(sbuId))
-      );
-      return response.data;
+      return await callApi<DataSourceIF[]>({
+        method: 'GET',
+        url: apiPaths.datasources(sbuId),
+      });
     },
     // only run the query if the sbuId is provided
     enabled: !!sbuId,

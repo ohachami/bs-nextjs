@@ -90,19 +90,21 @@ function DeadlinesForm() {
 
   return (
     <div className="space-y-4" onClick={(e) => e.stopPropagation()}>
-      {stepConfig.map((config, key) => (
-        <div key={key} className="grid grid-cols-3 items-center">
-          <Label>{config.name}</Label>
-          <div className="col-span-2">
-            <DatePicker
-              onSelectedDate={(date: Date) => onSelectedDate(date, config)}
-              withClearBtn={!config.mandatory}
-              initialDate={getDateWithDay(config.deadlineDay)}
-              onDateClear={() => onClearDate(config.id)}
-            />
+      {stepConfig
+        .sort((a, b) => a.sortedBy - b.sortedBy)
+        .map((config, key) => (
+          <div key={key} className="grid grid-cols-3 items-center">
+            <Label>{config.name}</Label>
+            <div className="col-span-2">
+              <DatePicker
+                onSelectedDate={(date: Date) => onSelectedDate(date, config)}
+                withClearBtn={!config.mandatory}
+                initialDate={getDateWithDay(config.deadlineDay)}
+                onDateClear={() => onClearDate(config.id)}
+              />
+            </div>
           </div>
-        </div>
-      ))}
+        ))}
     </div>
   );
 }
