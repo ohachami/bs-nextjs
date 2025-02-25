@@ -10,13 +10,12 @@ import { VersionTable } from './VersionTable';
 import { User } from '@/types/user';
 import { useState } from 'react';
 import SelectedVersions from './SelectedVersions';
+import CreateSenario from '../scenarisation/createSenario';
 
 function CollectPage({ user }: { user: User }) {
   //getting user information
   // getting datasources related to user's sbu id
-  const {
-    data: datasources
-  } = useDataSourceHierarchy(user ? user.sbu.id : '');
+  const { data: datasources } = useDataSourceHierarchy(user ? user.sbu.id : '');
 
   // Track only version names for each datasource and site combination
   const [selectedVersions, setSelectedVersions] = useState<DataVersionIF[]>([]);
@@ -46,6 +45,7 @@ function CollectPage({ user }: { user: User }) {
     Array.isArray(datasources) &&
     datasources.length > 0 && (
       <div className="space-y-4">
+        <CreateSenario />
         <Tabs defaultValue={`${datasources[0].id}`} orientation="vertical">
           <div className="flex items-start gap-4">
             <TabsList className="flex-col w-52 gap-4 h-auto bg-gray-200">
