@@ -25,11 +25,7 @@ interface ConsolidationComboboxProps {
 }
 
 function ConsolidationCombobox({ onSelect }: ConsolidationComboboxProps) {
-  const {
-    data: sbus,
-    isLoading: isLoadingSbu,
-    isError: isErrorSbu,
-  } = useSbus();
+  const { data: sbus, isLoading: isLoadingSbu } = useSbus();
   const sbuId = React.useMemo(() => {
     if (sbus && sbus.length > 0) {
       return sbus[0].id;

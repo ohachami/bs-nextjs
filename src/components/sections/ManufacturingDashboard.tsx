@@ -7,8 +7,13 @@ import { useExerciseStore } from '@/store/exercises/useExerciseStore';
 import { useChartList } from '@/services/dashboard.service';
 import { ChartBox } from '../common/ChartBox';
 import { ChartIF, DashboardProps } from '@/types/dashboard';
+import CompareVersions from '../common/CompareVersions';
 
-export default function ManufacturingDashboard({ section }: DashboardProps) {
+export default function ManufacturingDashboard({
+  section,
+  user,
+  disableCompare = false,
+}: DashboardProps) {
   const [displayType, setDisplayType] = useState<string>('VISUALIZE');
   const [filters, setFilters] = useState<Record<string, string[]>>({});
 
@@ -25,7 +30,15 @@ export default function ManufacturingDashboard({ section }: DashboardProps) {
   if (error) return <p className="p-4">Error Loading Charts...</p>;
 
   return (
-    <div>
+    <div className="flex flex-col gap-4">
+      {/* ConsolidationVersions with User Sbu (default) */}
+      <div>
+        <CompareVersions
+          sbuId={user.sbu.id}
+          exerciseId={currentExercise.id}
+          disabled={disableCompare}
+        />
+      </div>
       <div className="flex justify-center gap-10">
         <FilterFactory module="product" onChange={() => {}} />
         <FilterFactory module="region" onChange={() => {}} />

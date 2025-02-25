@@ -1,4 +1,4 @@
-import { Section } from './exercise';
+import { ExerciseStep, Section } from './exercise';
 import { User } from './user';
 
 export const CHART_FILTERS = {
@@ -84,4 +84,5 @@ export type MetricsData = Metrics;
 export interface DashboardProps {
   section: Section;
   user: User;
+  disableCompare?: boolean;
 }

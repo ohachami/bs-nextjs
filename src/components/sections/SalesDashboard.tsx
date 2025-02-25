@@ -15,6 +15,7 @@ import { User } from '@/types/user';
 export default function SalesDashboard({
   section,
   user: userData,
+  disableCompare = false,
 }: DashboardProps) {
   const [displayType] = useState<string>('VISUALIZE');
   const [filters, setFilters] = useState<Record<string, string[]>>({});
@@ -31,6 +32,7 @@ export default function SalesDashboard({
     marketableTypes && marketableTypes?.length > 0
       ? marketableTypes[0].name
       : '';
+
   return (
     <div className="flex flex-col gap-4">
       {/* ConsolidationVersions with User Sbu (default) */}
@@ -38,6 +40,7 @@ export default function SalesDashboard({
         <CompareVersions
           sbuId={userData.sbu.id}
           exerciseId={currentExercise.id}
+          disabled={disableCompare}
         />
       </div>
       <Tabs defaultValue={defaultItem} className="rounded">
