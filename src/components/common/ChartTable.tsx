@@ -28,7 +28,6 @@ import {
 } from '@/components/ui/table';
 import { useEffect, useState } from 'react';
 import { TOption } from '@/utils/types';
-import { DataTableFacetedFilter } from './DataTableFaceted';
 import {ChartWrapper} from "@/components/common/ChartWrapper";
 import {PeriodIF} from "@/types/refExercise/config";
 import {useExerciseStore} from "@/store/exercises/useExerciseStore";
@@ -60,7 +59,6 @@ export function ChartTable<TData, TValue>({
   columns,
   data,
   tableId,
-  facetedConfig,
   onSelect,
   displaySelectedOnly,
   hiddenColumns,
@@ -118,7 +116,7 @@ export function ChartTable<TData, TValue>({
   const rowModel = displaySelectedOnly
     ? table.getFilteredSelectedRowModel()
     : table.getRowModel();
-
+/* 
   const filtersJsx = facetedConfig ? <>{facetedConfig.map(
       (f) =>
           table.getColumn(f.column) && (
@@ -129,7 +127,7 @@ export function ChartTable<TData, TValue>({
                   options={f.options}
               />
           )
-  )}</> : undefined;
+  )}</> : undefined; */
 
   //TODO fire the changes for the selected period
   console.log("activePeriod", activePeriod)
@@ -137,11 +135,12 @@ export function ChartTable<TData, TValue>({
     <div>
       <div className="rounded-md border bg-white">
         <ChartWrapper
-            handleChange={(tab) => setActivePeriod(periods.find(p => p.id === tab.value))}
+            handleChange={(tab) => setActivePeriod(periods.find(p => p.period.id === tab.value)?.period)}
             title={title}
             subTitle={subtitle}
-            tabs={periods.map(p => ({value: p.id, label: p.name}))}
-            filters={filtersJsx}
+            tabs={periods.map(p => ({value: p.period.id, label: p.period.name}))}
+            filters={[]}
+            handleChangeFilter={() => null}
         >
           <Table id={tableId}>
             <TableHeader>

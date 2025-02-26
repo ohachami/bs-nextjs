@@ -1,4 +1,4 @@
-import { ExerciseStep, Section } from './exercise';
+import { Section } from './exercise';
 import { User } from './user';
 
 export const CHART_FILTERS = {
@@ -25,7 +25,7 @@ interface GroupingItem {
   data: DimentionItem[];
 }
 
-interface GroupedDataItem {
+export interface GroupedDataItem {
   groupedBy: GroupingItem;
 }
 

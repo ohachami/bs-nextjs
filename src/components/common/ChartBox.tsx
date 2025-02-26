@@ -7,6 +7,7 @@ import {
   CHART_FILTERS,
   DimentionItem,
   Filter,
+  GroupedDataItem,
 } from '@/types/dashboard';
 import { PeriodIF } from '@/types/refExercise/config';
 import { useEffect, useState, useMemo, useCallback } from 'react';
@@ -14,7 +15,6 @@ import Chart from 'react-apexcharts';
 import { ChartWrapper } from './ChartWrapper';
 import { useComparaisonVersionIds } from '@/store/consolidation/comparaisonVersionIds';
 import { MarketableConfig, TOption } from '@/utils/types';
-import { set } from 'date-fns';
 
 const getGridColsClass = (length: number) => {
   if (length <= 1) return 'grid-cols-1';
@@ -25,7 +25,7 @@ const getGridColsClass = (length: number) => {
   return 'grid-cols-3';
 };
 
-const buildFilters = (filters: Record<string, any[]>, filterConfig: Filter[]) =>
+const buildFilters = (filters: Record<string, string[]>, filterConfig: Filter[]) =>
   Object.entries(filters).reduce<Filter[]>((acc, [name, values]) => {
     const currentFilter = filterConfig.find((f) => f.name === name);
     if (currentFilter) {
@@ -45,7 +45,7 @@ export function ChartBox({
 }: {
   chart: ChartIF;
   marketableType?: MarketableConfig;
-  globalFilters: Record<string, any[]>;
+  globalFilters: Record<string, string[]>;
   setGlobalFilter: (key: string, value: string[]) => void;
 }) {
   const { currentExercise } = useExerciseStore();
@@ -57,10 +57,10 @@ export function ChartBox({
     [currentExercise]
   );
   const [activePeriod, setActivePeriod] = useState<PeriodIF>();
-  const [periods, setPeriods] = useState<PeriodIF[]>(initialPeriods);
+  const [periods, ] = useState<PeriodIF[]>(initialPeriods);
 
   // Initial filters state: always include periods from currentExercise
-  const [filters, setFilters] = useState<Record<string, any[]>>({
+  const [filters, setFilters] = useState<Record<string, string[]>>({
     [CHART_FILTERS.periods]:
       currentExercise?.periods?.map((p) => p.period.id) || [],
   });
@@ -68,20 +68,25 @@ export function ChartBox({
   const handleChangeActivePeriod = (tab: TOption<string>) => {
     setActivePeriod(periods.find((p) => p.id === tab.value));
   };
+
   useEffect(() => {
-    const newFilters = { ...filters };
-    newFilters[CHART_FILTERS.periods] = [activePeriod?.id];
-    setFilters(newFilters);
-  }, [activePeriod?.id]);
+    if(activePeriod) {
+      const newFilters = { ...filters };
+      newFilters[CHART_FILTERS.periods] = [activePeriod?.id];
+      setFilters(newFilters);
+    }
+    
+  }, [activePeriod]);
+
   // Update filters when marketableType changes
   useEffect(() => {
     if (marketableType) {
       setFilters((prev) => ({
         ...prev,
-        [CHART_FILTERS.productType]: [marketableType.id],
+        [CHART_FILTERS.productType]: [marketableType.id || ""],
       }));
     }
-  }, [marketableType?.id]);
+  }, [marketableType]);
 
   // Merge global filters into internal filters
   useEffect(() => {
@@ -98,15 +103,7 @@ export function ChartBox({
     });
   }, [globalFilters]);
 
-  // Update periods based on currentExercise and period filters
-  useEffect(() => {
-    if (currentExercise) {
-      const selected = currentExercise.periods
-        .filter((p) => filters[CHART_FILTERS.periods].includes(p.period.id))
-        .map((p) => p.period);
-      setPeriods(selected.length ? selected : initialPeriods);
-    }
-  }, [currentExercise, filters, initialPeriods]);
+
 
   const handleChangeFilter = useCallback((name: string, values: string[]) => {
     setFilters((prev) => {
@@ -118,12 +115,15 @@ export function ChartBox({
     });
   }, []);
 
+  console.log("chart.config", chart)
   const aggregatedFilters = useMemo(
     () => buildFilters(filters, chart.config?.filters || []),
     [filters, chart.config?.filters]
   );
 
-  const { data, isSuccess, isLoading, refetch } = useAggregations({
+  console.log("aggregatedFilters", aggregatedFilters)
+
+  const { data, isSuccess, isLoading } = useAggregations({
     entity: chart.config.entity,
     aggregations: chart.config.aggregations,
     groupedBy: chart.config.groupedBy,
@@ -135,7 +135,10 @@ export function ChartBox({
   // Prepare chart series data
   const prepareData = useCallback(
     (dataItems: DimentionItem[]) => {
-      const series: { name: string; data: any[] }[] = [];
+      const series: { name: string; data: {
+        x: string;
+        y: number[];
+    }[] | number[] }[] = [];
 
       if (chart.chartType === 'boxPlot') {
         const boxSeries = {
@@ -176,7 +179,7 @@ export function ChartBox({
 
   // Generate chart options for each chart instance
   const chartOptions = useCallback(
-    (index: number, d: any) => ({
+    (index: number, d: GroupedDataItem) => ({
       ...(marketableType && { colors: [marketableType.color] }),
       chart: { id: `${chart.id}-${index}` },
       plotOptions: {
@@ -192,12 +195,14 @@ export function ChartBox({
         },
       },
       xaxis: {
-        categories: d.groupedBy.data.map((item: any) => item.label),
+        categories: d.groupedBy.data.map((item: DimentionItem) => item.label),
       },
     }),
     [chart.id, marketableType]
   );
 
+
+  
   return (
     <ChartWrapper
       handleChange={handleChangeActivePeriod}
@@ -206,7 +211,7 @@ export function ChartBox({
       title={chart.name}
       subTitle={chart.subTitle}
       tabs={periods
-        .filter((e) => filters['periods'].includes(e.id))
+        .filter((e) => !globalFilters['periods'] || globalFilters['periods']?.length === 0 || globalFilters['periods'].includes(e.id))
         .sort((a, b) => a.sortedBy - b.sortedBy)
         .map((p) => ({ value: p.id, label: p.name }))}
     >

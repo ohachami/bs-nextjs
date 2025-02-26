@@ -13,6 +13,7 @@ import { cn } from '@/lib/utils';
 export interface RadioGroupProps {
   name: string;
   label?: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   control: Control<any, any>;
   options: { value: string; label: string }[];
   description?: string;

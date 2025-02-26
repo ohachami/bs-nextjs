@@ -1,10 +1,9 @@
-import { Section } from '@/types/exercise';
 import React, { useEffect, useState } from 'react';
 import FilterFactory from '../common/FilterFactory';
 import { useExerciseStore } from '@/store/exercises/useExerciseStore';
 import { useChartList } from '@/services/dashboard.service';
 import { ChartBox } from '../common/ChartBox';
-import { CHART_FILTERS, ChartIF, DashboardProps } from '@/types/dashboard';
+import { ChartIF, DashboardProps } from '@/types/dashboard';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useMarketableProductTypes } from '@/services/referential.Service';
 import CompareVersions from '../common/CompareVersions';

@@ -14,6 +14,7 @@ export interface InputProps
   extends React.InputHTMLAttributes<HTMLInputElement> {
   description?: string;
   label?: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   control?: Control<any, any>;
 }
 export default function FormInput({
