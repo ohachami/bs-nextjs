@@ -9,7 +9,6 @@ import { RefSiteIF } from '@/types/refExercise/config';
 import { VersionTable } from './VersionTable';
 import { useState } from 'react';
 import SelectedVersions from './SelectedVersions';
-import CreateSenario from '../scenarisation/createSenario';
 
 interface Props {
   sbuId?: string;
