@@ -4,7 +4,7 @@ import FilterFactory from '../common/FilterFactory';
 import { useExerciseStore } from '@/store/exercises/useExerciseStore';
 import { useChartList } from '@/services/dashboard.service';
 import { ChartBox } from '../common/ChartBox';
-import { ChartIF, DashboardProps } from '@/types/dashboard';
+import { CHART_FILTERS, ChartIF, DashboardProps } from '@/types/dashboard';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useMarketableProductTypes } from '@/services/referential.Service';
 import CompareVersions from '../common/CompareVersions';
@@ -18,12 +18,22 @@ export default function SalesDashboard({
   disableCompare = false,
 }: DashboardProps) {
   const [displayType] = useState<string>('VISUALIZE');
-  const [filters, setFilters] = useState<Record<string, string[]>>({});
 
   const { currentExercise } = useExerciseStore();
+  const [filters, setFilters] = useState<Record<string, string[]>>({
+    [CHART_FILTERS.periods]: currentExercise
+      ? currentExercise?.periods.map((e) => e.id.periodId)
+      : [],
+  });
+
   const { data, isPending, error } = useChartList(section.id);
   const { data: marketableTypes } = useMarketableProductTypes();
 
+  const handleFilter = (key: string, value: string[]) => {
+    const newFilters = { ...filters };
+    newFilters[key] = value;
+    setFilters(newFilters);
+  };
   if (!currentExercise || isPending) return <Loading />;
 
   if (error) return <p className="p-4">Error Loading Charts...</p>;
@@ -82,7 +92,7 @@ export default function SalesDashboard({
                   (e) =>
                     e.displayType === displayType &&
                     e.config !== null &&
-                    ['bar', 'line'].includes(e.chartType)
+                    ['bar', 'boxPlot'].includes(e.chartType)
                 )
                 .map((chart, key) => (
                   <ChartBox
@@ -90,6 +100,7 @@ export default function SalesDashboard({
                     key={key}
                     chart={chart as ChartIF}
                     globalFilters={filters}
+                    setGlobalFilter={handleFilter}
                   />
                 ))}
             </TabsContent>
@@ -101,13 +112,15 @@ export default function SalesDashboard({
                 (e) =>
                   e.displayType === displayType &&
                   e.config !== null &&
-                  ['bar', 'line'].includes(e.chartType)
+                  ['bar', 'boxPlot'].includes(e.chartType)
               )
+              .filter((e) => e.name.includes('Prix'))
               .map((chart, key) => (
                 <ChartBox
                   key={key}
                   chart={chart as ChartIF}
                   globalFilters={filters}
+                  setGlobalFilter={handleFilter}
                 />
               ))}
           </div>
