@@ -34,7 +34,7 @@ function DeadlinesForm() {
 
   /**
    * On a date picker value change
-   * @param date : selected date from the picker
+   * @param date : selected date from he picker
    * @param configId : the step config id
    */
   const onSelectedDate = (date: Date, config: StepConfigIF) => {

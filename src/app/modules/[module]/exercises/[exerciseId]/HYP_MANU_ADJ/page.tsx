@@ -6,6 +6,7 @@ import HypWrapper from '@/components/sections/HypWrapper';
 import { CODE_SUB_STEPS, SBUS } from '@/utils/constants';
 import { useSbus } from '@/services/referential.Service';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import Scenarisation from '@/components/sections/Scenarisation';
 
 function Page() {
   const { data: sbus, isLoading, isError } = useSbus();
@@ -36,7 +37,7 @@ function Page() {
             case CODE_SUB_STEPS.CONSOLIDATION:
               return <ConsolidationPage items={sections} user={user} />;
             case CODE_SUB_STEPS.SCENARISATION:
-              return <div />;
+              return <Scenarisation />;
             default:
               return <div />;
           }

@@ -92,7 +92,7 @@ function CompareVersions({
     );
 
   return (
-    <div className="flex justify-between items-center">
+    <div className="flex justify-between items-center flex-1">
       <div className="flex flex-wrap gap-4 items-center">
         {Array(compareItems)
           .fill(0)

@@ -119,8 +119,8 @@ export function ChartBox({
   }, []);
 
   const aggregatedFilters = useMemo(
-    () => buildFilters(filters, chart.config.filters),
-    [filters, chart.config.filters]
+    () => buildFilters(filters, chart.config?.filters || []),
+    [filters, chart.config?.filters]
   );
 
   const { data, isSuccess, isLoading, refetch } = useAggregations({
@@ -144,13 +144,7 @@ export function ChartBox({
             const { MIN, AVG, MAX } = item.values;
             return {
               x: item.label,
-              y: [
-                MIN,
-                0, 
-                AVG,
-                0, 
-                MAX,
-              ],
+              y: [MIN, 0, AVG, 0, MAX],
             };
           }),
         };
