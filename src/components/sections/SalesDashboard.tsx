@@ -4,7 +4,7 @@ import FilterFactory from '../common/FilterFactory';
 import { useExerciseStore } from '@/store/exercises/useExerciseStore';
 import { useChartList } from '@/services/dashboard.service';
 import { ChartBox } from '../common/ChartBox';
-import { ChartIF, DashboardProps } from '@/types/dashboard';
+import { CHART_FILTERS, ChartIF, DashboardProps } from '@/types/dashboard';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useMarketableProductTypes } from '@/services/referential.Service';
 import CompareVersions from '../common/CompareVersions';
@@ -21,31 +21,42 @@ export default function SalesDashboard({
   const [filters, setFilters] = useState<Record<string, string[]>>({});
 
   const { currentExercise } = useExerciseStore();
+
   const { data, isPending, error } = useChartList(section.id);
   const { data: marketableTypes } = useMarketableProductTypes();
 
+  const handleFilter = (key: string, value: string[]) => {
+    const newFilters = { ...filters };
+    newFilters[key] = value;
+    setFilters(newFilters);
+  };
+
   useEffect(() => {
-    if(marketableTypes && marketableTypes?.length > 0) {
-      setDefaultTab(marketableTypes[0].name)
+    if (marketableTypes && marketableTypes?.length > 0) {
+      setDefaultTab(marketableTypes[0].name);
     }
-  }, [marketableTypes])
+  }, [marketableTypes]);
+  useEffect(() => {
+    if (marketableTypes && marketableTypes?.length > 0) {
+      setDefaultTab(marketableTypes[0].name);
+    }
+  }, [marketableTypes]);
 
   if (!currentExercise || isPending) return <Loading />;
 
   if (error) return <p className="p-4">Error Loading Charts...</p>;
 
-
   return (
     <div className="flex flex-col gap-4">
       {/* ConsolidationVersions with User Sbu (default) */}
-      <div className='flex gap-4'>
+      <div className="flex gap-4">
         <CompareVersions
           sbuId={userData.sbu.id}
           exerciseId={currentExercise.id}
           disabled={disableCompare}
         />
         <Button>Valider</Button>
-      </div> 
+      </div>
       <Tabs defaultValue={defaultTab} className="rounded">
         <div className="flex justify-between gap-4">
           <TabsList variant="default" className="justify-start max-w-80">
@@ -80,22 +91,23 @@ export default function SalesDashboard({
           marketableTypes.map(({ id, name, color }) => (
             <TabsContent key={id} value={name}>
               <div className="flex flex-col gap-4">
-              {data
-                .filter(
-                  (e) =>
-                    e.displayType === displayType &&
-                    e.config !== null &&
-                    ['bar', 'line'].includes(e.chartType)
-                )
-                .map((chart, key) => (
-                  <ChartBox
-                    marketableType={{ id, name, color }}
-                    key={key}
-                    chart={chart as ChartIF}
-                    globalFilters={filters}
-                  />
-                ))}
-                </div>
+                {data
+                  .filter(
+                    (e) =>
+                      e.displayType === displayType &&
+                      e.config !== null &&
+                      ['bar', 'boxPlot'].includes(e.chartType)
+                  )
+                  .map((chart, key) => (
+                    <ChartBox
+                      marketableType={{ id, name, color }}
+                      key={key}
+                      chart={chart as ChartIF}
+                      globalFilters={filters}
+                      setGlobalFilter={handleFilter}
+                    />
+                  ))}
+              </div>
             </TabsContent>
           ))
         ) : (
@@ -105,13 +117,14 @@ export default function SalesDashboard({
                 (e) =>
                   e.displayType === displayType &&
                   e.config !== null &&
-                  ['bar', 'line'].includes(e.chartType)
+                  ['bar', 'boxPlot'].includes(e.chartType)
               )
               .map((chart, key) => (
                 <ChartBox
                   key={key}
                   chart={chart as ChartIF}
                   globalFilters={filters}
+                  setGlobalFilter={handleFilter}
                 />
               ))}
           </div>

@@ -13,7 +13,8 @@ import { useEffect, useState, useMemo, useCallback } from 'react';
 import Chart from 'react-apexcharts';
 import { ChartWrapper } from './ChartWrapper';
 import { useComparaisonVersionIds } from '@/store/consolidation/comparaisonVersionIds';
-import { MarketableConfig } from '@/utils/types';
+import { MarketableConfig, TOption } from '@/utils/types';
+import { set } from 'date-fns';
 
 const getGridColsClass = (length: number) => {
   if (length <= 1) return 'grid-cols-1';
@@ -44,7 +45,8 @@ export function ChartBox({
 }: {
   chart: ChartIF;
   marketableType?: MarketableConfig;
-  globalFilters: Record<string, string[]>;
+  globalFilters: Record<string, any[]>;
+  setGlobalFilter: (key: string, value: string[]) => void;
 }) {
   const { currentExercise } = useExerciseStore();
   const { versionIds } = useComparaisonVersionIds();
@@ -63,6 +65,14 @@ export function ChartBox({
       currentExercise?.periods?.map((p) => p.period.id) || [],
   });
 
+  const handleChangeActivePeriod = (tab: TOption<string>) => {
+    setActivePeriod(periods.find((p) => p.id === tab.value));
+  };
+  useEffect(() => {
+    const newFilters = { ...filters };
+    newFilters[CHART_FILTERS.periods] = [activePeriod?.id];
+    setFilters(newFilters);
+  }, [activePeriod?.id]);
   // Update filters when marketableType changes
   useEffect(() => {
     if (marketableType) {
@@ -113,7 +123,7 @@ export function ChartBox({
     [filters, chart.config?.filters]
   );
 
-  const { data, isSuccess, isLoading } = useAggregations({
+  const { data, isSuccess, isLoading, refetch } = useAggregations({
     entity: chart.config.entity,
     aggregations: chart.config.aggregations,
     groupedBy: chart.config.groupedBy,
@@ -125,15 +135,31 @@ export function ChartBox({
   // Prepare chart series data
   const prepareData = useCallback(
     (dataItems: DimentionItem[]) => {
-      const series: { name: string; data: number[] }[] = [];
-      if (chart.config.aggregations.length > 0) {
+      const series: { name: string; data: any[] }[] = [];
+
+      if (chart.chartType === 'boxPlot') {
+        const boxSeries = {
+          name: 'BoxPlot Series',
+          data: dataItems.map((item) => {
+            const { MIN, AVG, MAX } = item.values;
+            return {
+              x: item.label,
+              y: [MIN, 0, AVG, 0, MAX],
+            };
+          }),
+        };
+        series.push(boxSeries);
+      } else if (
+        chart.config.aggregations &&
+        chart.config.aggregations.length > 0
+      ) {
         chart.config.aggregations.forEach((agg, index) => {
           series.push({
             name: `Serie ${index}`,
             data: dataItems.map((d) => d.values[agg.operation]),
           });
         });
-      } else {
+      } else if (chart.config.formula && chart.config.formula.length > 0) {
         chart.config.formula.forEach((formulaObj, index) => {
           const key = Object.keys(formulaObj).pop() as string;
           series.push({
@@ -142,9 +168,10 @@ export function ChartBox({
           });
         });
       }
+
       return series;
     },
-    [chart.config]
+    [chart.config, chart.type, filters]
   );
 
   // Generate chart options for each chart instance
@@ -157,6 +184,12 @@ export function ChartBox({
           columnWidth: '40%',
           barHeight: '60%',
         },
+        boxPlot: {
+          colors: {
+            upper: '#5C4742',
+            lower: '#A5978B',
+          },
+        },
       },
       xaxis: {
         categories: d.groupedBy.data.map((item: any) => item.label),
@@ -165,18 +198,17 @@ export function ChartBox({
     [chart.id, marketableType]
   );
 
-  if (!['bar', 'line'].includes(chart.chartType) || !data) return <div />;
-
   return (
     <ChartWrapper
-      handleChange={(tab) =>
-        setActivePeriod(periods.find((p) => p.id === tab.value))
-      }
+      handleChange={handleChangeActivePeriod}
       filters={chart.config.filters}
       handleChangeFilter={handleChangeFilter}
       title={chart.name}
       subTitle={chart.subTitle}
-      tabs={periods.map((p) => ({ value: p.id, label: p.name }))}
+      tabs={periods
+        .filter((e) => filters['periods'].includes(e.id))
+        .sort((a, b) => a.sortedBy - b.sortedBy)
+        .map((p) => ({ value: p.id, label: p.name }))}
     >
       {isLoading && <Loading />}
       {isSuccess && Array.isArray(data) && (

@@ -23,6 +23,12 @@ export default function MiningDashboard({
    * Selection Event Handling
    * @param selectedValue: new selected value from the list
    */
+
+  const handleFilter = (key: string, value: string[]) => {
+    const newFilters = { ...filters };
+    newFilters[key] = value;
+    setFilters(newFilters);
+  };
   const onSelectHandler = (selectedValue: string) => {};
 
   if (!currentExercise || isPending) return <div />;
@@ -41,10 +47,25 @@ export default function MiningDashboard({
       </div>
 
       <div className="flex justify-center gap-10">
-        <FilterFactory module="product" onChange={() => {}} />
-        <FilterFactory module="region" onChange={() => {}} />
+        <FilterFactory
+          module="products"
+          onChange={(e) => {
+            setFilters({ ...filters, products: e });
+          }}
+        />
+        <FilterFactory
+          module="regions"
+          onChange={(e) => {
+            setFilters({ ...filters, regions: e });
+          }}
+        />
         <div>
-          <FilterFactory module="period" onChange={() => {}} />
+          <FilterFactory
+            module="periods"
+            onChange={(e) => {
+              setFilters({ ...filters, periods: e });
+            }}
+          />
         </div>
         {/* ConsolidationVersions with User Sbu (default) */}
         <ConsolidationCombobox onSelect={onSelectHandler} />
@@ -58,6 +79,7 @@ export default function MiningDashboard({
               key={key}
               chart={chart as ChartIF}
               globalFilters={filters}
+              setGlobalFilter={handleFilter}
             />
           ))}
       </div>
