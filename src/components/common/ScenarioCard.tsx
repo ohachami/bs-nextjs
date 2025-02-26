@@ -110,22 +110,23 @@ const ScenarioFooter: React.FC<FooterProps> = (props) => {
           />
         )}
         {props.published && (
-          <ReactionButton
-            Icon={ArrowBigDown}
-            active={props.dislike.active}
-            color="text-red-500"
-            count={props.dislike.count}
-            onClick={props.dislike.OnDislike}
-          />
-        )}
-        {props.published && (
-          <ReactionButton
-            Icon={MessageCircle}
-            active={false}
-            color="text-green-500"
-            count={props.comment.count}
-            onClick={props.comment.OnComment}
-          />
+          <>
+            <ReactionButton
+              Icon={ArrowBigDown}
+              active={props.dislike.active}
+              color="text-red-500"
+              count={props.dislike.count}
+              onClick={props.dislike.OnDislike}
+            />
+
+            <ReactionButton
+              Icon={MessageCircle}
+              active={false}
+              color="text-green-500"
+              count={props.comment.count}
+              onClick={props.comment.OnComment}
+            />
+          </>
         )}
       </div>
       <div className="flex items-center justify-left ">
