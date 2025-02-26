@@ -110,6 +110,31 @@ export const MARKETABLE_PRODUCT_TYPES: MarketableConfig[] = [{
   color: "#007BFF"
 }]
 
+// rus_status
+export const RUN_STATUS = {
+  PENDING: "PENDING",
+  RUNNING: "RUNNING",
+  ERROR: "ERROR",
+  DONE: "DONE"
+} as const
+
+//workflow_status
+export const WORKFLOW_STATUS = {
+  SHORTLISTED: "SHORTLISTED",
+  VALIDATED: "VALIDATED"
+} as const
+
+export const SENARIO_TYPE = {
+  EXPLORATION: "EXPLORATION",
+  EXPLOITATION: "EXPLOITATION"
+} as const
+
+export const SENARIO_INPUTS_TYPE = {
+  DONNEES_CONSOLIDEES: "DONNEES_CONSOLIDEES",
+  SCENARIOS_EXISTANTS: "SCENARIOS_EXISTANTS"
+} as const
+
+
 export const getMarketableProductConfig = (name: string) => {
   return MARKETABLE_PRODUCT_TYPES.find(m => m.name.toLowerCase() === name.toLowerCase());
 } 
