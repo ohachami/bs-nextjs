@@ -33,7 +33,7 @@ import { senarioShema } from '@/validations/schemas/senarios.create';
 const LIMIT = 250;
 
 function CreateSenario() {
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
   const { currentExercise } = useExerciseStore();
   const { data: userData } = useUser();
 
