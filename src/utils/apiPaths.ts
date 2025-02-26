@@ -21,4 +21,5 @@ export const apiPaths = {
   sbus: () => `/referential/sbus`,
   consolidationVersions: (sbuId?: string) =>
     sbuId ? `/consolidation` : `/consolidation?sbuId=${sbuId}`,
+  scenarios: () => `/scenarios`,
 } as const;

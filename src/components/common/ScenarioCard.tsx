@@ -54,11 +54,8 @@ const GridPairs: React.FC<{ pairs: Pair[]; type: number }> = ({
           <span
             className={cn(
               'text-sm font-medium',
-              item.value === 0
-                ? 'text-red-500'
-                : item.value === 100
-                  ? 'text-primary'
-                  : 'text-gray-400'
+              //   TODO: add colors when the rules are defined
+              'text-gray-400'
             )}
           >
             {item.key}
@@ -82,7 +79,7 @@ const GridPairs: React.FC<{ pairs: Pair[]; type: number }> = ({
 };
 
 type FooterProps = {
-  published: boolean;
+  published: Nullable<boolean>;
   like: {
     count: number;
     active: boolean;

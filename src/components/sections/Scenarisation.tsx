@@ -3,83 +3,14 @@ import React from 'react';
 import ScenarioCard from '../common/ScenarioCard';
 import { Button } from '../ui/button';
 import { PlusIcon, Split } from 'lucide-react';
-
-const scenarios = [
-  {
-    creator: 'John Doe',
-    creationDate: new Date(),
-    name: 'Scenario 1',
-    type: 0,
-    published: false,
-    topList: [
-      { key: 'Total Revenue', value: '45,241 K$' },
-      { key: 'Total Cost', value: '500 K$' },
-    ],
-    bottomList: [
-      { key: 'p1', value: 100 },
-      { key: 'p2', value: 90 },
-      { key: 'p3', value: 12 },
-      { key: 'p4', value: 0 },
-      { key: 'p5', value: 12 },
-      { key: 'p6', value: 45 },
-    ],
-    likes: 10,
-    dislikes: 2,
-    comments: 5,
-    liked: true,
-    disliked: false,
-  },
-  {
-    creator: 'Jane Doe',
-    creationDate: new Date(),
-    name: 'Scenario 2',
-    type: 2,
-    published: true,
-    topList: [
-      { key: 'Total Revenue', value: '45,241 K$' },
-      { key: 'Total Cost', value: '500 K$' },
-    ],
-    bottomList: [
-      { key: 'p1', value: 100 },
-      { key: 'p2', value: 90 },
-      { key: 'p3', value: 12 },
-      { key: 'p4', value: 0 },
-      { key: 'p5', value: 12 },
-      { key: 'p6', value: 45 },
-    ],
-    likes: 10,
-    dislikes: 2,
-    comments: 5,
-    liked: true,
-    disliked: false,
-  },
-  {
-    creator: 'John Doe',
-    creationDate: new Date(),
-    name: 'Scenario 3',
-    type: 0,
-    published: true,
-    topList: [
-      { key: 'Total Revenue', value: '45,241 K$' },
-      { key: 'Total Cost', value: '500 K$' },
-    ],
-    bottomList: [
-      { key: 'p1', value: 100 },
-      { key: 'p2', value: 90 },
-      { key: 'p3', value: 12 },
-      { key: 'p4', value: 0 },
-      { key: 'p5', value: 12 },
-      { key: 'p6', value: 45 },
-    ],
-    likes: 10,
-    dislikes: 2,
-    comments: 5,
-    liked: false,
-    disliked: true,
-  },
-];
+import { useScenarios } from '@/services/scenarios.service';
 
 const Scenarisation: React.FC = () => {
+  const { isPending, data: scenarios } = useScenarios();
+
+  if (isPending) return <p>Loading...</p>;
+  if (!scenarios) return <p>Error...</p>;
+
   return (
     <div>
       <div className="flex items-center justify-between">
