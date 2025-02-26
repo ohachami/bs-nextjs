@@ -26,4 +26,5 @@ export const apiPaths = {
     exerciseId
       ? `/consolidation/hierarchy?sbuId=${sbuId}&exerciseId=${exerciseId}`
       : `/consolidation/hierarchy?sbuId=${sbuId}`,
+  scenarios: () => `/scenarios`,
 } as const;
