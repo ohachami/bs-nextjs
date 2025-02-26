@@ -1,7 +1,11 @@
+import { ExerciseStep, Section } from './exercise';
+import { User } from './user';
+
 export const CHART_FILTERS = {
   regions: 'regions',
   periods: 'periods',
   products: 'products',
+  productType: 'product_type',
 };
 
 interface Metrics {
@@ -30,10 +34,11 @@ interface Aggregation {
   operation: 'SUM' | 'MAX' | 'MIN' | 'AVG';
 }
 
-interface Filter {
+export interface Filter {
   name: string;
   key: string;
   values: string[];
+  hidden?: boolean;
 }
 
 export type QueryDefinition = {
@@ -42,6 +47,7 @@ export type QueryDefinition = {
   groupedBy: string[];
   filters: Filter[];
   formula: Record<string, string>[];
+  dataVersionsIds: string[];
 };
 
 export type ChartIF = {
@@ -74,3 +80,9 @@ export type ChartIF = {
 
 export type GroupedData = GroupedDataItem[];
 export type MetricsData = Metrics;
+
+export interface DashboardProps {
+  section: Section;
+  user: User;
+  disableCompare?: boolean;
+}

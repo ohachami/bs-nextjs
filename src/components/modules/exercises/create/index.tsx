@@ -83,23 +83,18 @@ function CreateNewExercise() {
    */
   function preprocessData(data: ExerciseCreationFormData): ExercisePayload {
     return {
-      name: '',
+      name: null,
       year: +data.periodConfig[0].split(';')[0],
       status: EXERCISE_STATUS.IN_PROGRESS,
-      description: '',
-      exerciseType: {
-        id: data.exerciceType.split(';')[0],
-      },
-      parentPeriod: {
-        id: data.periodConfig[0].split(';')[1],
-      },
+      description: null,
+      exerciseTypeId: data.exerciceType.split(';')[0],
+      parentPeriodId: data.periodConfig[0].split(';')[1],
+      periods: data.periodConfig,
       steps: data.steps.map((step) => ({
         status:
           step.sortedBy === 1 ? STEP_STATUS.IN_PROGRESS : STEP_STATUS.INACTIVE,
-        deadlineAt: step.deadlineAt ? step.deadlineAt?.toISOString() : '',
-        stepConfig: {
-          id: step.stepConfigId,
-        },
+        deadlineAt: step.deadlineAt ? step.deadlineAt?.toISOString() : null,
+        stepConfigId: step.stepConfigId,
       })),
     };
   }

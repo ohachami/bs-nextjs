@@ -7,6 +7,7 @@ export const apiPaths = {
   exercises: () => `/exercises`,
   exercisesCount: () => `/exercises/count`,
   currentUser: () => `/users/current`,
+  users: () => `/users`,
   datasources: (sbuId: string) => `/datasources/hierarchy/${sbuId}`,
   dashboardSections: (stepId: string) => `/dashboard/steps/${stepId}/sections`,
   aggregations: () => `/aggregations`,
@@ -20,6 +21,10 @@ export const apiPaths = {
   groupedProducts: () => `/referential/grouped-products`,
   sbus: () => `/referential/sbus`,
   consolidationVersions: (sbuId?: string) =>
-    sbuId ? `/consolidation` : `/consolidation?sbuId=${sbuId}`,
+    !sbuId ? `/consolidation` : `/consolidation?sbuId=${sbuId}`,
+  consolidationHierarchy: (sbuId: string, exerciseId?: string) =>
+    exerciseId
+      ? `/consolidation/hierarchy?sbuId=${sbuId}&exerciseId=${exerciseId}`
+      : `/consolidation/hierarchy?sbuId=${sbuId}`,
   scenarios: () => `/scenarios`,
 } as const;

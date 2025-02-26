@@ -6,14 +6,14 @@ import ConsolidationCombobox from '../common/ConsolidationCombobox';
 import { useExerciseStore } from '@/store/exercises/useExerciseStore';
 import { useChartList } from '@/services/dashboard.service';
 import { ChartBox } from '../common/ChartBox';
-import { ChartIF } from '@/types/dashboard';
+import { ChartIF, DashboardProps } from '@/types/dashboard';
+import CompareVersions from '../common/CompareVersions';
 
-interface ManufacturingDashboardProps {
-  section: Section;
-}
 export default function ManufacturingDashboard({
   section,
-}: ManufacturingDashboardProps) {
+  user,
+  disableCompare = false,
+}: DashboardProps) {
   const [displayType, setDisplayType] = useState<string>('VISUALIZE');
   const [filters, setFilters] = useState<Record<string, string[]>>({});
 
@@ -30,7 +30,15 @@ export default function ManufacturingDashboard({
   if (error) return <p className="p-4">Error Loading Charts...</p>;
 
   return (
-    <div>
+    <div className="flex flex-col gap-4">
+      {/* ConsolidationVersions with User Sbu (default) */}
+      <div>
+        <CompareVersions
+          sbuId={user.sbu.id}
+          exerciseId={currentExercise.id}
+          disabled={disableCompare}
+        />
+      </div>
       <div className="flex justify-center gap-10">
         <FilterFactory module="product" onChange={() => {}} />
         <FilterFactory module="region" onChange={() => {}} />
@@ -41,12 +49,17 @@ export default function ManufacturingDashboard({
         <ConsolidationCombobox onSelect={onSelectHandler} />
       </div>
 
-      <div className="flex justify-center gap-10"></div>
-      {data
-        .filter((e) => e.displayType === displayType)
-        .map((chart) => (
-          <ChartBox key={chart.id} chart={chart as ChartIF} globalFilters={filters} />
-        ))}
+      <div className="flex flex-col gap-4">
+        {data
+          .filter((e) => e.displayType === displayType)
+          .map((chart) => (
+            <ChartBox
+              key={chart.id}
+              chart={chart as ChartIF}
+              globalFilters={filters}
+            />
+          ))}
+      </div>
     </div>
   );
 }

@@ -16,6 +16,7 @@ interface ChildredProps {
   subStepSelected: CodeSubStepType;
   user: User;
   sections: Section[];
+  step?: ExerciseStep;
 }
 interface HypWrapperProps {
   children?: ReactNode | ((props: ChildredProps) => ReactNode);
@@ -45,9 +46,11 @@ function HypWrapper({
 
   const pathname = usePathname();
   // Retrieve the current exercise step from the store
-  const {exerciseStep, currentExercise} = useExerciseStore();
+  const { exerciseStep, currentExercise } = useExerciseStore();
 
-  const step = currentExercise?.steps.find(s => pathname.endsWith(s.stepConfig.code) ) || exerciseStep
+  const step =
+    currentExercise?.steps.find((s) => pathname.endsWith(s.stepConfig.code)) ||
+    exerciseStep;
   // Fetch sub-steps related to the exercise step
   const {
     data: sections,
@@ -57,13 +60,11 @@ function HypWrapper({
 
   // Fetch user data
   const { data: user, isLoading, isError } = useUser();
-
   // Render an empty div when exercise step data is not yet available or still loading
   if (!exerciseStep || isPending || isLoading || !user) return <div />;
 
   // Display an error message if there is an error loading the exercise
   if (isError || error) return <p className="p-4">Error Loading Exercise...</p>;
-
   return (
     <div className="space-y-6">
       {/* Check if the waiting step should be displayed */}
@@ -79,14 +80,14 @@ function HypWrapper({
             steps={exerciseStep.subSteps}
             isDisabled={
               shouldDisableStep && user && exerciseStep
-                ? !shouldDisableStep(user, exerciseStep)
+                ? shouldDisableStep(user, exerciseStep)
                 : false
             }
             onSelect={(e) => setSubStepSelected(e as CodeSubStepType)}
           />
 
           {typeof children === 'function'
-            ? children({ subStepSelected, sections, user })
+            ? children({ subStepSelected, sections, user, step })
             : children}
         </>
       )}

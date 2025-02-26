@@ -31,12 +31,16 @@ function HorizonForm() {
     useExerciseTypes();
   // current tree data object
   const [treeData, setTreeData] = useState<TreeItem[]>([]);
+  // Key to reset TreeCombobox
+  const [treeKey, setTreeKey] = useState(0);
 
   // on exercice type change
   const onExerciceTypeChange = (exerciceType: string) => {
-    updateData({ ...data, exerciceType });
+    updateData({ ...data, exerciceType, periodConfig: [] });
     // getting exercise type name
     const [, exercieTypeName] = exerciceType.split(';');
+    // update treekey so that the tree combobox is reset
+    setTreeKey((prev) => prev + 1);
     // updating the tree data
     updateTreeData(exercieTypeName);
   };
@@ -135,10 +139,14 @@ function HorizonForm() {
       <section className="space-y-2">
         <Label htmlFor="typeExercice">Période de l&apos;exercice</Label>
         <TreeCombobox
+          key={treeKey}
           buttonVariant="default"
           items={treeData}
           title="Séléctionner une période"
           multiSelect={
+            data.exerciceType.split(';')[1] === EXERCISE_TYPES['Ad hoc']
+          }
+          selectParent={
             data.exerciceType.split(';')[1] === EXERCISE_TYPES['Ad hoc']
           }
           selectChildren={false}

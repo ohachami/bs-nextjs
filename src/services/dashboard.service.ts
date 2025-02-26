@@ -1,10 +1,8 @@
-import { callAsync } from '@/hooks/useAsync';
+import { callApi } from '@/hooks/useApi';
+import { ChartIF } from '@/types/dashboard';
+import { Section } from '@/types/exercise';
 import { apiPaths } from '@/utils/apiPaths';
 import { useQuery } from '@tanstack/react-query';
-import { AxiosResponse } from 'axios';
-import api from '@/api';
-import { Section } from '@/types/exercise';
-import { ChartIF } from '@/types/dashboard';
 
 export const useSections = (stepId: string | undefined) => {
   return useQuery<Section[]>({
@@ -13,10 +11,10 @@ export const useSections = (stepId: string | undefined) => {
       if (!stepId) {
         throw new Error('stepId is required'); // Prevents unnecessary API calls
       }
-      const response = await callAsync<AxiosResponse<Section[]>>(() =>
-        api.get(apiPaths.dashboardSections(stepId))
-      );
-      return response.data;
+      return await callApi<Section[]>({
+        method: 'GET',
+        url: apiPaths.dashboardSections(stepId),
+      });
     },
     enabled: Boolean(stepId), // Ensures query runs only when stepId is available
   });
@@ -30,10 +28,10 @@ export const useChartList = (sectionId: string | undefined) => {
       if (!sectionId) {
         throw new Error('sectionId is required'); // Prevents unnecessary API calls
       }
-      const response = await callAsync<AxiosResponse<ChartIF[]>>(() =>
-        api.get(apiPaths.chartList(sectionId))
-      );
-      return response.data;
+      return await callApi<ChartIF[]>({
+        method: 'GET',
+        url: apiPaths.chartList(sectionId),
+      });
     },
     enabled: Boolean(sectionId), // Ensures query runs only when stepId is available
   });

@@ -1,21 +1,16 @@
 // Define the type for the exercise payload
 interface ExercisePayload {
-  name: string;
+  name: string | null;
   year: number;
-  status: string;
-  description: string;
-  exerciseType: {
-    id: string;
-  };
-  parentPeriod: {
-    id: string;
-  };
+  status: string | null;
+  description: string | null;
+  exerciseTypeId: string;
+  parentPeriodId: string;
+  periods?: string[];
   steps: Array<{
+    stepConfigId: string;
     status: string;
-    deadlineAt: string;
-    stepConfig: {
-      id: string;
-    };
+    deadlineAt: string | null;
   }>;
 }
 
