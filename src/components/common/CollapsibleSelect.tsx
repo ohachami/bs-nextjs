@@ -33,30 +33,37 @@ interface CollapsibleSelectProps {
   collapsibleItems: NestedOption[];
   selectIndex: number;
   onCompare: (selectedItem: string, selectIndex: number) => void;
+  disabled?: boolean;
 }
 
 export function CollapsibleSelect({
   collapsibleItems: nestedOptions,
   selectIndex,
   onCompare,
+  disabled,
 }: CollapsibleSelectProps) {
   const [open, setOpen] = React.useState(false);
   const [search, setSearch] = React.useState('');
-  const [selected, setSelected] = React.useState<{value: string, label: string}>({value: '', label: ''});
+  const [selected, setSelected] = React.useState<{
+    value: string;
+    label: string;
+  }>({ value: '', label: '' });
   const [expandedItems, setExpandedItems] = React.useState<string[]>([]);
 
   const toggleItem = (depth: number, value: string, label: string) => {
     // selecting only the items of depth 1 (données consolidées)
     if (depth === 1) {
       setSelected((p) => {
-        if(p.value === value) return {
-          value: '', label: ''
-        }
+        if (p.value === value)
+          return {
+            value: '',
+            label: '',
+          };
         return {
           value,
-          label
-        }
-      })
+          label,
+        };
+      });
     }
   };
 
@@ -159,6 +166,7 @@ export function CollapsibleSelect({
           role="combobox"
           aria-expanded={open}
           className="w-fit justify-between"
+          disabled={disabled}
         >
           <div
             className={'h-full w-2 rounded-lg'}
@@ -189,7 +197,7 @@ export function CollapsibleSelect({
             <CommandGroup>
               {nestedOptions.length === 0 ? (
                 <div className="h-40 w-full flex flex-col items-center justify-center">
-                  <p className='text-sm text-gray-400'>Aucun élement trouvé.</p>
+                  <p className="text-sm text-gray-400">Aucun élement trouvé.</p>
                 </div>
               ) : (
                 <ScrollArea className="h-60">
@@ -199,7 +207,7 @@ export function CollapsibleSelect({
             </CommandGroup>
             <CommandSeparator />
             <CommandItem
-              disabled={selected.value.length === 0}
+              disabled={selected.value.length === 0 || disabled}
               onSelect={onCompareHanlder}
               className="justify-center py-2 text-center cursor-pointer"
             >

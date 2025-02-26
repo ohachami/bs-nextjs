@@ -17,7 +17,7 @@ import {
 } from '@/components/ui/sheet';
 import { useExercises } from '@/services/exercises.service';
 import { Exercise } from '@/types/exercise';
-import { EXERCISE_STATUS } from '@/utils/constants';
+import { EXERCISE_STATUS, STEP_STATUS } from '@/utils/constants';
 import { formatDate, getFullName } from '@/utils/functions';
 import { Nullable } from '@/utils/types';
 import { ColumnDef } from '@tanstack/react-table';
@@ -171,7 +171,11 @@ const ModuleExercices = () => {
                 order: s.stepConfig.sortedBy,
               }))}
               onDetailsView={() => handleViewDetails(ex)}
-              onOpenClick={() => router.push(`./exercises/${ex.id}/HYP_MANU`)}
+              onOpenClick={() =>
+                router.push(
+                  `./exercises/${ex.id}/${ex.steps.find((e) => e.status === STEP_STATUS.IN_PROGRESS)?.stepConfig.code}`
+                )
+              }
             />
           ))}
         </div>

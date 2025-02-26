@@ -13,7 +13,7 @@ function ProcessStepWrapper({
   onSelect,
   isDisabled = false,
 }: ProcessStepWrapperProps) {
-  steps.sort((a, b) => a.sortedBy - b.sortedBy)
+  steps.sort((a, b) => a.sortedBy - b.sortedBy);
   return (
     <div className="flex justify-center items-center border border-gray-300 bg-white rounded-lg">
       {steps.map((step: SubSteps, key: number) => (

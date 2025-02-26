@@ -16,9 +16,14 @@ const COMPARAISON_LIMIT = 4;
 interface CompareVersionsProps {
   sbuId: string;
   exerciseId?: string;
+  disabled?: boolean;
 }
 
-function CompareVersions({ sbuId, exerciseId }: CompareVersionsProps) {
+function CompareVersions({
+  sbuId,
+  exerciseId,
+  disabled = false,
+}: CompareVersionsProps) {
   // fetching backend data
   const { data, isLoading, isError } = useExerciseConsolidationVersions(
     sbuId,
@@ -87,12 +92,13 @@ function CompareVersions({ sbuId, exerciseId }: CompareVersionsProps) {
     );
 
   return (
-    <div className="flex justify-between items-center">
+    <div className="flex justify-between items-center flex-1">
       <div className="flex flex-wrap gap-4 items-center">
         {Array(compareItems)
           .fill(0)
           .map((item, key: number) => (
             <CollapsibleSelect
+              disabled={disabled}
               key={key}
               selectIndex={key}
               collapsibleItems={mapDataToNestedOptions(data)}
@@ -100,7 +106,7 @@ function CompareVersions({ sbuId, exerciseId }: CompareVersionsProps) {
             />
           ))}
       </div>
-      <Button variant="default" onClick={onCompareHandler}>
+      <Button variant="default" onClick={onCompareHandler} disabled={disabled}>
         <Split /> Comparer avec une autre version
       </Button>
     </div>
