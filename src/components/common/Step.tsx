@@ -45,7 +45,7 @@ function Step({
     >
       <div
         className={clsx(
-          'flex justify-between gap-4 px-10 items-center py-2 rounded-lg relative bg-white',
+          'flex justify-between gap-4 px-6 items-center py-2 rounded-lg relative bg-white',
           isActive &&
             isFirst &&
             'arrow-bg-first pr-0 pl-8 shadow-lg z-10 scale-[1.1] absolute',

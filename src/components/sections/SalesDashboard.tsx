@@ -1,5 +1,5 @@
 import { Section } from '@/types/exercise';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import FilterFactory from '../common/FilterFactory';
 import { useExerciseStore } from '@/store/exercises/useExerciseStore';
 import { useChartList } from '@/services/dashboard.service';
@@ -8,9 +8,8 @@ import { ChartIF, DashboardProps } from '@/types/dashboard';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useMarketableProductTypes } from '@/services/referential.Service';
 import CompareVersions from '../common/CompareVersions';
-import { useUser } from '@/services/users.service';
 import Loading from '@/app/loading';
-import { User } from '@/types/user';
+import { Button } from '../ui/button';
 
 export default function SalesDashboard({
   section,
@@ -18,32 +17,36 @@ export default function SalesDashboard({
   disableCompare = false,
 }: DashboardProps) {
   const [displayType] = useState<string>('VISUALIZE');
+  const [defaultTab, setDefaultTab] = useState<string>();
   const [filters, setFilters] = useState<Record<string, string[]>>({});
 
   const { currentExercise } = useExerciseStore();
   const { data, isPending, error } = useChartList(section.id);
   const { data: marketableTypes } = useMarketableProductTypes();
 
+  useEffect(() => {
+    if(marketableTypes && marketableTypes?.length > 0) {
+      setDefaultTab(marketableTypes[0].name)
+    }
+  }, [marketableTypes])
+
   if (!currentExercise || isPending) return <Loading />;
 
   if (error) return <p className="p-4">Error Loading Charts...</p>;
 
-  const defaultItem =
-    marketableTypes && marketableTypes?.length > 0
-      ? marketableTypes[0].name
-      : '';
 
   return (
     <div className="flex flex-col gap-4">
       {/* ConsolidationVersions with User Sbu (default) */}
-      <div>
+      <div className='flex gap-4'>
         <CompareVersions
           sbuId={userData.sbu.id}
           exerciseId={currentExercise.id}
           disabled={disableCompare}
         />
-      </div>
-      <Tabs defaultValue={defaultItem} className="rounded">
+        <Button>Valider</Button>
+      </div> 
+      <Tabs defaultValue={defaultTab} className="rounded">
         <div className="flex justify-between gap-4">
           <TabsList variant="default" className="justify-start max-w-80">
             {marketableTypes &&
@@ -76,7 +79,7 @@ export default function SalesDashboard({
         {marketableTypes && marketableTypes.length > 0 ? (
           marketableTypes.map(({ id, name, color }) => (
             <TabsContent key={id} value={name}>
-              <div className="flex justify-center gap-10"></div>
+              <div className="flex flex-col gap-4">
               {data
                 .filter(
                   (e) =>
@@ -92,6 +95,7 @@ export default function SalesDashboard({
                     globalFilters={filters}
                   />
                 ))}
+                </div>
             </TabsContent>
           ))
         ) : (

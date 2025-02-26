@@ -44,7 +44,7 @@ export function ChartBox({
 }: {
   chart: ChartIF;
   marketableType?: MarketableConfig;
-  globalFilters: Record<string, any[]>;
+  globalFilters: Record<string, string[]>;
 }) {
   const { currentExercise } = useExerciseStore();
   const { versionIds } = useComparaisonVersionIds();
@@ -109,8 +109,8 @@ export function ChartBox({
   }, []);
 
   const aggregatedFilters = useMemo(
-    () => buildFilters(filters, chart.config.filters),
-    [filters, chart.config.filters]
+    () => buildFilters(filters, chart.config?.filters || []),
+    [filters, chart.config?.filters]
   );
 
   const { data, isSuccess, isLoading } = useAggregations({
