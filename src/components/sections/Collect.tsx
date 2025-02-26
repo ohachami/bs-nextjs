@@ -17,9 +17,8 @@ interface Props {
 function CollectPage({ sbuId }: Props) {
   //getting user information
   // getting datasources related to user's sbu id
-  const {
-    data: datasources
-  } = useDataSourceHierarchy(sbuId ?? '');
+
+  const { data: datasources } = useDataSourceHierarchy(sbuId ?? '');
 
   // Track only version names for each datasource and site combination
   const [selectedVersions, setSelectedVersions] = useState<DataVersionIF[]>([]);
