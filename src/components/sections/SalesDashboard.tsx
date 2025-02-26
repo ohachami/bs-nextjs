@@ -18,12 +18,9 @@ export default function SalesDashboard({
 }: DashboardProps) {
   const [displayType] = useState<string>('VISUALIZE');
   const [defaultTab, setDefaultTab] = useState<string>();
+  const [filters, setFilters] = useState<Record<string, string[]>>({});
+
   const { currentExercise } = useExerciseStore();
-  const [filters, setFilters] = useState<Record<string, string[]>>({
-    [CHART_FILTERS.periods]: currentExercise
-      ? currentExercise?.periods.map((e) => e.id.periodId)
-      : [],
-  });
 
   const { data, isPending, error } = useChartList(section.id);
   const { data: marketableTypes } = useMarketableProductTypes();
@@ -39,6 +36,12 @@ export default function SalesDashboard({
       setDefaultTab(marketableTypes[0].name);
     }
   }, [marketableTypes]);
+  useEffect(() => {
+    if (marketableTypes && marketableTypes?.length > 0) {
+      setDefaultTab(marketableTypes[0].name);
+    }
+  }, [marketableTypes]);
+
   if (!currentExercise || isPending) return <Loading />;
 
   if (error) return <p className="p-4">Error Loading Charts...</p>;
