@@ -61,7 +61,7 @@ function HypWrapper({
   // Fetch user data
   const { data: user, isLoading, isError } = useUser();
   // Render an empty div when exercise step data is not yet available or still loading
-  if (!exerciseStep || isPending || isLoading || !user) return <div />;
+  if (!step || isPending || isLoading || !user) return <div />;
 
   // Display an error message if there is an error loading the exercise
   if (isError || error) return <p className="p-4">Error Loading Exercise...</p>;
@@ -70,14 +70,14 @@ function HypWrapper({
       {/* Check if the waiting step should be displayed */}
       {user &&
       shouldDisplayWaitingStep &&
-      shouldDisplayWaitingStep(user, exerciseStep) &&
+      shouldDisplayWaitingStep(user, step) &&
       waitingStepMessage ? (
         <WaitingStep {...waitingStepMessage} />
       ) : (
         <>
           {/* ProcessStepWrapper manages the step navigation */}
           <ProcessStepWrapper
-            steps={exerciseStep.subSteps}
+            steps={step.subSteps}
             isDisabled={
               shouldDisableStep && user && exerciseStep
                 ? shouldDisableStep(user, exerciseStep)
