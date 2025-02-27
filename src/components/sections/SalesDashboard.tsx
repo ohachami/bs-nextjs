@@ -30,16 +30,14 @@ export default function SalesDashboard({
     setFilters(newFilters);
   };
 
+
   useEffect(() => {
     if (marketableTypes && marketableTypes?.length > 0) {
       setDefaultTab(marketableTypes[0].name);
     }
   }, [marketableTypes]);
-  useEffect(() => {
-    if (marketableTypes && marketableTypes?.length > 0) {
-      setDefaultTab(marketableTypes[0].name);
-    }
-  }, [marketableTypes]);
+
+  console.log("tab", marketableTypes)
 
   if (!currentExercise || isPending) return <Loading />;
 

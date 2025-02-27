@@ -115,13 +115,11 @@ export function ChartBox({
     });
   }, []);
 
-  console.log("chart.config", chart)
   const aggregatedFilters = useMemo(
     () => buildFilters(filters, chart.config?.filters || []),
     [filters, chart.config?.filters]
   );
 
-  console.log("aggregatedFilters", aggregatedFilters)
 
   const { data, isSuccess, isLoading } = useAggregations({
     entity: chart.config.entity,
