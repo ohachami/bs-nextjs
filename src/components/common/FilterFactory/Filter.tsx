@@ -1,6 +1,6 @@
 import { TreeItem } from '@/types/common/TreeComboboxFilterTypes';
 import { TOption } from '@/utils/types';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import MultiSelect from './MultiSelect';
 import TreeCombobox from '../TreeCombobox';
 
@@ -9,6 +9,7 @@ type Filter<T> = {
   placeholder: string;
   data: T[];
   onChange: (values: string[]) => void;
+  values: string[];
 } & (
   | {
       basecomp: 'multiselect';
@@ -23,24 +24,17 @@ type Filter<T> = {
 );
 
 const Filter = <T,>(props: Filter<T>) => {
-  const { basecomp, title, placeholder, data, onChange, mapOption } = props;
-
-  const [values, setValues] = useState<TOption<string>[]>([]);
-
-  const handleChange = (option: TOption<string>) => {
-    setValues((prev) =>
-      prev.some((o) => o.value === option.value)
-        ? prev.filter((o) => o.value !== option.value)
-        : [...prev, option]
-    );
+  const { basecomp, title, placeholder, data, onChange, mapOption, values } =
+    props;
+  const handleChangeMultiSelect = (option: TOption<string>) => {
+    const newValues = values.includes(option.value)
+      ? values.filter((v) => v !== option.value)
+      : [...values, option.value];
+    onChange(newValues);
   };
-
-  useEffect(() => {
-    onChange(values.map((o) => o.value));
-  }, [values]);
-
   if (basecomp === 'treecombobox') {
     const { selectChildren, multiSelect } = props;
+
     return (
       <div>
         <TreeCombobox
@@ -53,6 +47,15 @@ const Filter = <T,>(props: Filter<T>) => {
           onSelectionChange={(selectedItems: string[]) => {
             onChange(selectedItems);
           }}
+          defaultValues={data
+            .map(mapOption)
+            .map((group) => ({
+              ...group,
+              children:
+                group.children?.filter((child) => values.includes(child.id)) ||
+                [],
+            }))
+            .filter((group) => group.children.length > 0)}
         />
       </div>
     );
@@ -64,9 +67,12 @@ const Filter = <T,>(props: Filter<T>) => {
         options={data.map(mapOption)}
         title={title}
         placeholder={placeholder}
-        values={values}
-        onChange={handleChange}
-        onClear={() => setValues([])}
+        values={data.map(mapOption).filter((d) => values.includes(d.value))}
+        onChange={(e) => {
+          // onChange([e.value]);
+          handleChangeMultiSelect(e);
+        }}
+        onClear={() => onChange([])}
       />
     );
   }

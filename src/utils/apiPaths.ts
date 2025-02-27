@@ -28,4 +28,5 @@ export const apiPaths = {
       : `/consolidation/hierarchy?sbuId=${sbuId}`,
   scenarios: () => `/scenarios`,
   cloneScenario: (scenarioId: string) => `/scenarios/${scenarioId}/clone`,
+  demandTypes: () => `/referential/demand-types`,
 } as const;

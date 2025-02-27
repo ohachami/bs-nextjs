@@ -14,6 +14,7 @@ export interface TextareaProps
   extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
   description?: string;
   label?: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   control?: Control<any, any>;
   limit?: number;
 }

@@ -4,9 +4,10 @@ import { FC } from 'react';
 
 type Props = {
   onChange: (values: string[]) => void;
+  values: string[];
 };
 
-const ExercisePeriodFilter: FC<Props> = ({ onChange }) => {
+const ExercisePeriodFilter: FC<Props> = ({ onChange, values }) => {
   const { exercisePeriods: periods } = useExerciseStore();
   if (!periods) return <div />;
   return (
@@ -17,9 +18,10 @@ const ExercisePeriodFilter: FC<Props> = ({ onChange }) => {
       placeholder="Chercher"
       mapOption={(p) => ({
         label: p.period.name + ' ' + p.year,
-        value: p.id.periodId
+        value: p.id.periodId,
       })}
       onChange={onChange}
+      values={values}
     />
   );
 };

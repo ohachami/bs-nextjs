@@ -24,7 +24,11 @@ export default function ManufacturingDashboard({
    * @param selectedValue: new selected value from the list
    */
   const onSelectHandler = (selectedValue: string) => {};
-
+  const handleFilter = (key: string, value: string[]) => {
+    const newFilters = { ...filters };
+    newFilters[key] = value;
+    setFilters(newFilters);
+  };
   if (!currentExercise || isPending) return <div />;
 
   if (error) return <p className="p-4">Error Loading Charts...</p>;
@@ -40,10 +44,25 @@ export default function ManufacturingDashboard({
         />
       </div>
       <div className="flex justify-center gap-10">
-        <FilterFactory module="product" onChange={() => {}} />
-        <FilterFactory module="region" onChange={() => {}} />
+        <FilterFactory
+          module="products"
+          onChange={(e) => {
+            setFilters({ ...filters, products: e });
+          }}
+        />
+        <FilterFactory
+          module="regions"
+          onChange={(e) => {
+            setFilters({ ...filters, regions: e });
+          }}
+        />
         <div>
-          <FilterFactory module="period" onChange={() => {}} />
+          <FilterFactory
+            module="periods"
+            onChange={(e) => {
+              setFilters({ ...filters, periods: e });
+            }}
+          />
         </div>
         {/* ConsolidationVersions with User Sbu (default) */}
         <ConsolidationCombobox onSelect={onSelectHandler} />
@@ -52,11 +71,12 @@ export default function ManufacturingDashboard({
       <div className="flex flex-col gap-4">
         {data
           .filter((e) => e.displayType === displayType)
-          .map((chart) => (
+          .map((chart, key) => (
             <ChartBox
-              key={chart.id}
+              key={key}
               chart={chart as ChartIF}
               globalFilters={filters}
+              setGlobalFilter={handleFilter}
             />
           ))}
       </div>
