@@ -169,7 +169,8 @@ function CreateSenario() {
                   setOpen(false);
                 }}
               >
-                <X /> <p className="text-sm font-medium">Annuler</p>
+                <X className="w-4 h-4" />
+                <p className="text-sm font-medium">Annuler</p>
               </Button>
 
               <Button
