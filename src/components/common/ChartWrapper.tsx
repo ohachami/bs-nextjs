@@ -17,18 +17,19 @@ export function ChartWrapper({
   tabs,
   handleChange,
   handleChangeFilter,
-  filters,
+  filtersConfig,
   children,
+  filters,
 }: PropsWithChildren & {
   handleChange: (tab: TOption<string>) => void;
   handleChangeFilter: (name: string, values: string[]) => void;
   title: string;
   subTitle: string;
   tabs: TOption<string>[];
-  filters?: Filter[];
+  filtersConfig?: Filter[];
+  filters: Record<string, string[]>;
 }) {
   const [activeTab, setActiveTab] = useState<TOption<string>>();
-
   return (
     <Card className="w-full">
       <CardHeader className="flex  justify-between   flex-col items-stretch space-y-0 border-b p-0 sm:flex-row">
@@ -37,14 +38,15 @@ export function ChartWrapper({
             <CardTitle>{title}</CardTitle>
             <CardDescription>{subTitle}</CardDescription>
           </div>
-          {filters && (
+          {filtersConfig && (
             <div className="flex items-center justify-center ">
-              {filters
+              {filtersConfig
                 .filter((e) => !e.hidden)
                 .map((e, key) => (
                   <FilterFactory
                     key={key}
                     module={e.name}
+                    values={filters[e.name] || []}
                     onChange={(v) => handleChangeFilter(e.name, v)}
                   />
                 ))}

@@ -25,7 +25,10 @@ const getGridColsClass = (length: number) => {
   return 'grid-cols-3';
 };
 
-const buildFilters = (filters: Record<string, string[]>, filterConfig: Filter[]) =>
+const buildFilters = (
+  filters: Record<string, string[]>,
+  filterConfig: Filter[]
+) =>
   Object.entries(filters).reduce<Filter[]>((acc, [name, values]) => {
     const currentFilter = filterConfig.find((f) => f.name === name);
     if (currentFilter) {
@@ -57,7 +60,7 @@ export function ChartBox({
     [currentExercise]
   );
   const [activePeriod, setActivePeriod] = useState<PeriodIF>();
-  const [periods, ] = useState<PeriodIF[]>(initialPeriods);
+  const [periods] = useState<PeriodIF[]>(initialPeriods);
 
   // Initial filters state: always include periods from currentExercise
   const [filters, setFilters] = useState<Record<string, string[]>>({
@@ -70,12 +73,11 @@ export function ChartBox({
   };
 
   useEffect(() => {
-    if(activePeriod) {
+    if (activePeriod) {
       const newFilters = { ...filters };
       newFilters[CHART_FILTERS.periods] = [activePeriod?.id];
       setFilters(newFilters);
     }
-    
   }, [activePeriod]);
 
   // Update filters when marketableType changes
@@ -83,43 +85,34 @@ export function ChartBox({
     if (marketableType) {
       setFilters((prev) => ({
         ...prev,
-        [CHART_FILTERS.productType]: [marketableType.id || ""],
+        [CHART_FILTERS.productType]: [marketableType.id || ''],
       }));
     }
   }, [marketableType]);
-
   // Merge global filters into internal filters
   useEffect(() => {
     setFilters((prev) => {
       const updated = { ...prev };
       Object.keys(globalFilters).forEach((key) => {
-        if (updated[key]) {
-          updated[key] = Array.from(
-            new Set([...updated[key], ...globalFilters[key]])
-          );
+        if (!updated[key]) {
+          updated[key] = [];
         }
+        updated[key] = Array.from(new Set([...globalFilters[key]]));
       });
       return updated;
     });
   }, [globalFilters]);
 
-
-
   const handleChangeFilter = useCallback((name: string, values: string[]) => {
-    setFilters((prev) => {
-      if (!prev[name]) return prev;
-      return {
-        ...prev,
-        [name]: Array.from(new Set([...prev[name], ...values])),
-      };
-    });
+    const newFilter = { ...filters };
+    newFilter[name] = values;
+    setFilters(newFilter);
   }, []);
 
   const aggregatedFilters = useMemo(
     () => buildFilters(filters, chart.config?.filters || []),
     [filters, chart.config?.filters]
   );
-
 
   const { data, isSuccess, isLoading } = useAggregations({
     entity: chart.config.entity,
@@ -133,10 +126,15 @@ export function ChartBox({
   // Prepare chart series data
   const prepareData = useCallback(
     (dataItems: DimentionItem[]) => {
-      const series: { name: string; data: {
-        x: string;
-        y: number[];
-    }[] | number[] }[] = [];
+      const series: {
+        name: string;
+        data:
+          | {
+              x: string;
+              y: number[];
+            }[]
+          | number[];
+      }[] = [];
 
       if (chart.chartType === 'boxPlot') {
         const boxSeries = {
@@ -198,18 +196,21 @@ export function ChartBox({
     }),
     [chart.id, marketableType]
   );
-
-
-  
   return (
     <ChartWrapper
       handleChange={handleChangeActivePeriod}
-      filters={chart.config.filters}
+      filtersConfig={chart.config.filters}
       handleChangeFilter={handleChangeFilter}
       title={chart.name}
+      filters={filters}
       subTitle={chart.subTitle}
       tabs={periods
-        .filter((e) => !globalFilters['periods'] || globalFilters['periods']?.length === 0 || globalFilters['periods'].includes(e.id))
+        .filter(
+          (e) =>
+            !globalFilters['periods'] ||
+            globalFilters['periods']?.length === 0 ||
+            globalFilters['periods'].includes(e.id)
+        )
         .sort((a, b) => a.sortedBy - b.sortedBy)
         .map((p) => ({ value: p.id, label: p.name }))}
     >

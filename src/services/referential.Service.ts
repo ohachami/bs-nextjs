@@ -65,6 +65,19 @@ export const useGroupedProducts = () => {
   });
 };
 
+export const useDemandTypes = () => {
+  return useQuery<ProductGroup[]>({
+    queryKey: ["demandTypes"],
+    queryFn: async () => {
+      return await callApi<ProductGroup[]>({
+        method: 'GET',
+        url: apiPaths.demandTypes(),
+      });
+    },
+  });
+};
+
+
 export const useMarketableProductTypes = () => {
   const { data } = useGroupedProducts();
   const types = MARKETABLE_PRODUCT_TYPES.map(m => m.name);

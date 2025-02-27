@@ -28,9 +28,9 @@ import {
 } from '@/components/ui/table';
 import { useEffect, useState } from 'react';
 import { TOption } from '@/utils/types';
-import {ChartWrapper} from "@/components/common/ChartWrapper";
-import {PeriodIF} from "@/types/refExercise/config";
-import {useExerciseStore} from "@/store/exercises/useExerciseStore";
+import { ChartWrapper } from '@/components/common/ChartWrapper';
+import { PeriodIF } from '@/types/refExercise/config';
+import { useExerciseStore } from '@/store/exercises/useExerciseStore';
 
 export type FacetedConfig = {
   title: string;
@@ -64,15 +64,13 @@ export function ChartTable<TData, TValue>({
   hiddenColumns,
 }: ChartTableProps<TData, TValue>) {
   const [activePeriod, setActivePeriod] = useState<PeriodIF>();
-  const {currentExercise} = useExerciseStore();
+  const { currentExercise } = useExerciseStore();
   const periods = currentExercise?.periods || [];
-
 
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [rowSelection, setRowSelection] = useState({});
   const [sorting, setSorting] = useState<SortingState>([]);
   const [expanded, setExpanded] = useState<ExpandedState>({});
-
 
   const table = useReactTable({
     data,
@@ -116,7 +114,7 @@ export function ChartTable<TData, TValue>({
   const rowModel = displaySelectedOnly
     ? table.getFilteredSelectedRowModel()
     : table.getRowModel();
-/* 
+  /* 
   const filtersJsx = facetedConfig ? <>{facetedConfig.map(
       (f) =>
           table.getColumn(f.column) && (
@@ -130,63 +128,69 @@ export function ChartTable<TData, TValue>({
   )}</> : undefined; */
 
   //TODO fire the changes for the selected period
-  console.log("activePeriod", activePeriod)
   return (
     <div>
       <div className="rounded-md border bg-white">
         <ChartWrapper
-            handleChange={(tab) => setActivePeriod(periods.find(p => p.period.id === tab.value)?.period)}
-            title={title}
-            subTitle={subtitle}
-            tabs={periods.map(p => ({value: p.period.id, label: p.period.name}))}
-            filters={[]}
-            handleChangeFilter={() => null}
+          handleChange={(tab) =>
+            setActivePeriod(
+              periods.find((p) => p.period.id === tab.value)?.period
+            )
+          }
+          title={title}
+          subTitle={subtitle}
+          tabs={periods.map((p) => ({
+            value: p.period.id,
+            label: p.period.name,
+          }))}
+          filters={{}}
+          handleChangeFilter={() => null}
         >
           <Table id={tableId}>
             <TableHeader>
               {table.getHeaderGroups().map((headerGroup) => (
-                  <TableRow key={headerGroup.id}>
-                    {headerGroup.headers.map((header) => {
-                      return (
-                          <TableHead key={header.id}>
-                            {header.isPlaceholder
-                                ? null
-                                : flexRender(
-                                    header.column.columnDef.header,
-                                    header.getContext()
-                                )}
-                          </TableHead>
-                      );
-                    })}
-                  </TableRow>
+                <TableRow key={headerGroup.id}>
+                  {headerGroup.headers.map((header) => {
+                    return (
+                      <TableHead key={header.id}>
+                        {header.isPlaceholder
+                          ? null
+                          : flexRender(
+                              header.column.columnDef.header,
+                              header.getContext()
+                            )}
+                      </TableHead>
+                    );
+                  })}
+                </TableRow>
               ))}
             </TableHeader>
             <TableBody>
               {rowModel?.rows?.length ? (
-                  rowModel.rows.map((row) => (
-                      <TableRow
-                          key={row.id}
-                          data-state={row.getIsSelected() && 'selected'}
-                      >
-                        {row.getVisibleCells().map((cell) => (
-                            <TableCell key={cell.id}>
-                              {flexRender(
-                                  cell.column.columnDef.cell,
-                                  cell.getContext()
-                              )}
-                            </TableCell>
-                        ))}
-                      </TableRow>
-                  ))
-              ) : (
-                  <TableRow>
-                    <TableCell
-                        colSpan={columns.length}
-                        className="h-24 text-center"
-                    >
-                      No results.
-                    </TableCell>
+                rowModel.rows.map((row) => (
+                  <TableRow
+                    key={row.id}
+                    data-state={row.getIsSelected() && 'selected'}
+                  >
+                    {row.getVisibleCells().map((cell) => (
+                      <TableCell key={cell.id}>
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </TableCell>
+                    ))}
                   </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell
+                    colSpan={columns.length}
+                    className="h-24 text-center"
+                  >
+                    No results.
+                  </TableCell>
+                </TableRow>
               )}
             </TableBody>
           </Table>

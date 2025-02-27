@@ -1,4 +1,4 @@
-import { useRegions } from '@/services/referential.Service';
+import { useDemandTypes } from '@/services/referential.Service';
 import Filter from './Filter';
 import { FC } from 'react';
 
@@ -7,8 +7,8 @@ type Props = {
   values: string[];
 };
 
-const RegionFilter: FC<Props> = ({ onChange, values }) => {
-  const { data, status } = useRegions();
+const DemandTypeFilter: FC<Props> = ({ onChange, values }) => {
+  const { data, status } = useDemandTypes();
 
   if (status === 'pending') {
     return <span>Loading...</span>;
@@ -17,17 +17,21 @@ const RegionFilter: FC<Props> = ({ onChange, values }) => {
   if (status === 'error' || !data) {
     return <span>Error fetching data</span>;
   }
+
   return (
     <Filter
       data={data}
       basecomp="multiselect"
-      title="Régions"
+      title="Type de demande"
       placeholder="Chercher"
-      mapOption={(region) => ({ label: region.name, value: region.id })}
+      mapOption={(demandType) => ({
+        label: demandType.name,
+        value: demandType.id,
+      })}
       onChange={onChange}
       values={values}
     />
   );
 };
 
-export default RegionFilter;
+export default DemandTypeFilter;
