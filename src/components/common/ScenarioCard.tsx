@@ -16,6 +16,7 @@ import {
 import { Badge } from '../ui/badge';
 import { ReactionButton } from '../ui/ReactionButton';
 import { Button } from '../ui/button';
+import CloneScenarioButton from '../scenarisation/CloneScenario';
 
 type Pair = {
   key: string;
@@ -24,9 +25,10 @@ type Pair = {
 
 type Props = {
   scenario: {
+    id: string;
     creator: Nullable<string>;
     creationDate: Nullable<Date>;
-    name: Nullable<string>;
+    name: string;
     type: Nullable<number>;
     published: Nullable<boolean>;
     topList: Nullable<Pair[]>;
@@ -79,6 +81,8 @@ const GridPairs: React.FC<{ pairs: Pair[]; type: number }> = ({
 };
 
 type FooterProps = {
+  scenarioId: string;
+  scenarioName: string;
   published: Nullable<boolean>;
   like: {
     count: number;
@@ -134,9 +138,10 @@ const ScenarioFooter: React.FC<FooterProps> = (props) => {
         <Button variant="ghost">
           <Send />
         </Button>
-        <Button variant="ghost">
-          <Copy />
-        </Button>
+        <CloneScenarioButton
+          scenarioId={props.scenarioId}
+          scenarioName={props.scenarioName}
+        />
         <Button variant="ghost">
           <EllipsisVertical />
         </Button>
@@ -197,6 +202,8 @@ const ScenarioCard: React.FC<Props> = (props) => {
       </div>
 
       <ScenarioFooter
+        scenarioId={props.scenario.id}
+        scenarioName={props.scenario.name}
         published={props.scenario.published}
         like={{
           count: props.scenario.likes,

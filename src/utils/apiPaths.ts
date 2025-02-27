@@ -27,4 +27,5 @@ export const apiPaths = {
       ? `/consolidation/hierarchy?sbuId=${sbuId}&exerciseId=${exerciseId}`
       : `/consolidation/hierarchy?sbuId=${sbuId}`,
   scenarios: () => `/scenarios`,
+  cloneScenario: (scenarioId: string) => `/scenarios/${scenarioId}/clone`,
 } as const;
