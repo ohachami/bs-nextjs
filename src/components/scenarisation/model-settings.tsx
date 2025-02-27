@@ -210,16 +210,16 @@ const ModelSettings = () => {
               >
                 <RefreshCcwDot className="w-4 h-4" />
               </Button>
-              <p className="text-xs font-normal text-accent-foreground ">
+              <p className="text-sm font-normal text-accent-foreground ">
                 Réinitialiser par défaut
               </p>
             </div>
           </CardTitle>
         </CardHeader>
 
-        <CardContent className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 auto-rows-[minmax(30px,auto)] gap-y-2 gap-x-4">
+        <CardContent className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 auto-rows-[minmax(30px,auto)] gap-y-2 gap-x-40">
           {mockedData.map((setting: SettingIF, index: number) => (
-            <div key={index} className="flex items-center gap-x-4">
+            <div key={index} className="flex items-center gap-x-6">
               <Label className="w-1/2 break-words text-sm">
                 {setting.label}
               </Label>
