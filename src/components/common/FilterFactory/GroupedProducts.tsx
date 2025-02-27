@@ -4,9 +4,10 @@ import { FC } from 'react';
 
 type Props = {
   onChange: (values: string[]) => void;
+  values: string[];
 };
 
-const ProductFilter: FC<Props> = ({ onChange }) => {
+const ProductFilter: FC<Props> = ({ onChange, values }) => {
   const { data, status } = useGroupedProducts();
 
   if (status === 'pending') {
@@ -34,6 +35,7 @@ const ProductFilter: FC<Props> = ({ onChange }) => {
         })),
       })}
       onChange={onChange}
+      values={values}
     />
   );
 };

@@ -30,15 +30,11 @@ export default function SalesDashboard({
     setFilters(newFilters);
   };
 
-
   useEffect(() => {
     if (marketableTypes && marketableTypes?.length > 0) {
       setDefaultTab(marketableTypes[0].name);
     }
   }, [marketableTypes]);
-
-  console.log("tab", marketableTypes)
-
   if (!currentExercise || isPending) return <Loading />;
 
   if (error) return <p className="p-4">Error Loading Charts...</p>;
@@ -70,18 +66,21 @@ export default function SalesDashboard({
             onChange={(e) => {
               setFilters({ ...filters, products: e });
             }}
+            values={filters['products']}
           />
           <FilterFactory
             module="regions"
             onChange={(e) => {
               setFilters({ ...filters, regions: e });
             }}
+            values={filters['regions']}
           />
           <FilterFactory
             module="periods"
             onChange={(e) => {
               setFilters({ ...filters, periods: e });
             }}
+            values={filters['periods']}
           />
         </div>
         {marketableTypes && marketableTypes.length > 0 ? (
@@ -95,6 +94,7 @@ export default function SalesDashboard({
                       e.config !== null &&
                       ['bar', 'boxPlot'].includes(e.chartType)
                   )
+                  // .filter((e) => e.name === 'Tri cliet ( CA, volume)')
                   .map((chart, key) => (
                     <ChartBox
                       marketableType={{ id, name, color }}
@@ -116,6 +116,8 @@ export default function SalesDashboard({
                   e.config !== null &&
                   ['bar', 'boxPlot'].includes(e.chartType)
               )
+              // .filter((e) => e.name === 'Tri cliet ( CA, volume)')
+
               .map((chart, key) => (
                 <ChartBox
                   key={key}
