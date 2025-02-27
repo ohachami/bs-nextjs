@@ -2,8 +2,9 @@
 import React from 'react';
 import ScenarioCard from '../common/ScenarioCard';
 import { Button } from '../ui/button';
-import { PlusIcon, Split } from 'lucide-react';
+import { Split } from 'lucide-react';
 import { useScenarios } from '@/services/scenarios.service';
+import CreateSenario from '../scenarisation/createSenario';
 
 const Scenarisation: React.FC = () => {
   const { isPending, data: scenarios } = useScenarios();
@@ -20,10 +21,7 @@ const Scenarisation: React.FC = () => {
             <Split size={16} />
             Comparer
           </Button>
-          <Button variant="default">
-            <PlusIcon size={16} />
-            Ajouter un scénario
-          </Button>
+          <CreateSenario />
         </div>
       </div>
       <div className="grid grid-cols-4 gap-4">
