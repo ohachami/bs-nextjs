@@ -54,18 +54,22 @@ function CollectPage({ sbuId, setSubStepSelected }: Props) {
    * @param datasourceId: datasourceId
    * @param siteId: siteId
    */
-  const handleVersionSelect = (selected: DataVersionIF[], datasourceId: string, siteId?: string) => {
+  const handleVersionSelect = (
+    selected: DataVersionIF[],
+    datasourceId: string,
+    siteId?: string
+  ) => {
     if (selected.length > 0) {
       const newVersion = selected[0];
       const key = createKey(datasourceId, siteId);
 
       // Update selections
-      setSelections(prevSelections => ({
+      setSelections((prevSelections) => ({
         ...prevSelections,
         [key]: {
           versionId: newVersion.id,
-          versionName: newVersion.name
-        }
+          versionName: newVersion.name,
+        },
       }));
     }
   };
@@ -73,12 +77,12 @@ function CollectPage({ sbuId, setSubStepSelected }: Props) {
   // Get the selected ID for a given datasource and site
   const getSelectedId = (datasourceId: string, siteId?: string): string => {
     const key = createKey(datasourceId, siteId);
-    return selections[key]?.versionId || "";
+    return selections[key]?.versionId || '';
   };
 
   // Get all selected version names for the SelectedVersions component
   const getSelectedVersionNames = (): string[] => {
-    return Object.values(selections).map(selection => selection.versionName);
+    return Object.values(selections).map((selection) => selection.versionName);
   };
 
   /**
@@ -87,120 +91,138 @@ function CollectPage({ sbuId, setSubStepSelected }: Props) {
    * If the mutation is successful, display a toast notification and redirect to the Consolidation&View page
    */
   const handleConsolidateSales = () => {
-    const step =
-    currentExercise?.steps.find((s) => pathname.endsWith(s.stepConfig.code))
-    const versionIds = Object.values(selections).map(selection => selection.versionId);
-    if(step) {
-      onConsolidateSales({versions: versionIds, stepId: step?.id}).then(() => {
-        //show toast
-        toast({
-          variant: 'default',
-          title: 'Consolidation effectuée avec succès',
-          duration: 5000,
-        });
-        // redirect to Consolidation&View
-        if(setSubStepSelected) {
-          setSubStepSelected(CODE_SUB_STEPS.CONSOLIDATION);
+    const step = currentExercise?.steps.find((s) =>
+      pathname.endsWith(s.stepConfig.code)
+    );
+    const versionIds = Object.values(selections).map(
+      (selection) => selection.versionId
+    );
+    if (step) {
+      onConsolidateSales({ versions: versionIds, stepId: step?.id }).then(
+        () => {
+          //show toast
+          toast({
+            variant: 'default',
+            title: 'Consolidation effectuée avec succès',
+            duration: 5000,
+          });
+          // redirect to Consolidation&View
+          if (setSubStepSelected) {
+            setSubStepSelected(CODE_SUB_STEPS.CONSOLIDATION);
+          }
         }
-      });
+      );
     }
-   
   };
 
   return (
-      datasources &&
-      Array.isArray(datasources) &&
-      datasources.length > 0 && (
-          <div className="space-y-4">
-            <Tabs defaultValue={`${datasources[0].id}`} orientation="vertical">
-              <div className="flex items-start gap-4">
-                <TabsList className="flex-col w-64 gap-4 h-auto bg-gray-200">
-                  {datasources.map((dataSource: DataSourceIF, key: number) => (
-                      <TabsTrigger
-                          className={`min-w-[200px]`}
+    datasources &&
+    Array.isArray(datasources) &&
+    datasources.length > 0 && (
+      <div className="flex flex-col h-full">
+        <Tabs
+          defaultValue={`${datasources[0].id}`}
+          orientation="vertical"
+          className="flex-1"
+        >
+          <div className="flex items-start gap-4 h-full">
+            <TabsList className="flex-col w-64 gap-4 h-auto bg-gray-200">
+              {datasources.map((dataSource: DataSourceIF, key: number) => (
+                <TabsTrigger
+                  className={`min-w-[200px]`}
+                  key={key}
+                  value={`${dataSource.id}`}
+                >
+                  {dataSource.name}
+                </TabsTrigger>
+              ))}
+            </TabsList>
+            {datasources.map((dataSource: DataSourceIF, key: number) => (
+              <TabsContent
+                key={key}
+                className={`flex-1 m-0 p-0`}
+                defaultValue={datasources[0].id}
+                value={`${dataSource.id}`}
+              >
+                {/* If site are found */}
+                {dataSource.sites &&
+                Array.isArray(dataSource.sites) &&
+                dataSource.sites.length > 1 ? (
+                  <Tabs defaultValue={dataSource.sites[0].id}>
+                    <div key={key} className="flex flex-col gap-4">
+                      <div className="flex justify-between">
+                        <TabsList className="flex gap-4 h-auto w-auto items-start justify-start bg-gray-200">
+                          {dataSource.sites.map(
+                            (site: RefSiteIF, key: number) => (
+                              <TabsTrigger
+                                key={key}
+                                className={`min-w-[100px]`}
+                                value={`${site.id}`}
+                              >
+                                {site.name}
+                              </TabsTrigger>
+                            )
+                          )}
+                        </TabsList>
+                        <Button>
+                          <RefreshCcw /> Actualiser
+                        </Button>
+                      </div>
+                      {dataSource.sites.map((site: RefSiteIF, key: number) => (
+                        <TabsContent
                           key={key}
-                          value={`${dataSource.id}`}
-                      >
-                        {dataSource.name}
-                      </TabsTrigger>
-                  ))}
-                </TabsList>
-                {datasources.map((dataSource: DataSourceIF, key: number) => (
-                    <TabsContent
-                        key={key}
-                        className={`flex-1`}
-                        defaultValue={datasources[0].id}
-                        value={`${dataSource.id}`}
-                    >
-                      {/* If site are found */}
-                      {dataSource.sites &&
-                      Array.isArray(dataSource.sites) &&
-                      dataSource.sites.length > 1 ? (
-                          <Tabs defaultValue={dataSource.sites[0].id}>
-                            <div key={key} className="flex flex-col gap-4 p-2">
-                              <div className="flex justify-between">
-                                <TabsList className="flex gap-4 h-auto w-auto items-start justify-start bg-gray-200">
-                                  {dataSource.sites.map(
-                                      (site: RefSiteIF, key: number) => (
-                                          <TabsTrigger
-                                              key={key}
-                                              className={`min-w-[100px]`}
-                                              value={`${site.id}`}
-                                          >
-                                            {site.name}
-                                          </TabsTrigger>
-                                      )
-                                  )}
-                                </TabsList>
-                                <Button>
-                                  <RefreshCcw /> Actualiser
-                                </Button>
-                              </div>
-                              {dataSource.sites.map((site: RefSiteIF, key: number) => (
-                                  <TabsContent
-                                      key={key}
-                                      value={`${site.id}`}
-                                      defaultValue={dataSource.sites[0].id}
-                                  >
-                                    <VersionTable
-                                        datasourceId={dataSource.id}
-                                        siteId={site.id}
-                                        selectedId={getSelectedId(dataSource.id, site.id)}
-                                        onSelect={(selected) => handleVersionSelect(selected, dataSource.id, site.id)}
-                                    />
-                                  </TabsContent>
-                              ))}
-                            </div>
-                          </Tabs>
-                      ) : (
-                          // If site are not found
-                          <div className="flex flex-col gap-4 justify-between p-2">
-                            <div className="flex justify-end">
-                              <Button>
-                                <RefreshCcw /> Actualiser
-                              </Button>
-                            </div>
-                            <VersionTable
-                                datasourceId={dataSource.id}
-                                selectedId={getSelectedId(dataSource.id)}
-                                onSelect={(selected) => handleVersionSelect(selected, dataSource.id)}
-                            />
-                          </div>
-                      )}
-                    </TabsContent>
-                ))}
-              </div>
-            </Tabs>
-            <SelectedVersions
-                selectedVersions={getSelectedVersionNames()}
-                totalLength={datasources.length}
-                loading={loadingConsolidateSales}
-                submitAction={() => {
-                  handleConsolidateSales();
-                }}
-            />
+                          value={`${site.id}`}
+                          defaultValue={dataSource.sites[0].id}
+                          className="p-0 m-0"
+                        >
+                          <VersionTable
+                            datasourceId={dataSource.id}
+                            siteId={site.id}
+                            selectedId={getSelectedId(dataSource.id, site.id)}
+                            onSelect={(selected) =>
+                              handleVersionSelect(
+                                selected,
+                                dataSource.id,
+                                site.id
+                              )
+                            }
+                          />
+                        </TabsContent>
+                      ))}
+                    </div>
+                  </Tabs>
+                ) : (
+                  // If site are not found
+                  <div className="flex flex-col gap-4 justify-between p-2">
+                    <div className="flex justify-end">
+                      <Button>
+                        <RefreshCcw /> Actualiser
+                      </Button>
+                    </div>
+                    <VersionTable
+                      datasourceId={dataSource.id}
+                      selectedId={getSelectedId(dataSource.id)}
+                      onSelect={(selected) =>
+                        handleVersionSelect(selected, dataSource.id)
+                      }
+                    />
+                  </div>
+                )}
+              </TabsContent>
+            ))}
           </div>
-      )
+        </Tabs>
+
+        <SelectedVersions
+          selectedVersions={getSelectedVersionNames()}
+          totalLength={datasources.length}
+          loading={loadingConsolidateSales}
+          submitAction={() => {
+            handleConsolidateSales();
+          }}
+        />
+      </div>
+    )
   );
 }
 

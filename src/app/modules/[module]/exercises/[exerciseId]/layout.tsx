@@ -38,8 +38,9 @@ function ExercisesLayout({
   if (isError) return <p className="p-4">Error Loading Exercise...</p>;
 
   return (
-    <div className="p-6 space-y-6">
+    <div className="p-6 space-y-6 h-full flex flex-col">
       <p className="text-2xl font-bold">{currentExercise?.name}</p>
+
       {isSuccess && currentExercise && currentExercise.steps && (
         <StepList
           steps={currentExercise.steps
@@ -58,7 +59,8 @@ function ExercisesLayout({
             .sort((a, b) => a.sortedBy - b.sortedBy)}
         />
       )}
-      {children}
+
+      <div className="grow">{children}</div>
     </div>
   );
 }
