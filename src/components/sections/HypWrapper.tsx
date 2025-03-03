@@ -11,6 +11,7 @@ import { CODE_SUB_STEPS } from '@/utils/constants';
 import React, { ReactNode, useState } from 'react';
 import WaitingStep from '../common/WaitingStep';
 import { usePathname } from 'next/navigation';
+import { findNextStepCode } from '@/utils/helpers';
 
 interface ChildredProps {
   subStepSelected: CodeSubStepType;
@@ -43,21 +44,24 @@ function HypWrapper({
   const [subStepSelected, setSubStepSelected] = useState<CodeSubStepType>(
     CODE_SUB_STEPS.COLLECT
   );
-
+  // get current pathname
   const pathname = usePathname();
   // Retrieve the current exercise step from the store
   const { exerciseStep, currentExercise } = useExerciseStore();
-
+  // find step
   const step =
     currentExercise?.steps.find((s) => pathname.endsWith(s.stepConfig.code)) ||
     exerciseStep;
+  // steps codes
+  const codes = currentExercise?.steps
+    .sort((a, b) => a.stepConfig.sortedBy - b.stepConfig.sortedBy)
+    .map((stepConf) => stepConf.stepConfig.code);
   // Fetch sub-steps related to the exercise step
   const {
     data: sections,
     error,
     isPending,
   } = useSections(step?.stepConfig?.id ?? undefined);
-
   // Fetch user data
   const { data: user, isLoading, isError } = useUser();
   // Render an empty div when exercise step data is not yet available or still loading
@@ -72,7 +76,10 @@ function HypWrapper({
       shouldDisplayWaitingStep &&
       shouldDisplayWaitingStep(user, step) &&
       waitingStepMessage ? (
-        <WaitingStep {...waitingStepMessage} />
+        <WaitingStep
+          {...waitingStepMessage}
+          nextStep={`${findNextStepCode(codes, pathname.split('/').at(-1))}`}
+        />
       ) : (
         <>
           {/* ProcessStepWrapper manages the step navigation */}

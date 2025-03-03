@@ -20,7 +20,7 @@ function PageHyperManu() {
       }
       waitingStepMessage={{
         title:
-          'Les BUs commerciales sont en train sont en train de terminer leur version',
+          'Les BUs commerciales sont en train de préparer leurs toplines et upsides',
       }}
     >
       {({ subStepSelected, sections, user }) => {

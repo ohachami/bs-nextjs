@@ -5,6 +5,7 @@ import ExerciseIdLayoutSkeleton from '@/components/skeletons/ExerciseIdLayoutSke
 import { useExercises } from '@/services/exercises.service';
 import { useExerciseStore } from '@/store/exercises/useExerciseStore';
 import { Exercise } from '@/types/exercise';
+import { modules } from '@/utils/constants';
 import * as LucideIcons from 'lucide-react';
 import { useParams } from 'next/navigation';
 import { useEffect } from 'react';
@@ -52,7 +53,7 @@ function ExercisesLayout({
               code: step.stepConfig.code,
               sortedBy: step.stepConfig.sortedBy,
               // TODO: to change tacticalPlanning with dynamic SBU name
-              redirectUrl: `/modules/tacticalPlanning/exercises/${params.exerciseId}/${step.stepConfig.code}`,
+              redirectUrl: `/modules/${modules.tacticalPlanning}/exercises/${params.exerciseId}/${step.stepConfig.code}`,
             }))
             .sort((a, b) => a.sortedBy - b.sortedBy)}
         />

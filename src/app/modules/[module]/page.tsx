@@ -1,12 +1,15 @@
 'use client';
 import ModuleComponent from '@/components/common/ModuleComponent';
-import { useExercisesCount } from '@/services/exercises.service';
+import { useExercisesCountByStatus } from '@/services/exercises.service';
 import { MousePointerClick, SlidersHorizontal } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
-import { modules } from '@/utils/constants';
+import { EXERCISE_STATUS, modules } from '@/utils/constants';
 
 const Module = () => {
-  const countQuery = useExercisesCount();
+  const exercicesEncours =
+    useExercisesCountByStatus(EXERCISE_STATUS.IN_PROGRESS);
+  const exercicesCloture =
+    useExercisesCountByStatus(EXERCISE_STATUS.CLOSED);
   return (
     <div className=" h-full flex flex-col gap-4 p-8 pt-6">
       <div className="flex flex-col gap-2.5 mt-5 mb-11">
@@ -29,14 +32,16 @@ const Module = () => {
             to={`/modules/${modules.tacticalPlanning}/exercises`}
           >
             <div className="flex gap-3">
-              {countQuery.isSuccess && (
+              {exercicesEncours.isSuccess && (
                 <Badge className="rounded-full">
-                  {countQuery.data} Exercices publiques
+                  {exercicesEncours.data} Exercices publiques
                 </Badge>
               )}
-              <Badge className="rounded-full bg-accent text-accent-foreground hover:bg-accent hover:text-accent-foreground">
-                0 Exercices locaux
-              </Badge>
+              {exercicesCloture.isSuccess && (
+                <Badge className="rounded-full bg-accent text-accent-foreground hover:bg-accent hover:text-accent-foreground">
+                  {exercicesCloture.data} Exercices clôturés
+                </Badge>
+              )}
             </div>
           </ModuleComponent>
         </div>
