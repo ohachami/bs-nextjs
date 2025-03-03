@@ -11,6 +11,7 @@ interface SelectedVersionsProps {
   selectedVersions: string[];
   totalLength: number;
   submitAction: () => void;
+  loading?: boolean;
 }
 
 /**
@@ -22,14 +23,15 @@ function SelectedVersions({
   selectedVersions,
   totalLength,
   submitAction,
+  loading = false,
 }: SelectedVersionsProps) {
+  console.log({ selectedVersions, totalLength });
   // up and down arrow state tracking
   const [toggle, setToggle] = useState<boolean>(false);
   // switch toggle
   const onToggle = () => {
     setToggle((p) => !p);
   };
-
   return (
     <div className="flex justify-between items-end">
       <div className="flex flex-col items-center gap-2">
@@ -56,7 +58,7 @@ function SelectedVersions({
       <Button
         onClick={submitAction}
         className="bg-[#007BFF] hover:bg-[#007bffd6]"
-        disabled={selectedVersions.length !== totalLength}
+        disabled={selectedVersions.length === totalLength}
       >
         Consolider et visualize <MoveRight />
       </Button>

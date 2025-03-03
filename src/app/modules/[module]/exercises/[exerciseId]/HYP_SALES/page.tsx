@@ -23,10 +23,10 @@ function PageHyperManu() {
           'Les BUs commerciales sont en train de préparer leurs toplines et upsides',
       }}
     >
-      {({ subStepSelected, sections, user }) => {
+      {({ subStepSelected, sections, user ,setSubStepSelected}) => {
         switch (subStepSelected) {
           case CODE_SUB_STEPS.COLLECT:
-            return <CollectPage sbuId={user.sbu.id} />;
+            return <CollectPage sbuId={user.sbu.id} setSubStepSelected={setSubStepSelected} />;
           case CODE_SUB_STEPS.CONSOLIDATION:
             return <ConsolidationPage items={sections} user={user} />;
           case CODE_SUB_STEPS.SCENARISATION:

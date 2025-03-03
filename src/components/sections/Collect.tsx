@@ -5,20 +5,29 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { DataSourceIF, DataVersionIF } from '@/types/collect/datasources';
 import { Button } from '../ui/button';
 import { RefreshCcw } from 'lucide-react';
-import { RefSiteIF } from '@/types/refExercise/config';
+import { CodeSubStepType, RefSiteIF } from '@/types/refExercise/config';
 import { VersionTable } from './VersionTable';
 import { useState } from 'react';
 import SelectedVersions from './SelectedVersions';
+import { useConsolidateSales } from '@/services/consolidation.service';
+import { toast } from '@/hooks/use-toast';
+import { CODE_SUB_STEPS } from '@/utils/constants';
 
 interface Props {
   sbuId?: string;
+  setSubStepSelected: (code: CodeSubStepType) => void;
 }
 
-function CollectPage({ sbuId }: Props) {
+function CollectPage({ sbuId, setSubStepSelected }: Props) {
   //getting user information
   // getting datasources related to user's sbu id
 
   const { data: datasources } = useDataSourceHierarchy(sbuId ?? '');
+
+  const {
+    mutateAsync: onConsolidateSales,
+    isPending: loadingConsolidateSales,
+  } = useConsolidateSales();
 
   // Track only version names for each datasource and site combination
   const [selectedVersions, setSelectedVersions] = useState<DataVersionIF[]>([]);
@@ -31,18 +40,33 @@ function CollectPage({ sbuId }: Props) {
    */
   const handleVersionSelect = (selected: DataVersionIF[]) => {
     if (selected.length > 0) {
-      setSelectedVersions((prevVersions) => {
-        const newVersion = selected[0];
-        // Remove any existing version with the same ID
-        const filteredVersions = prevVersions.filter(
-          (version) => version.id !== newVersion.id
-        );
-        // Add the new version
-        return [...filteredVersions, newVersion];
-      });
+      const newVersion = selected[0];
+      // Remove any existing version with the same ID
+      const filteredVersions = selectedVersions.filter(
+        (version) => version.id !== newVersion.id
+      );
+      // Add the new version
+      setSelectedVersions([...filteredVersions, newVersion]);
     }
   };
 
+  /**
+   * Handle the Consolidate Sales button click
+   * Call the onConsolidateSales mutation with the selected version IDs
+   * If the mutation is successful, display a toast notification and redirect to the Consolidation&View page
+   */
+  const handleConsolidateSales = () => {
+    onConsolidateSales(selectedVersions.map((e) => e.id)).then((e) => {
+      //show toast
+      toast({
+        variant: 'default',
+        title: 'Consolidation effectuée avec succès',
+        duration: 5000,
+      });
+      // redirect to Consolidation&View
+      setSubStepSelected(CODE_SUB_STEPS.CONSOLIDATION);
+    });
+  };
   return (
     datasources &&
     Array.isArray(datasources) &&
@@ -50,7 +74,7 @@ function CollectPage({ sbuId }: Props) {
       <div className="space-y-4">
         <Tabs defaultValue={`${datasources[0].id}`} orientation="vertical">
           <div className="flex items-start gap-4">
-            <TabsList className="flex-col w-52 gap-4 h-auto bg-gray-200">
+            <TabsList className="flex-col w-auto gap-4 h-auto bg-gray-200">
               {datasources.map((dataSource: DataSourceIF, key: number) => (
                 <TabsTrigger
                   className={`min-w-[200px]`}
@@ -128,7 +152,10 @@ function CollectPage({ sbuId }: Props) {
         <SelectedVersions
           selectedVersions={selectedVersions.map((version) => version.name)}
           totalLength={datasources.length}
-          submitAction={() => {}}
+          loading={loadingConsolidateSales}
+          submitAction={() => {
+            handleConsolidateSales();
+          }}
         />
       </div>
     )
