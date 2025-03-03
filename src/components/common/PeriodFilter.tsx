@@ -34,6 +34,7 @@ const PeriodFilter = ({ years, onSelectionChange }: PeriodFilterProps) => {
     <TreeCombobox
       buttonVariant="default"
       multiSelect
+      selectParent
       items={filter}
       selectChildren={false}
       onSelectionChange={onSelectionChange}

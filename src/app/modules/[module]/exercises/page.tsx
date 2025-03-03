@@ -83,7 +83,7 @@ const ModuleExercices = () => {
 
       if (selectedPeriods.length !== 0) {
         newData = newData.filter((e) =>
-          selectedPeriods.includes(`${e.year}-${e.parentPeriod.id}`)
+          selectedPeriods.includes(`${e.year};${e.parentPeriod.id}`)
         );
       }
 
@@ -134,19 +134,19 @@ const ModuleExercices = () => {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
+          {search !== '' && (
+            <Button
+              variant="ghost"
+              className="absolute top-1/2 -translate-y-1/2 right-3 text-muted-foreground rounded-full p-1 size-6"
+              onClick={() => setSearch('')}
+            >
+              <XIcon />
+            </Button>
+          )}
         </div>
         <div>
           <PeriodFilter years={years} onSelectionChange={setSelectedPeriods} />
         </div>
-        <Button
-          variant="ghost"
-          onClick={() => {
-            setSearch('');
-          }}
-        >
-          <XIcon />
-          Réinitialiser
-        </Button>
       </div>
 
       <h2 className="font-geist font-semibold text-lg text-card-foreground">
