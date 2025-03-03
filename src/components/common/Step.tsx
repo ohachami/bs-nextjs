@@ -46,8 +46,7 @@ function Step({
         className={clsx(
           'flex justify-between items-center rounded-lg relative bg-white gap-1 lg:gap-3',
           {
-            'shadow-xl z-10 scale-[1.1] absolute py-3 px-6 transform -translate-x-1/20':
-              isActive,
+            'shadow-xl z-10 scale-[1.1] absolute py-3 px-6': isActive,
             'arrow-bg-first': isActive && isFirst,
             'arrow-bg': isActive && !isFirst && !isLast,
             'arrow-bg-end': isActive && isLast,
