@@ -80,6 +80,7 @@ export const useDemandTypes = () => {
 
 export const useMarketableProductTypes = () => {
   const { data } = useGroupedProducts();
+  console.log("data", data)
   const types = MARKETABLE_PRODUCT_TYPES.map(m => m.name);
   return useQuery<MarketableConfig[]>({
     queryKey: ["marketableProductTypes"],

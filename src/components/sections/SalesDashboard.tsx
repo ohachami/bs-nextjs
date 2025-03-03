@@ -22,7 +22,7 @@ export default function SalesDashboard({
   const { currentExercise } = useExerciseStore();
 
   const { data, isPending, error } = useChartList(section.id);
-  const { data: marketableTypes } = useMarketableProductTypes();
+  const { data: marketableTypes, isLoading: isLoadingType } = useMarketableProductTypes();
 
   const handleFilter = (key: string, value: string[]) => {
     const newFilters = { ...filters };
@@ -30,14 +30,18 @@ export default function SalesDashboard({
     setFilters(newFilters);
   };
 
+  
+
   useEffect(() => {
     if (marketableTypes && marketableTypes?.length > 0) {
-      setDefaultTab(marketableTypes[0].name);
+      setDefaultTab(marketableTypes[0].id);
     }
   }, [marketableTypes]);
   if (!currentExercise || isPending) return <Loading />;
 
   if (error) return <p className="p-4">Error Loading Charts...</p>;
+
+  console.log("marketableTypes", marketableTypes, defaultTab)
 
   return (
     <div className="flex flex-col gap-4">
@@ -50,12 +54,12 @@ export default function SalesDashboard({
         />
         <Button>Valider</Button>
       </div>
-      <Tabs defaultValue={defaultTab} className="rounded">
+      isLoadingType ? <Loading/> : <Tabs defaultValue={marketableTypes ? marketableTypes[0]?.id : ""} className="rounded">
         <div className="flex justify-between gap-4">
           <TabsList variant="default" className="justify-start max-w-80">
             {marketableTypes &&
               marketableTypes.map(({ id, name }) => (
-                <TabsTrigger key={id} variant="default" value={name}>
+                <TabsTrigger key={id} variant="default" value={id || ""}>
                   {name}
                 </TabsTrigger>
               ))}
@@ -85,7 +89,7 @@ export default function SalesDashboard({
         </div>
         {marketableTypes && marketableTypes.length > 0 ? (
           marketableTypes.map(({ id, name, color }) => (
-            <TabsContent key={id} value={name}>
+            <TabsContent key={id} value={id || ""}>
               <div className="flex flex-col gap-4">
                 {data
                   .filter(
@@ -95,10 +99,10 @@ export default function SalesDashboard({
                       ['bar', 'boxPlot'].includes(e.chartType)
                   )
                   // .filter((e) => e.name === 'Tri cliet ( CA, volume)')
-                  .map((chart, key) => (
+                  .map((chart) => (
                     <ChartBox
                       marketableType={{ id, name, color }}
-                      key={key}
+                      key={chart.id}
                       chart={chart as ChartIF}
                       globalFilters={filters}
                       setGlobalFilter={handleFilter}

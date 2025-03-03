@@ -143,7 +143,7 @@ export function ChartBox({
             const { MIN, AVG, MAX } = item.values;
             return {
               x: item.label,
-              y: [MIN, 0, AVG, 0, MAX],
+              y: [MIN, AVG, AVG, AVG, MAX],
             };
           }),
         };
@@ -185,8 +185,8 @@ export function ChartBox({
         },
         boxPlot: {
           colors: {
-            upper: '#5C4742',
-            lower: '#A5978B',
+            upper: '#936646',
+            lower: '#E99C66',
           },
         },
       },
@@ -220,13 +220,14 @@ export function ChartBox({
           className={`grid ${getGridColsClass(data.length)} gap-6 mx-auto p-4`}
         >
           {data.map((d, index) => (
-            <div key={`${d.groupedBy.label}-${index}`}>
+            <div className='flex flex-col' key={`${d.groupedBy.label}-${index}`}>
               <Chart
                 options={chartOptions(index, d)}
                 series={prepareData(d.groupedBy.data)}
                 type={chart.chartType}
                 height={350}
               />
+              <span className='text-muted-foreground mx-auto'>{d.groupedBy.label}</span>
             </div>
           ))}
         </div>

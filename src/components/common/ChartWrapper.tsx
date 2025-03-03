@@ -39,7 +39,7 @@ export function ChartWrapper({
             <CardDescription>{subTitle}</CardDescription>
           </div>
           {filtersConfig && (
-            <div className="flex items-center justify-center ">
+            <div className="flex items-center justify-center gap-2 ">
               {filtersConfig
                 .filter((e) => !e.hidden)
                 .map((e, key) => (
