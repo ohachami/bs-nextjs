@@ -58,7 +58,7 @@ export default function SalesDashboard({
         <>
           {marketableTypes && marketableTypes.length > 0 ? (
             <Tabs defaultValue={marketableTypes ? marketableTypes[0]?.id : ""} className="rounded">
-                <div className="flex justify-between gap-4">
+                <div className="flex  gap-4">
                   <TabsList variant="default" className="justify-start max-w-80">
                     {marketableTypes &&
                       marketableTypes.map(({ id, name }) => (
@@ -68,6 +68,7 @@ export default function SalesDashboard({
                       ))}
                   </TabsList>
 
+                  <div className='flex gap-4'>
                   <FilterFactory
                     module="products"
                     onChange={(e) => {
@@ -89,8 +90,9 @@ export default function SalesDashboard({
                     }}
                     values={filters['periods']}
                   />
+                  </div>
                 </div>
-                {marketableTypes.map(({ id, name, color }) => (
+                {marketableTypes.map(({ id, name, colors }) => (
                     <TabsContent key={id} value={id || ""}>
                       <div className="flex flex-col gap-4">
                         {data
@@ -103,7 +105,7 @@ export default function SalesDashboard({
                           .sort((a,b) => a.sortedBy - b.sortedBy)
                           .map((chart) => (
                             <ChartBox
-                              marketableType={{ id, name, color }}
+                              marketableType={{ id, name, colors }}
                               key={chart.id}
                               chart={chart as ChartIF}
                               globalFilters={filters}

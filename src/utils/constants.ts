@@ -98,16 +98,16 @@ export const SECTIONS = {
 
 export const MARKETABLE_PRODUCT_TYPES: MarketableConfig[] = [{
   name: "Marketable Rock",
-  color: "#936646"
+  colors: ["#F6D6C0", "#F0BF9D", "#E99C66", "#C28154", "#936646"]
 }, {
   name: "Marketable Acid",
-  color: "#FFAE49"
+  colors: ["#ACEEB2", "#A8F2AF", "#8FED97", "#6DE477", "#57D762"]
 }, {
   name: "Feed",
-  color: "#57D762"
+  colors: ["#57D762"]
 }, {
   name: "Fertilizer",
-  color: "#007BFF"
+  colors: ["#007BFF"]
 }]
 
 // rus_status

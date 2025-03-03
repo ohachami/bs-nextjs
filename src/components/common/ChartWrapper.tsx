@@ -65,7 +65,7 @@ export function ChartWrapper({
                   handleChange(p);
                 }}
               >
-                <span className="text-lg font-bold leading-none sm:text-3xl">
+                <span className="text-base font-bold leading-none">
                   {p.label}
                 </span>
               </button>
