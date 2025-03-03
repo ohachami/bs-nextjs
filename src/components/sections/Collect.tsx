@@ -84,7 +84,7 @@ function CollectPage({ sbuId, setSubStepSelected }: Props) {
    */
   const handleConsolidateSales = () => {
     const versionIds = Object.values(selections).map(selection => selection.versionId);
-    onConsolidateSales(versionIds).then((e) => {
+    onConsolidateSales(versionIds).then(() => {
       //show toast
       toast({
         variant: 'default',
@@ -103,7 +103,7 @@ function CollectPage({ sbuId, setSubStepSelected }: Props) {
           <div className="space-y-4">
             <Tabs defaultValue={`${datasources[0].id}`} orientation="vertical">
               <div className="flex items-start gap-4">
-                <TabsList className="flex-col w-52 gap-4 h-auto bg-gray-200">
+                <TabsList className="flex-col w-64 gap-4 h-auto bg-gray-200">
                   {datasources.map((dataSource: DataSourceIF, key: number) => (
                       <TabsTrigger
                           className={`min-w-[200px]`}

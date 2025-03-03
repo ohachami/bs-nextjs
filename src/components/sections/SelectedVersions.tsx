@@ -22,8 +22,7 @@ interface SelectedVersionsProps {
 function SelectedVersions({
   selectedVersions,
   totalLength,
-  submitAction,
-  loading = false,
+  submitAction
 }: SelectedVersionsProps) {
   console.log({ selectedVersions, totalLength });
   // up and down arrow state tracking
