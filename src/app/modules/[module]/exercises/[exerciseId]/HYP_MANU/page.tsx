@@ -25,7 +25,7 @@ function Page() {
       shouldDisplayWaitingStep={(user) => user.sbu.name !== SBUS.MANUFACTURING}
       waitingStepMessage={{
         title:
-          'Les BUs Manufacturing sont en train d’ajuster les hypothèses Manufacturing',
+          'L’équipe BS Manufacturing est en train de préparer la première version des hypothèses Manufacturing',
       }}
     >
       {({ subStepSelected, user, sections }) => {

@@ -1,12 +1,15 @@
 import { Clock } from 'lucide-react';
+import Link from 'next/link';
 import React from 'react';
 
 export default function WaitingStep({
   title,
   subtitle,
+  nextStep,
 }: {
   title: string;
   subtitle?: string;
+  nextStep: string;
 }) {
   return (
     <div className="w-full h-[450px] rounded-md bg-white p-5">
@@ -28,9 +31,15 @@ export default function WaitingStep({
             subtitle
           ) : (
             <>
-              {"Merci de patienter le temps qu'elles finalisent leur version, ou"}
+              {
+                "Merci de patienter le temps qu'elles finalisent leur version, ou"
+              }
               passez à{' '}
-              <span className="text-blue-500 underline">{"l’étape suivante"}</span>
+              <Link href={nextStep}>
+                <span className="text-blue-500 underline">
+                  {'l’étape suivante'}
+                </span>
+              </Link>
             </>
           )}
         </p>
