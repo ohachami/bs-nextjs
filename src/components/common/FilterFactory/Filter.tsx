@@ -1,6 +1,5 @@
 import { TreeItem } from '@/types/common/TreeComboboxFilterTypes';
 import { TOption } from '@/utils/types';
-import { useCallback, useEffect, useState } from 'react';
 import MultiSelect from './MultiSelect';
 import TreeCombobox from '../TreeCombobox';
 

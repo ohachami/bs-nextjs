@@ -22,7 +22,7 @@ export default function SalesDashboard({
   const { currentExercise } = useExerciseStore();
 
   const { data, isPending, error } = useChartList(section.id);
-  const { data: marketableTypes, isLoading: isLoadingType } = useMarketableProductTypes();
+  const { data: marketableTypes, isLoading: isTypeLoading } = useMarketableProductTypes();
 
   const handleFilter = (key: string, value: string[]) => {
     const newFilters = { ...filters };
@@ -54,43 +54,92 @@ export default function SalesDashboard({
         />
         <Button>Valider</Button>
       </div>
-      isLoadingType ? <Loading/> : <Tabs defaultValue={marketableTypes ? marketableTypes[0]?.id : ""} className="rounded">
-        <div className="flex justify-between gap-4">
-          <TabsList variant="default" className="justify-start max-w-80">
-            {marketableTypes &&
-              marketableTypes.map(({ id, name }) => (
-                <TabsTrigger key={id} variant="default" value={id || ""}>
-                  {name}
-                </TabsTrigger>
-              ))}
-          </TabsList>
+      {isTypeLoading ? <Loading /> : 
+        <>
+          {marketableTypes && marketableTypes.length > 0 ? (
+            <Tabs defaultValue={marketableTypes ? marketableTypes[0]?.id : ""} className="rounded">
+                <div className="flex justify-between gap-4">
+                  <TabsList variant="default" className="justify-start max-w-80">
+                    {marketableTypes &&
+                      marketableTypes.map(({ id, name }) => (
+                        <TabsTrigger key={id} variant="default" value={id || ""}>
+                          {name}
+                        </TabsTrigger>
+                      ))}
+                  </TabsList>
 
-          <FilterFactory
-            module="products"
-            onChange={(e) => {
-              setFilters({ ...filters, products: e });
-            }}
-            values={filters['products']}
-          />
-          <FilterFactory
-            module="regions"
-            onChange={(e) => {
-              setFilters({ ...filters, regions: e });
-            }}
-            values={filters['regions']}
-          />
-          <FilterFactory
-            module="periods"
-            onChange={(e) => {
-              setFilters({ ...filters, periods: e });
-            }}
-            values={filters['periods']}
-          />
-        </div>
-        {marketableTypes && marketableTypes.length > 0 ? (
-          marketableTypes.map(({ id, name, color }) => (
-            <TabsContent key={id} value={id || ""}>
+                  <FilterFactory
+                    module="products"
+                    onChange={(e) => {
+                      setFilters({ ...filters, products: e });
+                    }}
+                    values={filters['products']}
+                  />
+                  <FilterFactory
+                    module="regions"
+                    onChange={(e) => {
+                      setFilters({ ...filters, regions: e });
+                    }}
+                    values={filters['regions']}
+                  />
+                  <FilterFactory
+                    module="periods"
+                    onChange={(e) => {
+                      setFilters({ ...filters, periods: e });
+                    }}
+                    values={filters['periods']}
+                  />
+                </div>
+                {marketableTypes.map(({ id, name, color }) => (
+                    <TabsContent key={id} value={id || ""}>
+                      <div className="flex flex-col gap-4">
+                        {data
+                          .filter(
+                            (e) =>
+                              e.displayType === displayType &&
+                              e.config !== null &&
+                              ['bar', 'boxPlot'].includes(e.chartType)
+                          )
+                          .sort((a,b) => a.sortedBy - b.sortedBy)
+                          .map((chart) => (
+                            <ChartBox
+                              marketableType={{ id, name, color }}
+                              key={chart.id}
+                              chart={chart as ChartIF}
+                              globalFilters={filters}
+                              setGlobalFilter={handleFilter}
+                            />
+                          ))}
+                      </div>
+                    </TabsContent>
+                  ))
+                }
+              </Tabs>
+          ): (
               <div className="flex flex-col gap-4">
+                <div className="flex justify-between gap-4">
+                <FilterFactory
+                    module="products"
+                    onChange={(e) => {
+                      setFilters({ ...filters, products: e });
+                    }}
+                    values={filters['products']}
+                  />
+                  <FilterFactory
+                    module="regions"
+                    onChange={(e) => {
+                      setFilters({ ...filters, regions: e });
+                    }}
+                    values={filters['regions']}
+                  />
+                  <FilterFactory
+                    module="periods"
+                    onChange={(e) => {
+                      setFilters({ ...filters, periods: e });
+                    }}
+                    values={filters['periods']}
+                  />
+                </div>
                 {data
                   .filter(
                     (e) =>
@@ -99,40 +148,20 @@ export default function SalesDashboard({
                       ['bar', 'boxPlot'].includes(e.chartType)
                   )
                   // .filter((e) => e.name === 'Tri cliet ( CA, volume)')
-                  .map((chart) => (
+                  .sort((a,b) => a.sortedBy - b.sortedBy)
+                  .map((chart, key) => (
                     <ChartBox
-                      marketableType={{ id, name, color }}
-                      key={chart.id}
+                      key={key}
                       chart={chart as ChartIF}
                       globalFilters={filters}
                       setGlobalFilter={handleFilter}
                     />
                   ))}
               </div>
-            </TabsContent>
-          ))
-        ) : (
-          <div className="flex flex-col gap-4">
-            {data
-              .filter(
-                (e) =>
-                  e.displayType === displayType &&
-                  e.config !== null &&
-                  ['bar', 'boxPlot'].includes(e.chartType)
-              )
-              // .filter((e) => e.name === 'Tri cliet ( CA, volume)')
-
-              .map((chart, key) => (
-                <ChartBox
-                  key={key}
-                  chart={chart as ChartIF}
-                  globalFilters={filters}
-                  setGlobalFilter={handleFilter}
-                />
-              ))}
-          </div>
-        )}
-      </Tabs>
+          )}
+        </>
+      }
+      
     </div>
   );
 }

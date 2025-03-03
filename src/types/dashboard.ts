@@ -57,6 +57,7 @@ export type ChartIF = {
   subTitle: string;
   type: 'bar' | 'boxPlot';
   comment: string;
+  sortedBy: number;
   displayType: 'VISUALIZE' | 'COMPARE';
   chartType:
     | 'line'

@@ -7,7 +7,6 @@ import {
   ArrowBigDown,
   ArrowBigUp,
   Compass,
-  Copy,
   EllipsisVertical,
   MessageCircle,
   Send,
