@@ -4,6 +4,23 @@ import { useCallback, useEffect, useState } from 'react';
 import MultiSelect from './MultiSelect';
 import TreeCombobox from '../TreeCombobox';
 
+function searchTree(
+  items: TreeItem[],
+  idsSearch: string[]
+): { id: string; label: string }[] {
+  let results: { id: string; label: string }[] = [];
+
+  for (const item of items) {
+    if (idsSearch.includes(item.id)) {
+      results.push(item);
+    }
+    if (item.children) {
+      results = results.concat(searchTree(item.children, idsSearch));
+    }
+  }
+
+  return results;
+}
 type Filter<T> = {
   title: string;
   placeholder: string;
@@ -44,18 +61,10 @@ const Filter = <T,>(props: Filter<T>) => {
           placeholder={placeholder}
           selectChildren={selectChildren}
           multiSelect={multiSelect}
-          onSelectionChange={(selectedItems: string[]) => {
+          onSelectionChange={(selectedItems) => {
             onChange(selectedItems);
           }}
-          defaultValues={data
-            .map(mapOption)
-            .map((group) => ({
-              ...group,
-              children:
-                group.children?.filter((child) => values.includes(child.id)) ||
-                [],
-            }))
-            .filter((group) => group.children.length > 0)}
+          values={searchTree(data.map(mapOption),values)}
         />
       </div>
     );
