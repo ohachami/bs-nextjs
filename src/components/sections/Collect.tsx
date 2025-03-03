@@ -15,7 +15,7 @@ import { CODE_SUB_STEPS } from '@/utils/constants';
 
 interface Props {
   sbuId?: string;
-  setSubStepSelected: (code: CodeSubStepType) => void;
+  setSubStepSelected?: (code: CodeSubStepType) => void;
 }
 
 type DSKey = string;
@@ -92,7 +92,9 @@ function CollectPage({ sbuId, setSubStepSelected }: Props) {
         duration: 5000,
       });
       // redirect to Consolidation&View
-      setSubStepSelected(CODE_SUB_STEPS.CONSOLIDATION);
+      if(setSubStepSelected) {
+        setSubStepSelected(CODE_SUB_STEPS.CONSOLIDATION);
+      }
     });
   };
 

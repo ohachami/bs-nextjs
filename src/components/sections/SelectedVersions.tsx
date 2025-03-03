@@ -57,7 +57,7 @@ function SelectedVersions({
       <Button
         onClick={submitAction}
         className="bg-[#007BFF] hover:bg-[#007bffd6]"
-        disabled={selectedVersions.length === totalLength}
+        disabled={selectedVersions.length !== totalLength}
       >
         Consolider et visualize <MoveRight />
       </Button>
