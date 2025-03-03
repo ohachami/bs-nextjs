@@ -12,6 +12,8 @@ import SelectedVersions from './SelectedVersions';
 import { useConsolidateSales } from '@/services/consolidation.service';
 import { toast } from '@/hooks/use-toast';
 import { CODE_SUB_STEPS } from '@/utils/constants';
+import { useExerciseStore } from '@/store/exercises/useExerciseStore';
+import { usePathname } from 'next/navigation';
 
 interface Props {
   sbuId?: string;
@@ -35,6 +37,8 @@ function CollectPage({ sbuId, setSubStepSelected }: Props) {
   //getting user information
   // getting datasources related to user's sbu id
   const { data: datasources } = useDataSourceHierarchy(sbuId ?? '');
+  const { currentExercise } = useExerciseStore();
+  const pathname = usePathname();
 
   const {
     mutateAsync: onConsolidateSales,
@@ -83,19 +87,24 @@ function CollectPage({ sbuId, setSubStepSelected }: Props) {
    * If the mutation is successful, display a toast notification and redirect to the Consolidation&View page
    */
   const handleConsolidateSales = () => {
+    const step =
+    currentExercise?.steps.find((s) => pathname.endsWith(s.stepConfig.code))
     const versionIds = Object.values(selections).map(selection => selection.versionId);
-    onConsolidateSales(versionIds).then(() => {
-      //show toast
-      toast({
-        variant: 'default',
-        title: 'Consolidation effectuée avec succès',
-        duration: 5000,
+    if(step) {
+      onConsolidateSales({versions: versionIds, stepId: step?.id}).then(() => {
+        //show toast
+        toast({
+          variant: 'default',
+          title: 'Consolidation effectuée avec succès',
+          duration: 5000,
+        });
+        // redirect to Consolidation&View
+        if(setSubStepSelected) {
+          setSubStepSelected(CODE_SUB_STEPS.CONSOLIDATION);
+        }
       });
-      // redirect to Consolidation&View
-      if(setSubStepSelected) {
-        setSubStepSelected(CODE_SUB_STEPS.CONSOLIDATION);
-      }
-    });
+    }
+   
   };
 
   return (

@@ -59,19 +59,19 @@ export const useExerciseConsolidationVersions = (
  * - `data`: the response data from the API
  */
 export const useConsolidateSales = () => {
-  return useMutation<unknown, Error, string[]>({
+  return useMutation<unknown, Error, {versions: string[]; stepId: string}>({
     /**
      * The mutation function that will be called when the hook is invoked
      * @param versions an array of version strings to be consolidated
      */
-    mutationFn: async (versions: string[]) => {
+    mutationFn: async ({versions, stepId}: {stepId: string; versions: string[]}) => {
       if (!versions || versions.length === 0) {
         throw new Error('Versions are required'); // Prevents unnecessary API calls
       }
       return await callApi<unknown>({
         method: 'POST',
         url: apiPaths.consolidationSales(), // API endpoint for consolidating sales
-        data: versions, // Versions data to be sent in the request body
+        data: {versions, stepId}, // Versions data to be sent in the request body
       });
     },
   });
