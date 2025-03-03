@@ -18,10 +18,22 @@ interface Props {
   setSubStepSelected: (code: CodeSubStepType) => void;
 }
 
+type DSKey = string;
+
+interface SelectionTracker {
+  [key: DSKey]: {
+    versionId: string;
+    versionName: string;
+  };
+}
+
+const createKey = (datasourceId: string, siteId?: string): DSKey => {
+  return siteId ? `${datasourceId}:${siteId}` : datasourceId;
+};
+
 function CollectPage({ sbuId, setSubStepSelected }: Props) {
   //getting user information
   // getting datasources related to user's sbu id
-
   const { data: datasources } = useDataSourceHierarchy(sbuId ?? '');
 
   const {
@@ -29,25 +41,40 @@ function CollectPage({ sbuId, setSubStepSelected }: Props) {
     isPending: loadingConsolidateSales,
   } = useConsolidateSales();
 
-  // Track only version names for each datasource and site combination
-  const [selectedVersions, setSelectedVersions] = useState<DataVersionIF[]>([]);
+  const [selections, setSelections] = useState<SelectionTracker>({});
 
   /**
    * Handling VersionTable Row Selection
-   * Updating the CollectPage component selectedVersions state
-   * NB: Making sure no DataVersion Selection Duplication occurs
+   * Updating the selected versions
    * @param selected: Selected DataVersion Row
+   * @param datasourceId: datasourceId
+   * @param siteId: siteId
    */
-  const handleVersionSelect = (selected: DataVersionIF[]) => {
+  const handleVersionSelect = (selected: DataVersionIF[], datasourceId: string, siteId?: string) => {
     if (selected.length > 0) {
       const newVersion = selected[0];
-      // Remove any existing version with the same ID
-      const filteredVersions = selectedVersions.filter(
-        (version) => version.id !== newVersion.id
-      );
-      // Add the new version
-      setSelectedVersions([...filteredVersions, newVersion]);
+      const key = createKey(datasourceId, siteId);
+
+      // Update selections
+      setSelections(prevSelections => ({
+        ...prevSelections,
+        [key]: {
+          versionId: newVersion.id,
+          versionName: newVersion.name
+        }
+      }));
     }
+  };
+
+  // Get the selected ID for a given datasource and site
+  const getSelectedId = (datasourceId: string, siteId?: string): string => {
+    const key = createKey(datasourceId, siteId);
+    return selections[key]?.versionId || "";
+  };
+
+  // Get all selected version names for the SelectedVersions component
+  const getSelectedVersionNames = (): string[] => {
+    return Object.values(selections).map(selection => selection.versionName);
   };
 
   /**
@@ -56,109 +83,113 @@ function CollectPage({ sbuId, setSubStepSelected }: Props) {
    * If the mutation is successful, display a toast notification and redirect to the Consolidation&View page
    */
   const handleConsolidateSales = () => {
-    onConsolidateSales(selectedVersions.map((e) => e.id)).then((e) => {
+    const versionIds = Object.values(selections).map(selection => selection.versionId);
+    onConsolidateSales(versionIds).then((e) => {
       //show toast
       toast({
         variant: 'default',
-        title: 'Consolidation effectuée avec succès',
+        title: 'Consolidation effectuée avec succès',
         duration: 5000,
       });
       // redirect to Consolidation&View
       setSubStepSelected(CODE_SUB_STEPS.CONSOLIDATION);
     });
   };
+
   return (
-    datasources &&
-    Array.isArray(datasources) &&
-    datasources.length > 0 && (
-      <div className="space-y-4">
-        <Tabs defaultValue={`${datasources[0].id}`} orientation="vertical">
-          <div className="flex items-start gap-4">
-            <TabsList className="flex-col w-auto gap-4 h-auto bg-gray-200">
-              {datasources.map((dataSource: DataSourceIF, key: number) => (
-                <TabsTrigger
-                  className={`min-w-[200px]`}
-                  key={key}
-                  value={`${dataSource.id}`}
-                >
-                  {dataSource.name}
-                </TabsTrigger>
-              ))}
-            </TabsList>
-            {datasources.map((dataSource: DataSourceIF, key: number) => (
-              <TabsContent
-                key={key}
-                className={`flex-1`}
-                defaultValue={datasources[0].id}
-                value={`${dataSource.id}`}
-              >
-                {/* If site are found */}
-                {dataSource.sites &&
-                Array.isArray(dataSource.sites) &&
-                dataSource.sites.length > 1 ? (
-                  <Tabs defaultValue={dataSource.sites[0].id}>
-                    <div key={key} className="flex flex-col gap-4 p-2">
-                      <div className="flex justify-between">
-                        <TabsList className="flex gap-4 h-auto w-auto items-start justify-start bg-gray-200">
-                          {dataSource.sites.map(
-                            (site: RefSiteIF, key: number) => (
-                              <TabsTrigger
-                                key={key}
-                                className={`min-w-[100px]`}
-                                value={`${site.id}`}
-                              >
-                                {site.name}
-                              </TabsTrigger>
-                            )
-                          )}
-                        </TabsList>
-                        <Button>
-                          <RefreshCcw /> Actualiser
-                        </Button>
-                      </div>
-                      {dataSource.sites.map((site: RefSiteIF, key: number) => (
-                        <TabsContent
+      datasources &&
+      Array.isArray(datasources) &&
+      datasources.length > 0 && (
+          <div className="space-y-4">
+            <Tabs defaultValue={`${datasources[0].id}`} orientation="vertical">
+              <div className="flex items-start gap-4">
+                <TabsList className="flex-col w-52 gap-4 h-auto bg-gray-200">
+                  {datasources.map((dataSource: DataSourceIF, key: number) => (
+                      <TabsTrigger
+                          className={`min-w-[200px]`}
                           key={key}
-                          value={`${site.id}`}
-                          defaultValue={dataSource.sites[0].id}
-                        >
-                          <VersionTable
-                            datasourceId={dataSource.id}
-                            siteId={site.id}
-                            onSelect={handleVersionSelect}
-                          />
-                        </TabsContent>
-                      ))}
-                    </div>
-                  </Tabs>
-                ) : (
-                  // If site are not found
-                  <div className="flex flex-col gap-4 justify-between p-2">
-                    <div className="flex justify-end">
-                      <Button>
-                        <RefreshCcw /> Actualiser
-                      </Button>
-                    </div>
-                    <VersionTable
-                      datasourceId={dataSource.id}
-                      onSelect={handleVersionSelect}
-                    />
-                  </div>
-                )}
-              </TabsContent>
-            ))}
+                          value={`${dataSource.id}`}
+                      >
+                        {dataSource.name}
+                      </TabsTrigger>
+                  ))}
+                </TabsList>
+                {datasources.map((dataSource: DataSourceIF, key: number) => (
+                    <TabsContent
+                        key={key}
+                        className={`flex-1`}
+                        defaultValue={datasources[0].id}
+                        value={`${dataSource.id}`}
+                    >
+                      {/* If site are found */}
+                      {dataSource.sites &&
+                      Array.isArray(dataSource.sites) &&
+                      dataSource.sites.length > 1 ? (
+                          <Tabs defaultValue={dataSource.sites[0].id}>
+                            <div key={key} className="flex flex-col gap-4 p-2">
+                              <div className="flex justify-between">
+                                <TabsList className="flex gap-4 h-auto w-auto items-start justify-start bg-gray-200">
+                                  {dataSource.sites.map(
+                                      (site: RefSiteIF, key: number) => (
+                                          <TabsTrigger
+                                              key={key}
+                                              className={`min-w-[100px]`}
+                                              value={`${site.id}`}
+                                          >
+                                            {site.name}
+                                          </TabsTrigger>
+                                      )
+                                  )}
+                                </TabsList>
+                                <Button>
+                                  <RefreshCcw /> Actualiser
+                                </Button>
+                              </div>
+                              {dataSource.sites.map((site: RefSiteIF, key: number) => (
+                                  <TabsContent
+                                      key={key}
+                                      value={`${site.id}`}
+                                      defaultValue={dataSource.sites[0].id}
+                                  >
+                                    <VersionTable
+                                        datasourceId={dataSource.id}
+                                        siteId={site.id}
+                                        selectedId={getSelectedId(dataSource.id, site.id)}
+                                        onSelect={(selected) => handleVersionSelect(selected, dataSource.id, site.id)}
+                                    />
+                                  </TabsContent>
+                              ))}
+                            </div>
+                          </Tabs>
+                      ) : (
+                          // If site are not found
+                          <div className="flex flex-col gap-4 justify-between p-2">
+                            <div className="flex justify-end">
+                              <Button>
+                                <RefreshCcw /> Actualiser
+                              </Button>
+                            </div>
+                            <VersionTable
+                                datasourceId={dataSource.id}
+                                selectedId={getSelectedId(dataSource.id)}
+                                onSelect={(selected) => handleVersionSelect(selected, dataSource.id)}
+                            />
+                          </div>
+                      )}
+                    </TabsContent>
+                ))}
+              </div>
+            </Tabs>
+            <SelectedVersions
+                selectedVersions={getSelectedVersionNames()}
+                totalLength={datasources.length}
+                loading={loadingConsolidateSales}
+                submitAction={() => {
+                  handleConsolidateSales();
+                }}
+            />
           </div>
-        </Tabs>
-        <SelectedVersions
-          selectedVersions={selectedVersions.map((version) => version.name)}
-          totalLength={datasources.length}
-          loading={loadingConsolidateSales}
-          submitAction={() => {
-            handleConsolidateSales();
-          }}
-        />
-      </div>
-    )
+      )
   );
 }
 
