@@ -22,7 +22,11 @@ function Page() {
       shouldDisableStep={(_, exerciseStep) =>
         exerciseStep.status === STEP_STATUS.INACTIVE
       }
-      shouldDisplayWaitingStep={(user) => user.sbu.name !== SBUS.MANUFACTURING}
+      shouldDisplayWaitingStep={(user) =>
+              ![SBUS.MANUFACTURING, SBUS.MINING, SBUS.CORPORATE].includes(
+                user.sbu.name as never
+              )
+            }
       waitingStepMessage={{
         title:
           'L’équipe BS Manufacturing est en train de préparer la première version des hypothèses Manufacturing',

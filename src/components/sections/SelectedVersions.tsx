@@ -39,7 +39,7 @@ function SelectedVersions({
           onClick={onToggle}
         >
           {!toggle ? <ChevronDown size={20} /> : <ChevronUp size={20} />}{' '}
-          {selectedVersions.length} sur {totalLength} fichier(s) sélectionné(s).
+          {selectedVersions.length} sur {totalLength} donnée(s) sélectionné(s).
         </p>
         {toggle && (
           <ul>

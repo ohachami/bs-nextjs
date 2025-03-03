@@ -28,13 +28,13 @@ const Module = () => {
             icon={MousePointerClick}
             variant="primary"
             title="Gestion des exercices"
-            description="Description Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam imperdiet quam fringilla libero rutrum lobortis..."
+            description="Gestion des exercices BS du groupe"
             to={`/modules/${modules.tacticalPlanning}/exercises`}
           >
             <div className="flex gap-3">
               {exercicesEncours.isSuccess && (
                 <Badge className="rounded-full">
-                  {exercicesEncours.data} Exercices publiques
+                  {exercicesEncours.data} Exercices en cours
                 </Badge>
               )}
               {exercicesCloture.isSuccess && (
@@ -50,7 +50,7 @@ const Module = () => {
             icon={SlidersHorizontal}
             variant="secondary"
             title="Simulation Ad Hoc"
-            description="Description Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam imperdiet quam fringilla libero rutrum lobortis..."
+            description="Espace dédié à chaque BU pour effectuer des simulations en fonction de ses besoins."
           >
             <div>
               <Badge className="rounded-full bg-accent text-accent-foreground hover:bg-accent hover:text-accent-foreground">
