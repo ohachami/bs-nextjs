@@ -59,7 +59,7 @@ export const useExerciseConsolidationVersions = (
  * - `data`: the response data from the API
  */
 export const useConsolidateSales = () => {
-  return useMutation<any, Error, string[]>({
+  return useMutation<unknown, Error, string[]>({
     /**
      * The mutation function that will be called when the hook is invoked
      * @param versions an array of version strings to be consolidated
@@ -68,7 +68,7 @@ export const useConsolidateSales = () => {
       if (!versions || versions.length === 0) {
         throw new Error('Versions are required'); // Prevents unnecessary API calls
       }
-      return await callApi<any>({
+      return await callApi<unknown>({
         method: 'POST',
         url: apiPaths.consolidationSales(), // API endpoint for consolidating sales
         data: versions, // Versions data to be sent in the request body
