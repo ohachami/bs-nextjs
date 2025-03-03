@@ -54,7 +54,7 @@ function ProcessStep({
         </div>
         <div className={`flex flex-col justify-start items-start`}>
           <p className="text-md font-medium text-black uppercase">{name}</p>
-          <p className="text-sm text-gray-400 font-normal capitalize">
+          <p className="text-sm text-gray-400 font-normal">
             {description}
           </p>
         </div>

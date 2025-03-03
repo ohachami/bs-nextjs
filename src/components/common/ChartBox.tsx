@@ -143,7 +143,7 @@ export function ChartBox({
             const { MIN, AVG, MAX } = item.values;
             return {
               x: item.label,
-              y: [MIN, AVG, AVG, AVG, MAX],
+              y: [Math.ceil(MIN), Math.ceil(AVG), Math.ceil(AVG), Math.ceil(AVG), Math.ceil(MAX)],
             };
           }),
         };
@@ -155,7 +155,7 @@ export function ChartBox({
         chart.config.aggregations.forEach((agg, index) => {
           series.push({
             name: `Serie ${index}`,
-            data: dataItems.map((d) => d.values[agg.operation]),
+            data: dataItems.map((d) => Math.ceil(d.values[agg.operation])),
           });
         });
       } else if (chart.config.formula && chart.config.formula.length > 0) {
@@ -176,7 +176,7 @@ export function ChartBox({
   // Generate chart options for each chart instance
   const chartOptions = useCallback(
     (index: number, d: GroupedDataItem) => ({
-      ...(marketableType && { colors: [marketableType.color] }),
+      ...(marketableType && { colors: marketableType.colors }),
       chart: { id: `${chart.id}-${index}` },
       plotOptions: {
         bar: {
@@ -185,8 +185,8 @@ export function ChartBox({
         },
         boxPlot: {
           colors: {
-            upper: '#936646',
-            lower: '#E99C66',
+            upper: '#CA7C45',
+            lower: '#F4CDB2',
           },
         },
       },
