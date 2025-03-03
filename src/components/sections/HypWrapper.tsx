@@ -17,6 +17,7 @@ interface ChildredProps {
   user: User;
   sections: Section[];
   step?: ExerciseStep;
+  setSubStepSelected: (code: CodeSubStepType) => void;
 }
 interface HypWrapperProps {
   children?: ReactNode | ((props: ChildredProps) => ReactNode);
@@ -87,7 +88,7 @@ function HypWrapper({
           />
 
           {typeof children === 'function'
-            ? children({ subStepSelected, sections, user, step })
+            ? children({ subStepSelected, sections, user, step ,setSubStepSelected})
             : children}
         </>
       )}
