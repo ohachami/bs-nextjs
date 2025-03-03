@@ -32,7 +32,7 @@ export const usePatchComment = () => {
     return useMutation<void, Error, DataSourcePatchVersionParams>({
         mutationFn: async ({ id, comment }) => {
             return callApi<void>({
-                method: 'POST',
+                method: 'PATCH',
                 url: apiPaths.version(id),
                 data: { comment }
             })
