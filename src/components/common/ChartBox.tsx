@@ -177,7 +177,21 @@ export function ChartBox({
   const chartOptions = useCallback(
     (index: number, d: GroupedDataItem) => ({
       ...(marketableType && { colors: marketableType.colors }),
-      chart: { id: `${chart.id}-${index}` },
+      chart: { id: `${chart.id}-${index}` ,
+      toolbar: {
+        show: true,
+        tools: {
+          download: true,
+          selection: false, // Disable selection zoom
+          zoom: false,      // Disable zoom
+          zoomin: false,    // Disable zoom in
+          zoomout: false,   // Disable zoom out
+          pan: false,       // Disable panning
+          reset: false      // Disable reset zoom
+        }
+      },
+      },
+     
       plotOptions: {
         bar: {
           columnWidth: '40%',
