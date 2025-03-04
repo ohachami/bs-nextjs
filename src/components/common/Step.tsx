@@ -44,14 +44,15 @@ function Step({
     >
       <div
         className={clsx(
-          'flex justify-between items-center rounded-lg relative bg-white gap-1 lg:gap-3',
+          'flex justify-center items-center relative bg-white gap-1 lg:gap-3',
           {
-            'shadow-xl z-10 scale-[1.1] absolute py-3 px-6': isActive,
+            'shadow scale-[1.15] z-10 h-[66px]': isActive, // Scale up when active
+            'shadow-none': !isActive, // Default shadow
             'arrow-bg-first': isActive && isFirst,
             'arrow-bg': isActive && !isFirst && !isLast,
             'arrow-bg-end': isActive && isLast,
-            'pl-3': isFirst,
-            'pr-3': isLast,
+            'pl-3 rounded-l-lg': isFirst,
+            'pr-3 rounded-r-lg': isLast,
           }
         )}
       >
@@ -59,7 +60,7 @@ function Step({
         {
           <div
             className={clsx(
-              `border-2 border-gray-400 p-3 rounded-full w-10 h-10 flex items-center justify-center`,
+              `border-2 border-gray-400 p-3 rounded-full min-w-10 w-10 h-10 flex items-center justify-center`,
               {
                 'border-white': isActive,
                 'border-[#57D762] bg-[#6fef7930]': status === STEP_STATUS.DONE,
@@ -68,7 +69,7 @@ function Step({
           >
             <p
               className={clsx('font-semibold text-black text-xs', {
-                'text-white': isActive,
+                'text-white text-sm': isActive,
                 'text-gray-400': isDisabled,
               })}
             >
@@ -86,7 +87,7 @@ function Step({
         {/* Text */}
         <p
           className={clsx(
-            'text-[11px] min-[1280px]:text-xs max-w-[105px] min-[1280px]:max-w-fit font-medium uppercase text-black text-pretty',
+            'text-xs font-medium uppercase text-black text-balance max-w-[120px]',
             {
               'text-white': isActive,
               'text-gray-400': isDisabled,
