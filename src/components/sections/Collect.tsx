@@ -101,7 +101,7 @@ function CollectPage({ sbuId, setSubStepSelected }: Props) {
     );
     if (step) {
       onConsolidateSales({ versions: versionIds, stepId: step?.id }).then(
-        (e: any) => {
+        (e: {id: string}) => {
           //show toast
           toast({
             variant: 'default',
