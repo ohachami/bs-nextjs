@@ -1,15 +1,16 @@
 'use client';
 
 import { cn } from '@/lib/utils';
+import { requiredPermissions } from '@/utils/constants';
 import { formatDate } from '@/utils/functions';
 import { Nullable } from '@/utils/types';
+import { differenceInDays, isValid } from 'date-fns';
 import { ArrowRightIcon, EyeIcon, MousePointerClick } from 'lucide-react';
 import { Badge } from '../ui/badge';
 import { Button } from '../ui/button';
 import ExerciseStatus from './ExerciseStatus';
 import StepProgress from './ExerciseStepper';
 import { Guard } from './Guard';
-import { requiredPermissions } from '@/utils/constants';
 
 type Props = {
   creator: Nullable<string>;
@@ -30,10 +31,26 @@ type Props = {
 
 const ExerciceCard: React.FC<Props> = (props) => {
   const actifStep = props.steps.find((s) => s.status === 'IN_PROGRESS');
+
+  const isDeadlineClose =
+    actifStep?.deadline && isValid(new Date(actifStep.deadline))
+      ? differenceInDays(new Date(actifStep.deadline), new Date()) < 2
+      : false;
+
   return (
-    <div className="bg-white border-l-4 border-l-blue p-6 rounded-lg flex flex-col gap-3">
+    <div
+      className={cn(' border-l-4 p-6 rounded-lg flex flex-col gap-3 shadow', {
+        'bg-white border-l-blue-500': !isDeadlineClose,
+        'bg-rose-100 border-l-red-500': isDeadlineClose,
+      })}
+    >
       <div className="flex items-center gap-3">
-        <MousePointerClick className="size-6 text-blue" />
+        <MousePointerClick
+          className={cn('size-6', {
+            'text-blue-500': !isDeadlineClose,
+            'text-red-500': isDeadlineClose,
+          })}
+        />
 
         <div className="grow flex flex-col">
           <p className="font-geist text-foreground leading-5 text-xs font-semibold">
@@ -46,7 +63,9 @@ const ExerciceCard: React.FC<Props> = (props) => {
           )}
         </div>
 
-        <ExerciseStatus status={props.status} />
+        <ExerciseStatus
+          status={isDeadlineClose ? 'DEADLINE_CLOSE' : 'IN_PROGRESS'}
+        />
       </div>
 
       <h3 className="font-geist font-semibold text-xl">{props.name}</h3>
@@ -70,10 +89,18 @@ const ExerciceCard: React.FC<Props> = (props) => {
       >
         {actifStep && (
           <div className="flex flex-col font-geist">
-            <p className="font-semibold text-sm text-foreground truncate max-w-32">
+            <p
+              title={actifStep.name || undefined}
+              className="font-semibold text-sm text-foreground truncate max-w-32"
+            >
               {actifStep.name}
             </p>
-            <p className="text-xs text-card-foreground">
+            <p
+              className={cn('text-xs', {
+                'text-card-foreground': !isDeadlineClose,
+                'text-red-500': isDeadlineClose,
+              })}
+            >
               {actifStep.deadline && formatDate(new Date(actifStep.deadline))}
             </p>
           </div>
@@ -83,7 +110,7 @@ const ExerciceCard: React.FC<Props> = (props) => {
           <Guard permissions={requiredPermissions.VIEW_EXERCISE_SHEET_DETAILS}>
             <Button
               variant="ghost"
-              className="px-2 hover:bg-white"
+              className="px-2 border-0 shadow-none hover:bg-white"
               onClick={props.onDetailsView}
             >
               <EyeIcon />

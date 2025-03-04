@@ -13,30 +13,27 @@ export default function WaitingStep({
 }) {
   return (
     <div className="w-full h-[450px] rounded-md bg-white p-5">
-      <div className="w-full h-full  rounded-md bg-customGray flex justify-center items-center flex-col">
-        <Clock size={100} color="#0F172A" strokeWidth={1} />
+      <div className="w-full h-full  rounded-md bg-customGray flex justify-center items-center flex-col gap-[11px]">
+        <Clock size={56} color="#0F172A" strokeWidth={1} />
 
         <h1
           color="#1C2024"
-          className="text-2xl  text-card-foreground font-semibold font-geist tracking-tight mt-4"
+          className="text-base  text-card-foreground font-semibold font-geist tracking-tight"
         >
           {title}
         </h1>
 
         <p
           color="#60646C"
-          className="text-xl  text-card-foreground   font-geist tracking-tight mt-4 inline-block"
+          className="text-sm  text-card-foreground   font-geist tracking-tight inline-block"
         >
           {subtitle ? (
             subtitle
           ) : (
             <>
-              {
-                "Merci de patienter le temps qu'elles finalisent leur version, ou"
-              }
-              passez à{' '}
+              {`Merci de patienter le temps qu'elles finalisent leur version, ou passez à`}
               <Link href={nextStep}>
-                <span className="text-blue-500 underline">
+                <span className="text-blue-500 underline ml-1">
                   {'l’étape suivante'}
                 </span>
               </Link>
