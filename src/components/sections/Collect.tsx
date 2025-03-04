@@ -14,6 +14,7 @@ import { toast } from '@/hooks/use-toast';
 import { CODE_SUB_STEPS } from '@/utils/constants';
 import { useExerciseStore } from '@/store/exercises/useExerciseStore';
 import { usePathname } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 
 interface Props {
   sbuId?: string;
@@ -39,6 +40,7 @@ function CollectPage({ sbuId, setSubStepSelected }: Props) {
   const { data: datasources } = useDataSourceHierarchy(sbuId ?? '');
   const { currentExercise } = useExerciseStore();
   const pathname = usePathname();
+  const router = useRouter();
 
   const {
     mutateAsync: onConsolidateSales,
@@ -99,7 +101,7 @@ function CollectPage({ sbuId, setSubStepSelected }: Props) {
     );
     if (step) {
       onConsolidateSales({ versions: versionIds, stepId: step?.id }).then(
-        () => {
+        (e: any) => {
           //show toast
           toast({
             variant: 'default',
@@ -108,6 +110,11 @@ function CollectPage({ sbuId, setSubStepSelected }: Props) {
           });
           // redirect to Consolidation&View
           if (setSubStepSelected) {
+            const currentUrl = new URL(window.location.href);
+            currentUrl.searchParams.set('version_id', e.id);
+
+            router.push(currentUrl.toString(), undefined);
+
             setSubStepSelected(CODE_SUB_STEPS.CONSOLIDATION);
           }
         }
