@@ -26,6 +26,7 @@ interface GroupingItem {
 }
 
 export interface GroupedDataItem {
+  dataVersionId: string
   groupedBy: GroupingItem;
 }
 
@@ -43,6 +44,7 @@ export interface Filter {
 
 export type QueryDefinition = {
   entity: string;
+  groupingKey?: string;
   aggregations: Aggregation[];
   groupedBy: string[];
   filters: Filter[];

@@ -58,6 +58,11 @@ export function ChartBox({
   );
   const [activePeriod, setActivePeriod] = useState<PeriodIF>();
   const [periods] = useState<PeriodIF[]>(initialPeriods);
+  const [groupBy, setGroupBy] = useState<string[]>(chart.config.groupedBy);
+
+  useEffect(() => {
+    setGroupBy(chart.config.groupedBy)
+  }, [chart.config.groupedBy])
 
   // Initial filters state: always include periods from currentExercise
   const [filters, setFilters] = useState<Record<string, string[]>>({
@@ -94,7 +99,18 @@ export function ChartBox({
         if (!updated[key]) {
           updated[key] = [];
         }
+        
         updated[key] = Array.from(new Set([...globalFilters[key]]));
+        
+        if(chart.config.groupingKey && ["regions"].includes(key) ) {
+          const temp = [...groupBy];
+          if(updated[key].length > 0) {
+            temp[0] = chart.config.groupingKey;
+          }else {
+            temp[0] = chart.config.groupedBy[0];
+          }
+          setGroupBy(temp)
+        }
       });
       return updated;
     });
@@ -103,6 +119,15 @@ export function ChartBox({
   const handleChangeFilter = useCallback((name: string, values: string[]) => {
     const newFilter = { ...filters };
     newFilter[name] = values;
+    if(chart.config.groupingKey && ["regions"].includes(name) ) {
+      const temp = [...groupBy];
+      if(newFilter[name].length > 0) {
+        temp[0] = chart.config.groupingKey;
+      }else {
+        temp[0] = chart.config.groupedBy[0];
+      }
+      setGroupBy(temp)
+    }
     setFilters(newFilter);
   }, []);
 
@@ -114,7 +139,7 @@ export function ChartBox({
   const { data, isSuccess, isLoading } = useAggregations({
     entity: chart.config.entity,
     aggregations: chart.config.aggregations,
-    groupedBy: chart.config.groupedBy,
+    groupedBy: groupBy,
     filters: aggregatedFilters,
     formula: chart.config.formula,
     dataVersionsIds: versionIds,
