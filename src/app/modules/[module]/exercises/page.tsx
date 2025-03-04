@@ -15,13 +15,15 @@ import {
   SheetFooter,
   SheetTitle,
 } from '@/components/ui/sheet';
+import { cn } from '@/lib/utils';
 import { useExercises } from '@/services/exercises.service';
 import { Exercise } from '@/types/exercise';
 import { EXERCISE_STATUS, STEP_STATUS } from '@/utils/constants';
 import { formatDate, getFullName } from '@/utils/functions';
 import { Nullable } from '@/utils/types';
 import { ColumnDef } from '@tanstack/react-table';
-import { PenIcon, SearchIcon, XIcon } from 'lucide-react';
+import { differenceInDays, isValid } from 'date-fns';
+import { MousePointerClick, PenIcon, SearchIcon, XIcon } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
@@ -114,6 +116,11 @@ const ModuleExercices = () => {
     exercise && exercise.steps.find((s) => s.status === 'IN_PROGRESS');
 
   const objectifs = exercise && exercise.target && JSON.parse(exercise.target);
+
+  const isDeadlineClose =
+    exercise && actifStep?.deadlineAt && isValid(new Date(actifStep.deadlineAt))
+      ? differenceInDays(new Date(actifStep.deadlineAt), new Date()) < 2
+      : false;
 
   return (
     <div className="flex flex-col p-8 pt-6 gap-4">
@@ -211,8 +218,31 @@ const ModuleExercices = () => {
           <SheetContent className="p-9 w-[485px] sm:max-w-screen-xl [&>button]:hidden rounded-s-xl">
             <div className="h-full flex flex-col justify-between">
               <div className="flex flex-col gap-4 font-geist">
-                <div>
-                  <ExerciseStatus status={exercise.status} />
+                <div className="flex items-center gap-3">
+                  <MousePointerClick
+                    className={cn('size-6', {
+                      'text-blue-500': !isDeadlineClose,
+                      'text-red-500': isDeadlineClose,
+                    })}
+                  />
+
+                  <div className="grow flex flex-col">
+                    <p className="font-geist text-foreground leading-5 text-xs font-semibold">
+                      {getFullName(
+                        exercise.creator.lastName,
+                        exercise.creator.firstName
+                      )}
+                    </p>
+                    {exercise.createdAt && (
+                      <p className="font-geist text-muted-foreground leading-5 text-[10px] font-normal">
+                        crée le {formatDate(exercise.createdAt)}
+                      </p>
+                    )}
+                  </div>
+
+                  <ExerciseStatus
+                    status={isDeadlineClose ? 'DEADLINE_CLOSE' : 'IN_PROGRESS'}
+                  />
                 </div>
 
                 <div>
@@ -232,7 +262,12 @@ const ModuleExercices = () => {
                     <p className="font-semibold text-sm text-foreground">
                       {actifStep.stepConfig.name}
                     </p>
-                    <p className="text-xs text-card-foreground">
+                    <p
+                      className={cn('text-xs', {
+                        'text-card-foreground': !isDeadlineClose,
+                        'text-red-500': isDeadlineClose,
+                      })}
+                    >
                       {actifStep.deadlineAt &&
                         formatDate(new Date(actifStep.deadlineAt))}
                     </p>
@@ -272,7 +307,12 @@ const ModuleExercices = () => {
                   <p className="text-xs text-muted-foreground leading-4 font-normal mb-1.5">
                     Horizon
                   </p>
-                  <Badge variant="muted">{exercise.parentPeriod.name}</Badge>
+                  <Badge
+                    variant="outline"
+                    className="bg-[#57D7624D] hover:bg-[#57D7624D] border-0 rounded-full hover:cursor-default"
+                  >
+                    {exercise.parentPeriod.name}
+                  </Badge>
                 </div>
 
                 <div className="flex items-center gap-1.5 text-xs text-muted-foreground leading-4 font-normal">
