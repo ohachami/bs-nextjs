@@ -59,7 +59,7 @@ export function ChartWrapper({
             <button
               key={p.value}
               data-active={activeTab?.value === p.value}
-              className="relative z-30 flex flex-1 flex-col justify-center gap-1 border-t px-6 py-4 text-left even:border-l data-[active=true]:bg-blue-100 sm:border-l sm:border-t-0 sm:px-8 sm:py-6"
+              className="relative z-30 flex flex-1 flex-col justify-center gap-1 border-t px-6 py-4 text-left even:border-l data-[active=true]:bg-[#007BFF12] sm:border-l sm:border-t-0 sm:px-8 sm:py-6"
               onClick={() => {
                 setActiveTab(p);
                 handleChange(p);
