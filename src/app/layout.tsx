@@ -32,9 +32,7 @@ export default async function RootLayout({
       >
         <Providers>
           <NavBar />
-          <div className="flex-grow">
-            <ScrollArea>{children}</ScrollArea>
-          </div>
+          <div className="flex-grow">{children}</div>
         </Providers>
 
         <Toaster />
