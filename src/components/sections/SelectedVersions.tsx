@@ -59,7 +59,7 @@ function SelectedVersions({
         className="bg-[#007BFF] hover:bg-[#007bffd6]"
         disabled={selectedVersions.length !== totalLength}
       >
-        Consolider et visualize <MoveRight />
+        Consolider et visualiser <MoveRight />
       </Button>
     </div>
   );

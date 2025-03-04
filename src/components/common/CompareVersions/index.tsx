@@ -73,6 +73,7 @@ function CompareVersions({
   const onApplyCompareHandler = (selectedItem: string, index: number) => {
     // insert selected versions at specefic comparaison position
     insertOrReplaceVersionId(index, selectedItem);
+    
   };
 
   /**
