@@ -19,9 +19,7 @@ import { MarketableConfig, TOption } from '@/utils/types';
 const getGridColsClass = (length: number) => {
   if (length <= 1) return 'grid-cols-1';
   if (length === 2) return 'grid-cols-2';
-  if (length === 3) return 'grid-cols-3';
-  if (length === 4) return 'grid-cols-2 md:grid-cols-4';
-  if (length >= 5) return 'grid-cols-2 md:grid-cols-3 lg:grid-cols-4';
+  if (length >= 3) return 'grid-cols-3';
   return 'grid-cols-3';
 };
 
@@ -203,6 +201,13 @@ export function ChartBox({
             lower: '#F4CDB2',
           },
         },
+      },
+      yaxis: {
+        labels: {
+          formatter: function(val: number) {
+            return Math.round(val).toFixed(0);
+          }
+        }
       },
       xaxis: {
         categories: d.groupedBy.data.map((item: DimentionItem) => item.label),
