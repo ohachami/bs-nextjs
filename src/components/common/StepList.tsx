@@ -25,7 +25,7 @@ function StepList({ steps }: StepListProps) {
   }, [steps]);
 
   return (
-    <div className="flex flex-nowrap justify-between items-center border border-gray-300 bg-white rounded-lg relative ">
+    <div className="border border-gray-300 bg-white rounded-lg relative grid grid-cols-6 items-center">
       {steps.map((item, key) => {
         const isEnabled =
           item.status !== STEP_STATUS.INACTIVE ||
