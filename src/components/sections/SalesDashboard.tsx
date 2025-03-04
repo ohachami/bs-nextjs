@@ -60,7 +60,7 @@ export default function SalesDashboard({
               defaultValue={marketableTypes ? marketableTypes[0]?.id : ''}
               className="rounded"
             >
-              <div className="flex  gap-4">
+              <div className="flex justify-between gap-4">
                 <TabsList variant="default" className="justify-start max-w-80">
                   {marketableTypes &&
                     marketableTypes.map(({ id, name }) => (
@@ -70,7 +70,7 @@ export default function SalesDashboard({
                     ))}
                 </TabsList>
 
-                <div className="flex gap-4">
+                <div className="flex justify-center gap-4">
                   <FilterFactory
                     module="products"
                     onChange={(e) => {
@@ -120,7 +120,7 @@ export default function SalesDashboard({
             </Tabs>
           ) : (
             <div className="flex flex-col gap-4">
-              <div className="flex justify-between gap-4">
+              <div className="flex justify-center gap-4">
                 <FilterFactory
                   module="products"
                   onChange={(e) => {

@@ -30,7 +30,7 @@ function ProcessStep({
       <div className={`flex gap-3 items-center`}>
         <div
           className={clsx(
-            'border-2 p-3 rounded-full w-14 h-14 flex items-center justify-center',
+            'border-2 p-1 rounded-full w-10 h-10 flex items-center justify-center',
             status === STEP_STATUS.IN_PROGRESS &&
               `bg-[#e6f2ff] border-[#007BFF]`,
             status === STEP_STATUS.DONE &&
@@ -53,10 +53,8 @@ function ProcessStep({
           )}
         </div>
         <div className={`flex flex-col justify-start items-start`}>
-          <p className="text-md font-medium text-black uppercase">{name}</p>
-          <p className="text-sm text-gray-400 font-normal">
-            {description}
-          </p>
+          <p className="text-sm font-medium text-black uppercase">{name}</p>
+          <p className="text-xs text-gray-400 font-normal">{description}</p>
         </div>
       </div>
     </div>
