@@ -29,4 +29,5 @@ export const apiPaths = {
   scenarios: () => `/scenarios`,
   cloneScenario: (scenarioId: string) => `/scenarios/${scenarioId}/clone`,
   demandTypes: () => `/referential/demand-types`,
+  ScenarioParams: (consoDataId: string) => `/scenarios/data?consoDataId=${consoDataId}`
 } as const;

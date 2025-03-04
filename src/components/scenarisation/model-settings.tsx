@@ -195,7 +195,7 @@ const mockedData: SettingIF[] = [
 
 const ModelSettings = () => {
   return (
-    <div className="p-20">
+    <div>
       <Card className="w-full h-[400px] overflow-y-auto">
         <CardHeader>
           <CardTitle className="flex justify-between items-center">

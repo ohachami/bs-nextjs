@@ -6,7 +6,7 @@ import HypWrapper from '@/components/sections/HypWrapper';
 import { CODE_SUB_STEPS, SBUS } from '@/utils/constants';
 import { useSbus } from '@/services/referential.Service';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import Scenarisation from '@/components/sections/Scenarisation';
+import Scenarisation from '@/components/scenarisation/Scenarisation';
 
 function Page() {
   const { data: sbus, isLoading, isError } = useSbus();
