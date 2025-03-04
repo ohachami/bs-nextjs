@@ -2,8 +2,23 @@
 @tailwind components;
 @tailwind utilities;
 
+
+@font-face {
+  font-family: 'Inter';
+  src: url('/fonts/Inter-VariableFont_opsz,wght.ttf') format('truetype');
+  font-weight: 100 900;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Inter';
+  src: url('/fonts/Inter-Italic-VariableFont_opsz,wght.ttf') format('truetype');
+  font-weight: 100 900;
+  font-style: italic;
+}
+
 body {
-  font-family: Arial, Helvetica, sans-serif;
+  @apply font-inter;
 }
 
 @layer base {
@@ -80,6 +95,7 @@ body {
 .arrow-bg {
   @apply bg-[#007BFF] text-white font-bold flex items-center justify-center;
   clip-path: polygon(0 0, 90% 0, 100% 50%, 90% 100%, 0 100%, 10% 50%);
+  transform: translateX(-6%) scale(1.1);
 }
 
 .arrow-bg-first {

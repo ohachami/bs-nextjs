@@ -63,7 +63,7 @@ export function ChartTable<TData, TValue>({
   displaySelectedOnly,
   hiddenColumns,
 }: ChartTableProps<TData, TValue>) {
-  const [activePeriod, setActivePeriod] = useState<PeriodIF>();
+  const [, setActivePeriod] = useState<PeriodIF>();
   const { currentExercise } = useExerciseStore();
   const periods = currentExercise?.periods || [];
 

@@ -11,12 +11,14 @@ import { CODE_SUB_STEPS } from '@/utils/constants';
 import React, { ReactNode, useState } from 'react';
 import WaitingStep from '../common/WaitingStep';
 import { usePathname } from 'next/navigation';
+import { findNextStepCode } from '@/utils/helpers';
 
 interface ChildredProps {
   subStepSelected: CodeSubStepType;
   user: User;
   sections: Section[];
   step?: ExerciseStep;
+  setSubStepSelected: (code: CodeSubStepType) => void;
 }
 interface HypWrapperProps {
   children?: ReactNode | ((props: ChildredProps) => ReactNode);
@@ -43,21 +45,24 @@ function HypWrapper({
   const [subStepSelected, setSubStepSelected] = useState<CodeSubStepType>(
     CODE_SUB_STEPS.COLLECT
   );
-
+  // get current pathname
   const pathname = usePathname();
   // Retrieve the current exercise step from the store
   const { exerciseStep, currentExercise } = useExerciseStore();
-
+  // find step
   const step =
     currentExercise?.steps.find((s) => pathname.endsWith(s.stepConfig.code)) ||
     exerciseStep;
+  // steps codes
+  const codes = currentExercise?.steps
+    .sort((a, b) => a.stepConfig.sortedBy - b.stepConfig.sortedBy)
+    .map((stepConf) => stepConf.stepConfig.code);
   // Fetch sub-steps related to the exercise step
   const {
     data: sections,
     error,
     isPending,
   } = useSections(step?.stepConfig?.id ?? undefined);
-
   // Fetch user data
   const { data: user, isLoading, isError } = useUser();
   // Render an empty div when exercise step data is not yet available or still loading
@@ -66,13 +71,16 @@ function HypWrapper({
   // Display an error message if there is an error loading the exercise
   if (isError || error) return <p className="p-4">Error Loading Exercise...</p>;
   return (
-    <div className="space-y-6">
+    <div className="flex flex-col h-full gap-6">
       {/* Check if the waiting step should be displayed */}
       {user &&
       shouldDisplayWaitingStep &&
       shouldDisplayWaitingStep(user, step) &&
       waitingStepMessage ? (
-        <WaitingStep {...waitingStepMessage} />
+        <WaitingStep
+          {...waitingStepMessage}
+          nextStep={`${findNextStepCode(codes, pathname.split('/').at(-1))}`}
+        />
       ) : (
         <>
           {/* ProcessStepWrapper manages the step navigation */}
@@ -87,7 +95,13 @@ function HypWrapper({
           />
 
           {typeof children === 'function'
-            ? children({ subStepSelected, sections, user, step })
+            ? children({
+                subStepSelected,
+                sections,
+                user,
+                step,
+                setSubStepSelected,
+              })
             : children}
         </>
       )}

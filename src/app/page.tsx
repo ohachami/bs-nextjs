@@ -32,7 +32,7 @@ const HomePage = () => {
             icon={ClipboardList}
             variant="secondary"
             title="Tactical planning (business steering)"
-            description="Description Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam imperdiet quam fringilla libero rutrum lobortis..."
+            description="Encapsulant le processus de Business Steering, permettant à chaque BU de réaliser un run local pour optimiser sa valeur, et ainsi contribuer au run global visant à maximiser la valeur pour le Groupe."
             to={`/modules/${modules.tacticalPlanning}`}
           />
         </div>

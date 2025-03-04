@@ -11,6 +11,7 @@ interface SelectedVersionsProps {
   selectedVersions: string[];
   totalLength: number;
   submitAction: () => void;
+  loading?: boolean;
 }
 
 /**
@@ -21,15 +22,15 @@ interface SelectedVersionsProps {
 function SelectedVersions({
   selectedVersions,
   totalLength,
-  submitAction,
+  submitAction
 }: SelectedVersionsProps) {
+  console.log({ selectedVersions, totalLength });
   // up and down arrow state tracking
   const [toggle, setToggle] = useState<boolean>(false);
   // switch toggle
   const onToggle = () => {
     setToggle((p) => !p);
   };
-
   return (
     <div className="flex justify-between items-end">
       <div className="flex flex-col items-center gap-2">
@@ -38,7 +39,7 @@ function SelectedVersions({
           onClick={onToggle}
         >
           {!toggle ? <ChevronDown size={20} /> : <ChevronUp size={20} />}{' '}
-          {selectedVersions.length} sur {totalLength} fichier(s) sélectionné(s).
+          {selectedVersions.length} sur {totalLength} donnée(s) sélectionné(s).
         </p>
         {toggle && (
           <ul>
@@ -58,7 +59,7 @@ function SelectedVersions({
         className="bg-[#007BFF] hover:bg-[#007bffd6]"
         disabled={selectedVersions.length !== totalLength}
       >
-        Consolider et visualize <MoveRight />
+        Consolider et visualiser <MoveRight />
       </Button>
     </div>
   );

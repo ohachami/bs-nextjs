@@ -6,13 +6,26 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 export const useExercisesCount = () => {
   return useQuery<number>({
-    queryKey: ["exercises", "count"],
+    queryKey: ["exercises", "count", "all"],
     queryFn: async () => {
       return await callApi<number>({
         method: 'GET',
         url: apiPaths.exercisesCount(),
       });
     },
+  });
+};
+
+export const useExercisesCountByStatus = (status: string) => {
+  return useQuery<number>({
+    queryKey: ["exercises", "count", "byStatus", status],
+    queryFn: async () => {
+      return await callApi<number>({
+        method: 'GET',
+        url: apiPaths.exercisesCountByStatus(status),
+      });
+    },
+    enabled: !!status
   });
 };
 

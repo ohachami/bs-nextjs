@@ -39,7 +39,7 @@ export function ChartWrapper({
             <CardDescription>{subTitle}</CardDescription>
           </div>
           {filtersConfig && (
-            <div className="flex items-center justify-center ">
+            <div className="flex items-center justify-center gap-2 ">
               {filtersConfig
                 .filter((e) => !e.hidden)
                 .map((e, key) => (
@@ -65,7 +65,7 @@ export function ChartWrapper({
                   handleChange(p);
                 }}
               >
-                <span className="text-lg font-bold leading-none sm:text-3xl">
+                <span className="text-base font-bold leading-none">
                   {p.label}
                 </span>
               </button>

@@ -22,10 +22,14 @@ function Page() {
       shouldDisableStep={(_, exerciseStep) =>
         exerciseStep.status === STEP_STATUS.INACTIVE
       }
-      shouldDisplayWaitingStep={(user) => user.sbu.name !== SBUS.MANUFACTURING}
+      shouldDisplayWaitingStep={(user) =>
+        ![SBUS.MANUFACTURING, SBUS.MINING, SBUS.CORPORATE].includes(
+          user.sbu.name as never
+        )
+      }
       waitingStepMessage={{
         title:
-          'Les BUs Manufacturing sont en train d’ajuster les hypothèses Manufacturing',
+          'L’équipe BS Manufacturing est en train de préparer la première version des hypothèses Manufacturing',
       }}
     >
       {({ subStepSelected, user, sections }) => {
@@ -38,7 +42,6 @@ function Page() {
             case CODE_SUB_STEPS.CONSOLIDATION:
               return <ConsolidationPage items={sections} user={user} />;
             case CODE_SUB_STEPS.SCENARISATION:
-              return <div />;
             default:
               return <div />;
           }

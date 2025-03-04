@@ -12,7 +12,6 @@ export async function middleware(req: NextRequest) {
   // decoding the JWT Token
 
   const JWTClaims = token ? await decodeToken(token.value) : null;
-  console.log("token", JWTClaims)
 
   /**
    * CLIENT ROUTES PROTECTION LOGIC

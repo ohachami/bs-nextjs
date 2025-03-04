@@ -143,7 +143,7 @@ export function ChartBox({
             const { MIN, AVG, MAX } = item.values;
             return {
               x: item.label,
-              y: [MIN, 0, AVG, 0, MAX],
+              y: [Math.ceil(MIN), Math.ceil(AVG), Math.ceil(AVG), Math.ceil(AVG), Math.ceil(MAX)],
             };
           }),
         };
@@ -155,7 +155,7 @@ export function ChartBox({
         chart.config.aggregations.forEach((agg, index) => {
           series.push({
             name: `Serie ${index}`,
-            data: dataItems.map((d) => d.values[agg.operation]),
+            data: dataItems.map((d) => Math.ceil(d.values[agg.operation])),
           });
         });
       } else if (chart.config.formula && chart.config.formula.length > 0) {
@@ -176,8 +176,22 @@ export function ChartBox({
   // Generate chart options for each chart instance
   const chartOptions = useCallback(
     (index: number, d: GroupedDataItem) => ({
-      ...(marketableType && { colors: [marketableType.color] }),
-      chart: { id: `${chart.id}-${index}` },
+      ...(marketableType && { colors: marketableType.colors }),
+      chart: { id: `${chart.id}-${index}` ,
+      toolbar: {
+        show: true,
+        tools: {
+          download: true,
+          selection: false, // Disable selection zoom
+          zoom: false,      // Disable zoom
+          zoomin: false,    // Disable zoom in
+          zoomout: false,   // Disable zoom out
+          pan: false,       // Disable panning
+          reset: false      // Disable reset zoom
+        }
+      },
+      },
+     
       plotOptions: {
         bar: {
           columnWidth: '40%',
@@ -185,8 +199,8 @@ export function ChartBox({
         },
         boxPlot: {
           colors: {
-            upper: '#5C4742',
-            lower: '#A5978B',
+            upper: '#CA7C45',
+            lower: '#F4CDB2',
           },
         },
       },
@@ -220,13 +234,14 @@ export function ChartBox({
           className={`grid ${getGridColsClass(data.length)} gap-6 mx-auto p-4`}
         >
           {data.map((d, index) => (
-            <div key={`${d.groupedBy.label}-${index}`}>
+            <div className='flex flex-col' key={`${d.groupedBy.label}-${index}`}>
               <Chart
                 options={chartOptions(index, d)}
                 series={prepareData(d.groupedBy.data)}
                 type={chart.chartType}
                 height={350}
               />
+              <span className='text-muted-foreground mx-auto'>{d.groupedBy.label}</span>
             </div>
           ))}
         </div>

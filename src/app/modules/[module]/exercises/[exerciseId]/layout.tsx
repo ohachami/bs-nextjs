@@ -5,6 +5,7 @@ import ExerciseIdLayoutSkeleton from '@/components/skeletons/ExerciseIdLayoutSke
 import { useExercises } from '@/services/exercises.service';
 import { useExerciseStore } from '@/store/exercises/useExerciseStore';
 import { Exercise } from '@/types/exercise';
+import { modules } from '@/utils/constants';
 import * as LucideIcons from 'lucide-react';
 import { useParams } from 'next/navigation';
 import { useEffect } from 'react';
@@ -37,8 +38,9 @@ function ExercisesLayout({
   if (isError) return <p className="p-4">Error Loading Exercise...</p>;
 
   return (
-    <div className="p-6 space-y-6">
+    <div className="p-6 space-y-6 h-full flex flex-col">
       <p className="text-2xl font-bold">{currentExercise?.name}</p>
+
       {isSuccess && currentExercise && currentExercise.steps && (
         <StepList
           steps={currentExercise.steps
@@ -52,12 +54,13 @@ function ExercisesLayout({
               code: step.stepConfig.code,
               sortedBy: step.stepConfig.sortedBy,
               // TODO: to change tacticalPlanning with dynamic SBU name
-              redirectUrl: `/modules/tacticalPlanning/exercises/${params.exerciseId}/${step.stepConfig.code}`,
+              redirectUrl: `/modules/${modules.tacticalPlanning}/exercises/${params.exerciseId}/${step.stepConfig.code}`,
             }))
             .sort((a, b) => a.sortedBy - b.sortedBy)}
         />
       )}
-      {children}
+
+      <div className="grow">{children}</div>
     </div>
   );
 }
