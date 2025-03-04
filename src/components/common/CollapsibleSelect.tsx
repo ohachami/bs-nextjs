@@ -28,12 +28,26 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import clsx from 'clsx';
 import { NestedOption } from '@/types/common/CollapsibleSelectTypes';
 import { collapsibleSelectColors } from '@/utils/colors';
+import { useComparaisonVersionIds } from '@/store/consolidation/comparaisonVersionIds';
 
 interface CollapsibleSelectProps {
   collapsibleItems: NestedOption[];
   selectIndex: number;
   onCompare: (selectedItem: string, selectIndex: number) => void;
   disabled?: boolean;
+}
+
+function findLabelById(data: NestedOption[], id: string): string {
+  for (const item of data) {
+    if (item.value === id) {
+      return item.label;
+    }
+    if (item.children) {
+      const label = findLabelById(item.children, id);
+      if (label) return label;
+    }
+  }
+  return '';
 }
 
 export function CollapsibleSelect({
@@ -49,6 +63,7 @@ export function CollapsibleSelect({
     label: string;
   }>({ value: '', label: '' });
   const [expandedItems, setExpandedItems] = React.useState<string[]>([]);
+  const { versionIds } = useComparaisonVersionIds();
 
   const toggleItem = (depth: number, value: string, label: string) => {
     // selecting only the items of depth 1 (données consolidées)
@@ -66,6 +81,15 @@ export function CollapsibleSelect({
       });
     }
   };
+
+  React.useEffect(() => {
+    // reset selected item when selectIndex changes
+    if (Array.isArray(versionIds) && versionIds.length > 0)
+      setSelected({
+        value: versionIds[0],
+        label: findLabelById(nestedOptions, versionIds[0]),
+      });
+  }, [versionIds]);
 
   const toggleExpand = (value: string) => {
     setExpandedItems((prev) =>
@@ -157,7 +181,6 @@ export function CollapsibleSelect({
     return nestedOptions;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [search]);
-
   return (
     <Popover open={open} onOpenChange={setOpen} modal={true}>
       <PopoverTrigger asChild>

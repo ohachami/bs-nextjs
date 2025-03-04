@@ -267,23 +267,23 @@ const TreeCombobox: React.FC<TreeComboboxProps> = ({
               {values.length}
             </Badge>
             <div className="hidden space-x-1 lg:flex">
-              {values.length > 3 ? (
+              {values.slice(0, 4).map((item) => (
+                <Badge
+                  key={item.id}
+                  variant="muted"
+                  className="rounded-sm px-1 font-normal max-w-28 hover:bg-[#274754]/10"
+                >
+                  <p className="truncate">{item.label}</p>
+                </Badge>
+              ))}
+
+              {values.length > 4 && (
                 <Badge
                   variant="muted"
                   className="rounded-sm px-1 font-normal hover:bg-[#274754]/10"
                 >
-                  {values.length} selected
+                  +{values.length - 4} selected
                 </Badge>
-              ) : (
-                Array.from(values).map((item) => (
-                  <Badge
-                    key={item.id}
-                    variant="muted"
-                    className="rounded-sm px-1 font-normal max-w-28 hover:bg-[#274754]/10"
-                  >
-                    <p className="truncate">{item.label}</p>
-                  </Badge>
-                ))
               )}
             </div>
           </>

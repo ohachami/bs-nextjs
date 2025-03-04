@@ -70,8 +70,13 @@ export default function ManufacturingDashboard({
 
       <div className="flex flex-col gap-4">
         {data
-          .filter((e) => e.displayType === displayType)
-          .filter((e) => e.name === 'Volume Produit Réalisé')
+          .filter(
+            (e) =>
+              e.displayType === displayType &&
+              e.config !== null &&
+              ['bar', 'boxPlot'].includes(e.chartType)
+          )
+          .sort((a, b) => a.sortedBy - b.sortedBy)
           .map((chart, key) => (
             <ChartBox
               key={key}

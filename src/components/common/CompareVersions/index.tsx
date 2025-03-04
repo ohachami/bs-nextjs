@@ -29,7 +29,7 @@ function CompareVersions({
     sbuId,
     exerciseId
   );
-  const { insertOrReplaceVersionId } = useComparaisonVersionIds();
+  const { insertOrReplaceVersionId, versionIds } = useComparaisonVersionIds();
 
   useEffect(() => {
     if (
@@ -73,7 +73,6 @@ function CompareVersions({
   const onApplyCompareHandler = (selectedItem: string, index: number) => {
     // insert selected versions at specefic comparaison position
     insertOrReplaceVersionId(index, selectedItem);
-    
   };
 
   /**
