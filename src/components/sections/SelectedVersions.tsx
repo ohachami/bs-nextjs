@@ -22,9 +22,8 @@ interface SelectedVersionsProps {
 function SelectedVersions({
   selectedVersions,
   totalLength,
-  submitAction
+  submitAction,
 }: SelectedVersionsProps) {
-  console.log({ selectedVersions, totalLength });
   // up and down arrow state tracking
   const [toggle, setToggle] = useState<boolean>(false);
   // switch toggle

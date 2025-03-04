@@ -40,8 +40,6 @@ export default function SalesDashboard({
 
   if (error) return <p className="p-4">Error Loading Charts...</p>;
 
-  console.log('marketableTypes', marketableTypes, defaultTab);
-
   return (
     <div className="flex flex-col gap-4">
       {/* ConsolidationVersions with User Sbu (default) */}
