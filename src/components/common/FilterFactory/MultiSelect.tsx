@@ -48,23 +48,19 @@ const MultiSelect = <T extends number | string>({
               {values.length}
             </Badge>
             <div className="hidden space-x-1 lg:flex">
-              {values.length > 3 ? (
+              {values.slice(0, 3).map((o) => (
                 <Badge
+                  key={o.value}
                   variant="muted"
-                  className="rounded-sm px-1 font-normal hover:bg-[#274754]/10"
+                  className="rounded-sm px-1 font-normal max-w-28 hover:bg-[#274754]/10"
                 >
-                  {values.length} selected
+                  <p className="truncate">{o.label}</p>
                 </Badge>
-              ) : (
-                values.map((o) => (
-                  <Badge
-                    key={o.value}
-                    variant="muted"
-                    className="rounded-sm px-1 font-normal max-w-28 hover:bg-[#274754]/10"
-                  >
-                    <p className="truncate">{o.label}</p>
-                  </Badge>
-                ))
+              ))}
+              {values.length > 3 && (
+                <Badge variant="muted" className="rounded-sm px-1 font-normal">
+                  +{values.length - 3}
+                </Badge>
               )}
             </div>
           </>
