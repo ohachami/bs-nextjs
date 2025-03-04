@@ -5,18 +5,19 @@ import { Button } from "../ui/button";
 import { formatDateAndTime } from "@/utils/functions";
 import { ColumnDef } from "@tanstack/react-table";
 import { DataVersionIF } from "@/types/collect/datasources";
-import { useEffect, useState } from "react";
-import { useDatasourceVersions } from "@/services/dataVersions.service";
 import { useExerciseStore } from "@/store/exercises/useExerciseStore";
+import { useDatasourceVersions } from "@/services/dataVersions.service";
+import {EditableInputWrapper} from "@/components/common/EditableInputWrapper";
 
-const columns: ColumnDef<DataVersionIF>[] = [
+const createColumns = (selectedId: string): ColumnDef<DataVersionIF>[] => [
     {
         id: 'Select',
         enableHiding: false,
         cell: ({ row }) => (
-            <RadioGroupItem 
+            <RadioGroupItem
                 value={`${row.original.id}`}
                 className="border-black mb-1"
+                checked={selectedId === row.original.id}
             />
         )
     },
@@ -28,6 +29,7 @@ const columns: ColumnDef<DataVersionIF>[] = [
     {
         header: 'Commentaire',
         accessorKey: 'comment',
+        cell: ({ row }) => <EditableInputWrapper comment={row.original.comment} id={row.original.id}/>
     },
     {
         accessorKey: 'updatedAt',
@@ -62,33 +64,25 @@ const columns: ColumnDef<DataVersionIF>[] = [
 export function VersionTable({
     datasourceId,
     siteId,
-    onSelect
+    onSelect,
+    selectedId,
 }: {
     datasourceId: string;
     siteId?: string;
     onSelect?: (selected: DataVersionIF[]) => void;
+    selectedId: string;
 }) {
-    const {currentExercise} = useExerciseStore()
+    const {currentExercise} = useExerciseStore();
     const datasourceVersions = useDatasourceVersions(datasourceId, currentExercise?.id || "", siteId);
-    const [selectedId, setSelectedId] = useState<string>("");
 
-    // When radio selection changes, find the corresponding version and call onSelect
+    const columns = createColumns(selectedId);
+
     const handleRadioChange = (value: string) => {
-        setSelectedId(value);        
         if (onSelect) {
             const selectedVersion = datasourceVersions.data?.find(v => v.id === value);
             onSelect(selectedVersion ? [selectedVersion] : []);
         }
     };
-
-    // Clear selection when datasourceId or siteId changes
-    useEffect(() => {
-        setSelectedId("");
-        if (onSelect) {
-            onSelect([]);
-        }
-    }, [datasourceId, siteId]);
-
 
     if(datasourceVersions.isLoading) return <p>Loading ...</p>
 

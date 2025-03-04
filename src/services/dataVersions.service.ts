@@ -5,7 +5,6 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 
 export const useDatasourceVersions = (datasourceId: string, exerciseId: string, siteId?: string) => {
-    console.log("exerciseId", exerciseId)
     return useQuery<DataVersionIF[]>({
         queryKey: ["datasources", datasourceId, exerciseId, siteId],
         queryFn: async () => {
@@ -33,7 +32,7 @@ export const usePatchComment = () => {
     return useMutation<void, Error, DataSourcePatchVersionParams>({
         mutationFn: async ({ id, comment }) => {
             return callApi<void>({
-                method: 'POST',
+                method: 'PATCH',
                 url: apiPaths.version(id),
                 data: { comment }
             })

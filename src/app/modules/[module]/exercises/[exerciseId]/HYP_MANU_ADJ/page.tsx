@@ -22,7 +22,11 @@ function Page() {
       shouldDisableStep={(user) =>
         SBUS.MANUFACTURING !== (user.sbu.name as never)
       }
-      shouldDisplayWaitingStep={(user) => user.sbu.name !== SBUS.MANUFACTURING}
+      shouldDisplayWaitingStep={(user) =>
+        ![SBUS.MANUFACTURING, SBUS.MINING, SBUS.CORPORATE].includes(
+          user.sbu.name as never
+        )
+      }
       waitingStepMessage={{
         title: 'Les BUs Industrielles sont en train de terminer leur version',
       }}

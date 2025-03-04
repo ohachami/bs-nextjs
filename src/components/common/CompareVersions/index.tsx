@@ -1,5 +1,5 @@
 'use client';
-
+import { useSearchParams } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Split } from 'lucide-react';
 import { CollapsibleSelect } from '../CollapsibleSelect';
@@ -24,6 +24,8 @@ function CompareVersions({
   exerciseId,
   disabled = false,
 }: CompareVersionsProps) {
+  const searchParams = useSearchParams();
+  const version_id = searchParams.get('version_id');
   // fetching backend data
   const { data, isLoading, isError } = useExerciseConsolidationVersions(
     sbuId,
@@ -32,7 +34,9 @@ function CompareVersions({
   const { insertOrReplaceVersionId } = useComparaisonVersionIds();
 
   useEffect(() => {
-    if (
+    if (version_id) {
+      insertOrReplaceVersionId(0, version_id as string);
+    } else if (
       Array.isArray(data) &&
       data.length > 0 &&
       data[0].consolidatedData &&

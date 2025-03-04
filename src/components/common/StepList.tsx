@@ -16,24 +16,27 @@ interface StepListProps {
   steps: StepProps[];
 }
 
-function StepList({ steps }: StepListProps) { 
+function StepList({ steps }: StepListProps) {
   const pathname = usePathname();
-  const [hypSales, setHypSales] = useState<StepProps>()
-  
+  const [hypSales, setHypSales] = useState<StepProps>();
+
   useEffect(() => {
-    setHypSales(steps.find(s => s.code === STEP_CODES.HYP_SALES))
-  }, [steps])
+    setHypSales(steps.find((s) => s.code === STEP_CODES.HYP_SALES));
+  }, [steps]);
 
   return (
-    <div className="flex justify-between flex-wrap items-center border border-gray-300 bg-white rounded-lg relative">
+    <div className="border border-gray-300 bg-white rounded-lg relative grid grid-cols-6 items-center">
       {steps.map((item, key) => {
-          const isEnabled = item.status !== STEP_STATUS.INACTIVE || 
-            STEP_CODES.HYP_SALES === item.code ||
-            STEP_CODES.HYP_MANU_ADJ === item.code && hypSales?.status === STEP_STATUS.DONE
-          
-          const isSelected = pathname.endsWith(item.code);
-          return (
-            <Step
+        const isEnabled =
+          item.status !== STEP_STATUS.INACTIVE ||
+          STEP_CODES.HYP_SALES === item.code ||
+          (STEP_CODES.HYP_MANU_ADJ === item.code &&
+            hypSales?.status === STEP_STATUS.DONE);
+
+        const isSelected = pathname.endsWith(item.code);
+
+        return (
+          <Step
             key={key}
             label={item.label}
             iconKey={item.iconKey}
@@ -46,7 +49,7 @@ function StepList({ steps }: StepListProps) {
             isFirst={key === 0}
             isLast={key === steps.length - 1}
           />
-          )
+        );
       })}
     </div>
   );

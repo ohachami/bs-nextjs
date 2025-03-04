@@ -5,7 +5,8 @@ export const apiPaths = {
   periods: () => `/config/periods`,
   stepConfig: () => `/config/steps`,
   exercises: () => `/exercises`,
-  exercisesCount: () => `/exercises/count`,
+  exercisesCount: () => `/exercises/count/all`,
+  exercisesCountByStatus: (status: string) => `/exercises/count?status=${status}`,
   currentUser: () => `/users/current`,
   users: () => `/users`,
   datasources: (sbuId: string) => `/datasources/hierarchy/${sbuId}`,
@@ -29,5 +30,6 @@ export const apiPaths = {
   scenarios: () => `/scenarios`,
   cloneScenario: (scenarioId: string) => `/scenarios/${scenarioId}/clone`,
   demandTypes: () => `/referential/demand-types`,
-  ScenarioParams: (consoDataId: string) => `/scenarios/data?consoDataId=${consoDataId}`
+  ScenarioParams: (consoDataId: string) => `/scenarios/data?consoDataId=${consoDataId}`,
+  consolidationSales: () => `/consolidation/sales`
 } as const;

@@ -30,7 +30,6 @@ function Step({
   isLast,
   isDisabled,
 }: StepProps) {
-  // test if click is allowed or not
   const handleClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
     if (isDisabled) {
       event.preventDefault();
@@ -45,26 +44,34 @@ function Step({
     >
       <div
         className={clsx(
-          'flex justify-between gap-4 px-6 items-center py-2 rounded-lg relative bg-white',
-          isActive &&
-            isFirst &&
-            'arrow-bg-first pr-0 pl-8 shadow-lg z-10 scale-[1.1] absolute',
-          isActive &&
-            !isFirst &&
-            !isLast &&
-            'arrow-bg pl-10 pr-0 shadow-xl z-10 scale-[1.1] absolute',
-          isActive &&
-            isLast &&
-            'arrow-bg-end pr-0 pl-10 shadow-xl z-10 scale-[1.1] absolute'
+          'flex justify-center items-center relative bg-white gap-1 lg:gap-3',
+          {
+            'shadow scale-[1.15] z-10 h-[66px]': isActive, // Scale up when active
+            'shadow-none': !isActive, // Default shadow
+            'arrow-bg-first': isActive && isFirst,
+            'arrow-bg': isActive && !isFirst && !isLast,
+            'arrow-bg-end': isActive && isLast,
+            'pl-3 rounded-l-lg': isFirst,
+            'pr-3 rounded-r-lg': isLast,
+          }
         )}
       >
         {/* Number Circle */}
         {
           <div
-            className={`border-2 ${isActive ? 'border-white' : status === STEP_STATUS.DONE ? 'border-[#57D762] bg-[#6fef7930]' : 'border-gray-400'} p-3 rounded-full w-14 h-14 flex items-center justify-center`}
+            className={clsx(
+              `border-2 border-gray-400 p-3 rounded-full min-w-10 w-10 h-10 flex items-center justify-center`,
+              {
+                'border-white': isActive,
+                'border-[#57D762] bg-[#6fef7930]': status === STEP_STATUS.DONE,
+              }
+            )}
           >
             <p
-              className={`font-semibold ${isActive ? 'text-white': isDisabled? 'text-gray-400': 'text-black'}`}
+              className={clsx('font-semibold text-black text-xs', {
+                'text-white text-sm': isActive,
+                'text-gray-400': isDisabled,
+              })}
             >
               {status === STEP_STATUS.DONE ? (
                 <Check color="#57D762" />
@@ -79,7 +86,13 @@ function Step({
 
         {/* Text */}
         <p
-          className={`text-sm w-[150px] font-medium ${isActive ? 'text-white': isDisabled? 'text-gray-400': 'text-black'} uppercase`}
+          className={clsx(
+            'text-xs font-medium uppercase text-black text-balance max-w-[120px]',
+            {
+              'text-white': isActive,
+              'text-gray-400': isDisabled,
+            }
+          )}
         >
           {label}
         </p>

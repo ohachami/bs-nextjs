@@ -11,6 +11,7 @@ export default {
   theme: {
     extend: {
       fontFamily: {
+        inter: ['Inter', 'sans-serif'],
         montserrat: 'var(--font-montserrat)',
         geist: 'var(--font-geist-sans)',
         geistMono: 'var(--font-geist-mono)',

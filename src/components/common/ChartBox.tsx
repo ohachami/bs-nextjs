@@ -19,9 +19,6 @@ import { MarketableConfig, TOption } from '@/utils/types';
 const getGridColsClass = (length: number) => {
   if (length <= 1) return 'grid-cols-1';
   if (length === 2) return 'grid-cols-2';
-  if (length === 3) return 'grid-cols-3';
-  if (length === 4) return 'grid-cols-2 md:grid-cols-4';
-  if (length >= 5) return 'grid-cols-2 md:grid-cols-3 lg:grid-cols-4';
   return 'grid-cols-3';
 };
 
@@ -61,6 +58,11 @@ export function ChartBox({
   );
   const [activePeriod, setActivePeriod] = useState<PeriodIF>();
   const [periods] = useState<PeriodIF[]>(initialPeriods);
+  const [groupBy, setGroupBy] = useState<string[]>(chart.config.groupedBy);
+
+  useEffect(() => {
+    setGroupBy(chart.config.groupedBy)
+  }, [chart.config.groupedBy])
 
   // Initial filters state: always include periods from currentExercise
   const [filters, setFilters] = useState<Record<string, string[]>>({
@@ -97,7 +99,18 @@ export function ChartBox({
         if (!updated[key]) {
           updated[key] = [];
         }
+        
         updated[key] = Array.from(new Set([...globalFilters[key]]));
+        
+        if(chart.config.groupingKey && ["regions"].includes(key) ) {
+          const temp = [...groupBy];
+          if(updated[key].length > 0) {
+            temp[0] = chart.config.groupingKey;
+          }else {
+            temp[0] = chart.config.groupedBy[0];
+          }
+          setGroupBy(temp)
+        }
       });
       return updated;
     });
@@ -106,6 +119,15 @@ export function ChartBox({
   const handleChangeFilter = useCallback((name: string, values: string[]) => {
     const newFilter = { ...filters };
     newFilter[name] = values;
+    if(chart.config.groupingKey && ["regions"].includes(name) ) {
+      const temp = [...groupBy];
+      if(newFilter[name].length > 0) {
+        temp[0] = chart.config.groupingKey;
+      }else {
+        temp[0] = chart.config.groupedBy[0];
+      }
+      setGroupBy(temp)
+    }
     setFilters(newFilter);
   }, []);
 
@@ -117,7 +139,7 @@ export function ChartBox({
   const { data, isSuccess, isLoading } = useAggregations({
     entity: chart.config.entity,
     aggregations: chart.config.aggregations,
-    groupedBy: chart.config.groupedBy,
+    groupedBy: groupBy,
     filters: aggregatedFilters,
     formula: chart.config.formula,
     dataVersionsIds: versionIds,
@@ -143,7 +165,7 @@ export function ChartBox({
             const { MIN, AVG, MAX } = item.values;
             return {
               x: item.label,
-              y: [MIN, 0, AVG, 0, MAX],
+              y: [Math.ceil(MIN), Math.ceil(AVG), Math.ceil(AVG), Math.ceil(AVG), Math.ceil(MAX)],
             };
           }),
         };
@@ -155,7 +177,7 @@ export function ChartBox({
         chart.config.aggregations.forEach((agg, index) => {
           series.push({
             name: `Serie ${index}`,
-            data: dataItems.map((d) => d.values[agg.operation]),
+            data: dataItems.map((d) => Math.ceil(d.values[agg.operation])),
           });
         });
       } else if (chart.config.formula && chart.config.formula.length > 0) {
@@ -176,19 +198,44 @@ export function ChartBox({
   // Generate chart options for each chart instance
   const chartOptions = useCallback(
     (index: number, d: GroupedDataItem) => ({
-      ...(marketableType && { colors: [marketableType.color] }),
-      chart: { id: `${chart.id}-${index}` },
+      ...(marketableType && { colors: marketableType.colors }),
+      chart: { id: `${chart.id}-${index}` ,
+      toolbar: {
+        show: true,
+        tools: {
+          download: true,
+          selection: false, // Disable selection zoom
+          zoom: false,      // Disable zoom
+          zoomin: false,    // Disable zoom in
+          zoomout: false,   // Disable zoom out
+          pan: false,       // Disable panning
+          reset: false      // Disable reset zoom
+        }
+      },
+      },
+      legend: {
+        show: false
+      },
       plotOptions: {
         bar: {
           columnWidth: '40%',
           barHeight: '60%',
+          distributed: true
         },
         boxPlot: {
           colors: {
-            upper: '#5C4742',
-            lower: '#A5978B',
+            upper: '#CA7C45',
+            lower: '#F4CDB2',
+            distributed: true
           },
         },
+      },
+      yaxis: {
+        labels: {
+          formatter: function(val: number) {
+            return Math.round(val).toFixed(0);
+          }
+        }
       },
       xaxis: {
         categories: d.groupedBy.data.map((item: DimentionItem) => item.label),
@@ -216,19 +263,25 @@ export function ChartBox({
     >
       {isLoading && <Loading />}
       {isSuccess && Array.isArray(data) && (
+       
         <div
           className={`grid ${getGridColsClass(data.length)} gap-6 mx-auto p-4`}
         >
-          {data.map((d, index) => (
-            <div key={`${d.groupedBy.label}-${index}`}>
+          {data.length > 0 ? data.map((d, index) => (
+            <div className='flex flex-col' key={`${d.groupedBy.label}-${index}`}>
               <Chart
                 options={chartOptions(index, d)}
                 series={prepareData(d.groupedBy.data)}
                 type={chart.chartType}
                 height={350}
               />
+              <span className='text-muted-foreground mx-auto'>{d.groupedBy.label}</span>
             </div>
-          ))}
+          )): 
+          <div className='flex justify-center align-center'>
+            <span className='text-center text-muted-foreground font-medium'>{"Aucune donnée n'a été trouvée pour ce graphe"}</span>
+          </div>
+          }
         </div>
       )}
     </ChartWrapper>

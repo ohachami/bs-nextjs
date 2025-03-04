@@ -32,6 +32,7 @@ import { Badge } from '../ui/badge';
 import { Separator } from '../ui/separator';
 import TreeCheckbox from './TreeCheckbox';
 
+
 const isAllChildrenSelected = (
   item: TreeItem,
   selected: TreeItem[]
@@ -68,7 +69,7 @@ const TreeCombobox: React.FC<TreeComboboxProps> = ({
   buttonVariant,
   items,
   multiSelect,
-  defaultValues,
+  values = [],
   title,
   placeholder,
   selectChildren,
@@ -78,56 +79,45 @@ const TreeCombobox: React.FC<TreeComboboxProps> = ({
   const [open, setOpen] = React.useState(false);
   const [search, setSearch] = React.useState('');
   const [expanded, setExpanded] = React.useState<TreeItem[]>([]);
-  const [selected, setSelected] = React.useState<TreeItem[]>(
-    defaultValues || []
-  );
-
-  React.useEffect(() => {
-    onSelectionChange(selected.map((val) => val.id));
-  }, [selected]); // Run after `selected` changes
 
   const handleSelect = (item: TreeItem) => {
-    setSelected((prev) => {
-      if (multiSelect) {
-        let newSelected: TreeItem[] = [];
-        const isSelected = prev.some(
-          (selectedItem) => selectedItem.id === item.id
-        );
+    if (multiSelect) {
+      let newSelected: TreeItem[] = [];
+      const isSelected = values.some(
+        (selectedItem) => selectedItem.id === item.id
+      );
 
-        if (isSelected) {
-          // Deselect the item and its children if applicable
-          let toRemove: string[] = [item.id];
-          if (selectChildren && item.children) {
-            const childIds = item.children
-              .flatMap((node) => collectChildItems(node))
-              .map((n) => n.id);
-            toRemove = [...toRemove, ...childIds];
-          }
-          newSelected = prev.filter((node) => !toRemove.includes(node.id));
-        } else {
-          // Select the item and its children if applicable
-          let toAdd = [item];
-          if (selectChildren && item.children) {
-            const children = item.children.flatMap((node) =>
-              collectChildItems(node)
-            );
-            toAdd = [...toAdd, ...children];
-          }
-          newSelected = [...prev, ...toAdd];
+      if (isSelected) {
+        // Deselect the item and its children if applicable
+        let toRemove: string[] = [item.id];
+        if (selectChildren && item.children) {
+          const childIds = item.children
+            .flatMap((node) => collectChildItems(node))
+            .map((n) => n.id);
+          toRemove = [...toRemove, ...childIds];
         }
-
-        return newSelected;
+        newSelected = values.filter((node) => !toRemove.includes(node.id));
       } else {
-        // Single select mode
-        if (prev.some((selectedItem) => selectedItem.id === item.id)) {
-          onSelectionChange([]);
-          return [];
-        } else {
-          onSelectionChange([item.id]);
-          return [item];
+        // Select the item and its children if applicable
+        let toAdd = [item];
+        if (selectChildren && item.children) {
+          const children = item.children.flatMap((node) =>
+            collectChildItems(node)
+          );
+          toAdd = [...toAdd, ...children];
         }
+        newSelected = [...values, ...toAdd];
       }
-    });
+
+      onSelectionChange(newSelected.map((e) => e.id));
+    } else {
+      // Single select mode
+      if (values.some((selectedItem) => selectedItem.id === item.id)) {
+        onSelectionChange([]);
+      } else {
+        onSelectionChange([item.id]);
+      }
+    }
   };
 
   const toggleExpand = (item: TreeItem) => {
@@ -174,16 +164,16 @@ const TreeCombobox: React.FC<TreeComboboxProps> = ({
             )}
 
             <TreeCheckbox
-              selected={selected.some(
+              selected={values.some(
                 (selectedItem) => selectedItem.id === item.id
               )}
               indeterminate={
                 (hasChildren &&
                   item.children?.some((child) =>
-                    isAnyChildSelected(child, selected)
+                    isAnyChildSelected(child, values)
                   ) &&
                   !item.children.every((child) =>
-                    isAllChildrenSelected(child, selected)
+                    isAllChildrenSelected(child, values)
                   )) ||
                 false
               }
@@ -201,7 +191,6 @@ const TreeCombobox: React.FC<TreeComboboxProps> = ({
   };
 
   const clearSelection = () => {
-    setSelected([]);
     onSelectionChange([]);
   };
 
@@ -231,8 +220,8 @@ const TreeCombobox: React.FC<TreeComboboxProps> = ({
       className="w-full justify-between"
     >
       {!title && <ListFilter />}
-      {selected.length > 0
-        ? `${selected.length} selected`
+      {values.length > 0
+        ? `${values.length} selected`
         : title
           ? title
           : 'Filtre'}
@@ -249,33 +238,33 @@ const TreeCombobox: React.FC<TreeComboboxProps> = ({
       <Button variant="outline" size="sm" className="h-9">
         <ListFilter className="mr-2 h-4 w-4" />
         {title}
-        {selected.length > 0 ? (
+        {values.length > 0 ? (
           <>
             <Separator orientation="vertical" className="mx-2 h-4" />
             <Badge
               variant="muted"
               className="rounded-sm px-1 font-normal hover:bg-[#274754]/10 lg:hidden"
             >
-              {selected.length}
+              {values.length}
             </Badge>
             <div className="hidden space-x-1 lg:flex">
-              {selected.length > 3 ? (
+              {values.slice(0, 4).map((item) => (
+                <Badge
+                  key={item.id}
+                  variant="muted"
+                  className="rounded-sm px-1 font-normal max-w-28 hover:bg-[#274754]/10"
+                >
+                  <p className="truncate">{item.label}</p>
+                </Badge>
+              ))}
+
+              {values.length > 4 && (
                 <Badge
                   variant="muted"
                   className="rounded-sm px-1 font-normal hover:bg-[#274754]/10"
                 >
-                  {selected.length} selected
+                  +{values.length - 4} selected
                 </Badge>
-              ) : (
-                Array.from(selected).map((item) => (
-                  <Badge
-                    key={item.id}
-                    variant="muted"
-                    className="rounded-sm px-1 font-normal max-w-28 hover:bg-[#274754]/10"
-                  >
-                    <p className="truncate">{item.label}</p>
-                  </Badge>
-                ))
               )}
             </div>
           </>
@@ -303,7 +292,7 @@ const TreeCombobox: React.FC<TreeComboboxProps> = ({
                 {renderTreeItems(filteredItems)}
               </ScrollArea>
             </CommandGroup>
-            {selected.length > 0 && (
+            {values.length > 0 && (
               <>
                 <CommandSeparator />
                 <CommandGroup>
