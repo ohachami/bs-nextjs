@@ -9,6 +9,7 @@ import React from 'react';
 import svgLogo from '../../public/Logo.svg';
 import './globals.css';
 import { modules } from '@/utils/constants';
+import { useUser } from '@/services/users.service';
 
 const ModuleInfo: React.FC<{
   icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
@@ -31,8 +32,10 @@ const NavBar = () => {
   const pathname = usePathname();
   const params = useParams();
 
+  const userQuery = useUser();
+
   return (
-    <div className="sticky top-0 h-16 bg-white py-3 px-4 flex justify-between items-center border-b border-[#E2E8F0]">
+    <div className="sticky top-0 z-50 h-16 bg-white py-3 px-4 flex justify-between items-center border-b border-[#E2E8F0]">
       <Image src={svgLogo} alt="logo" />
 
       <div className="grow ml-[50px]">
@@ -59,7 +62,7 @@ const NavBar = () => {
 
       <div className="flex items-center gap-4">
         <p className="font-montserrat font-medium text-muted-foreground text-sm">
-          Welcome Nada
+          Welcome {userQuery.isSuccess && `${userQuery.data.firstName}`}
         </p>
         <Avatar className="w-10 h-10">
           <AvatarImage src="https://picsum.photos/200" />

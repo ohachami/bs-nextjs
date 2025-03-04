@@ -1,4 +1,5 @@
 export type Scenario = {
+  id: string;
   creator: string;
   creationDate: Date;
   name: string;
