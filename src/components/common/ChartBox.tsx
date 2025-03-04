@@ -19,9 +19,6 @@ import { MarketableConfig, TOption } from '@/utils/types';
 const getGridColsClass = (length: number) => {
   if (length <= 1) return 'grid-cols-1';
   if (length === 2) return 'grid-cols-2';
-  if (length === 3) return 'grid-cols-3';
-  if (length === 4) return 'grid-cols-2 md:grid-cols-4';
-  if (length >= 5) return 'grid-cols-2 md:grid-cols-3 lg:grid-cols-4';
   return 'grid-cols-3';
 };
 
@@ -191,18 +188,29 @@ export function ChartBox({
         }
       },
       },
-     
+      legend: {
+        show: false
+      },
       plotOptions: {
         bar: {
           columnWidth: '40%',
           barHeight: '60%',
+          distributed: true
         },
         boxPlot: {
           colors: {
             upper: '#CA7C45',
             lower: '#F4CDB2',
+            distributed: true
           },
         },
+      },
+      yaxis: {
+        labels: {
+          formatter: function(val: number) {
+            return Math.round(val).toFixed(0);
+          }
+        }
       },
       xaxis: {
         categories: d.groupedBy.data.map((item: DimentionItem) => item.label),
@@ -230,10 +238,11 @@ export function ChartBox({
     >
       {isLoading && <Loading />}
       {isSuccess && Array.isArray(data) && (
+       
         <div
           className={`grid ${getGridColsClass(data.length)} gap-6 mx-auto p-4`}
         >
-          {data.map((d, index) => (
+          {data.length > 0 ? data.map((d, index) => (
             <div className='flex flex-col' key={`${d.groupedBy.label}-${index}`}>
               <Chart
                 options={chartOptions(index, d)}
@@ -243,7 +252,11 @@ export function ChartBox({
               />
               <span className='text-muted-foreground mx-auto'>{d.groupedBy.label}</span>
             </div>
-          ))}
+          )): 
+          <div className='flex justify-center align-center'>
+            <span className='text-center text-muted-foreground font-medium'>{"Aucune donnée n'a été trouvée pour ce graphe"}</span>
+          </div>
+          }
         </div>
       )}
     </ChartWrapper>
