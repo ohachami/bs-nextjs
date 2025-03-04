@@ -29,7 +29,7 @@ function CompareVersions({
     sbuId,
     exerciseId
   );
-  const { insertOrReplaceVersionId, versionIds } = useComparaisonVersionIds();
+  const { insertOrReplaceVersionId } = useComparaisonVersionIds();
 
   useEffect(() => {
     if (

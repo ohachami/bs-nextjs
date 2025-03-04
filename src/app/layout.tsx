@@ -3,7 +3,6 @@ import './globals.css';
 import NavBar from './Navbar';
 import Providers from './providers';
 import { Toaster } from '@/components/ui/toaster';
-import { ScrollArea } from '@/components/ui/scroll-area';
 
 const montserratFont = Montserrat({
   variable: '--font-montserrat',

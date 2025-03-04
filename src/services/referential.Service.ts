@@ -96,7 +96,7 @@ export const useMarketableProductTypes = () => {
           } : {
             id: type.productType.id,
             name: type.productType.name,
-            color: ""
+            colors: []
           })
         }
       })

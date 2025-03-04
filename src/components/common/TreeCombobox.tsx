@@ -32,25 +32,7 @@ import { Badge } from '../ui/badge';
 import { Separator } from '../ui/separator';
 import TreeCheckbox from './TreeCheckbox';
 
-function getAllChildIds(items: TreeItem[]): string[] {
-  let ids: string[] = [];
 
-  for (const item of items) {
-    // If the item has children, process them
-    if (item.children && item.children.length > 0) {
-      // Add the id of each child
-      for (const child of item.children) {
-        ids.push(child.id);
-        // Recursively get ids from deeper children, if any
-        if (child.children) {
-          ids.push(...getAllChildIds(child.children));
-        }
-      }
-    }
-  }
-
-  return ids;
-}
 const isAllChildrenSelected = (
   item: TreeItem,
   selected: TreeItem[]
@@ -87,7 +69,6 @@ const TreeCombobox: React.FC<TreeComboboxProps> = ({
   buttonVariant,
   items,
   multiSelect,
-  defaultValues,
   values = [],
   title,
   placeholder,
