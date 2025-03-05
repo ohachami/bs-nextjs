@@ -165,7 +165,7 @@ export function ChartBox({
             const { MIN, AVG, MAX } = item.values;
             return {
               x: item.label,
-              y: [Math.ceil(MIN), Math.ceil(AVG), Math.ceil(AVG), Math.ceil(AVG), Math.ceil(MAX)],
+              y: [Math.round(MIN), Math.round(AVG), Math.round(AVG), Math.round(AVG), Math.round(MAX)],
             };
           }),
         };
@@ -177,7 +177,7 @@ export function ChartBox({
         chart.config.aggregations.forEach((agg, index) => {
           series.push({
             name: `Serie ${index}`,
-            data: dataItems.map((d) => Math.ceil(d.values[agg.operation])),
+            data: dataItems.map((d) => Math.round(d.values[agg.operation])),
           });
         });
       } else if (chart.config.formula && chart.config.formula.length > 0) {
@@ -185,7 +185,7 @@ export function ChartBox({
           const key = Object.keys(formulaObj).pop() as string;
           series.push({
             name: `Serie ${index}`,
-            data: dataItems.map((d) => d.values[key]),
+            data: dataItems.map((d) => Math.round(d.values[key])),
           });
         });
       }

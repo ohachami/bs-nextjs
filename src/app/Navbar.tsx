@@ -2,7 +2,7 @@
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { AvatarImage } from '@radix-ui/react-avatar';
 import clsx from 'clsx';
-import { ChartLine, ClipboardList, GitCompareArrows } from 'lucide-react';
+import { ChartLine, ClipboardList, GitCompareArrows, MousePointerClick, SlidersHorizontal } from 'lucide-react';
 import Image from 'next/image';
 import { useParams, usePathname } from 'next/navigation';
 import React from 'react';
@@ -10,12 +10,15 @@ import svgLogo from '../../public/Logo.svg';
 import './globals.css';
 import { modules } from '@/utils/constants';
 import { useUser } from '@/services/users.service';
+import Link from 'next/link';
 
 const ModuleInfo: React.FC<{
   icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
   title: string;
   actif: boolean;
-}> = ({ icon: Icon, title, actif }) => (
+  href?: string;
+}> = ({ icon: Icon, title, actif,  href}) => (
+  <Link href={href || ""}>
   <div
     className={clsx({
       'flex items-center gap-2 text-sm font-geis': true,
@@ -26,6 +29,7 @@ const ModuleInfo: React.FC<{
     <Icon className="size-4" />
     <p>{title}</p>
   </div>
+  </Link>
 );
 
 const NavBar = () => {
@@ -39,7 +43,21 @@ const NavBar = () => {
       <Image src={svgLogo} alt="logo" />
 
       <div className="grow ml-[50px]">
-        {pathname.startsWith('/modules') && (
+        {pathname.startsWith('/modules/tacticalPlanning/exercises') ? (
+          <div className="flex gap-6">
+            <ModuleInfo
+                icon={MousePointerClick}
+                title="Gestion des exercices"
+                actif={pathname.includes("/exercises")}
+                href={"/modules/tacticalPlanning/exercises"}
+              />
+              <ModuleInfo
+                icon={SlidersHorizontal}
+                title="Simulation Ad Hoc"
+                actif={!pathname.includes("/modules/tacticalPlanning/exercises")}
+              />
+          </div>
+        ): (
           <div className="flex gap-6">
             <ModuleInfo
               icon={ChartLine}
@@ -50,6 +68,7 @@ const NavBar = () => {
               icon={ClipboardList}
               title="Tactical planning"
               actif={params.module === modules.tacticalPlanning}
+              href={"/modules/tacticalPlanning"}
             />
             <ModuleInfo
               icon={GitCompareArrows}

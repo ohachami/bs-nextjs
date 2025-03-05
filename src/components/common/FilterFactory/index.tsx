@@ -3,6 +3,7 @@ import ProductFilter from './GroupedProducts';
 import RegionFilter from './RegionFilter';
 import ExercisePeriodFilter from './ExercisePeriodFilter';
 import DemandTypeFilter from './DemandTypeFilter';
+import TopFilter from './TopFilter';
 
 type Props = {
   module: string;
@@ -18,6 +19,8 @@ const FilterFactory: React.FC<Props> = ({ module, onChange, values = [] }) => {
       return <RegionFilter onChange={onChange} values={values} />;
     case 'demandType':
       return <DemandTypeFilter onChange={onChange} values={values} />;
+    case 'top':
+      return <TopFilter onChange={onChange} values={values} />;
     default:
       return <ExercisePeriodFilter onChange={onChange} values={values} />;
   }
