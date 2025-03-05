@@ -17,8 +17,7 @@ const Module = () => {
           Tactical planning (business steering)
         </h1>
         <p className="font-geist font-normal text-sm text-muted-foreground">
-          Description Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-          Nam imperdiet quam fringilla libero rutrum lobortis...
+          Encapsulant le processus de Business Steering, permettant à chaque BU de réaliser un run local pour optimiser sa valeur, et ainsi contribuer au run global visant à maximiser la valeur pour le Groupe.
         </p>
       </div>
 

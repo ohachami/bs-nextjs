@@ -27,7 +27,7 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${montserratFont.variable} antialiased bg-[#F1F5F9] h-screen flex flex-col`}
+        className={`${geistSans.variable} ${geistMono.variable} ${montserratFont.variable} antialiased bg-[#F6F9FC] h-screen flex flex-col`}
       >
         <Providers>
           <NavBar />

@@ -133,10 +133,10 @@ function CollectPage({ sbuId, setSubStepSelected }: Props) {
           className="flex-1"
         >
           <div className="flex items-start gap-4 h-full">
-            <TabsList className="flex-col max-w-max gap-4 h-auto bg-gray-200">
+            <TabsList className="flex-col max-w-max gap-4 h-auto bg-[#F1F5F9]">
               {datasources.map((dataSource: DataSourceIF, key: number) => (
                 <TabsTrigger
-                  className={`min-w-[200px]`}
+                  className={`min-w-[200px] justify-start`}
                   key={key}
                   value={`${dataSource.id}`}
                 >
@@ -158,7 +158,7 @@ function CollectPage({ sbuId, setSubStepSelected }: Props) {
                   <Tabs defaultValue={dataSource.sites[0].id}>
                     <div key={key} className="flex flex-col gap-4">
                       <div className="flex justify-between">
-                        <TabsList className="flex gap-4 h-auto w-auto items-start justify-start bg-gray-200">
+                        <TabsList className="flex gap-4 h-auto w-auto items-start justify-start bg-[#F1F5F9]">
                           {dataSource.sites.map(
                             (site: RefSiteIF, key: number) => (
                               <TabsTrigger
