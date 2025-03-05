@@ -1,11 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import FilterFactory from '../common/FilterFactory';
 import { useExerciseStore } from '@/store/exercises/useExerciseStore';
 import { useChartList } from '@/services/dashboard.service';
 import { ChartBox } from '../common/ChartBox';
 import { ChartIF, DashboardProps } from '@/types/dashboard';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { useMarketableProductTypes } from '@/services/referential.Service';
+import {
+  useGroupedProducts,
+  useMarketableProductTypes,
+} from '@/services/referential.Service';
 import CompareVersions from '../common/CompareVersions';
 import Loading from '@/app/loading';
 import { Button } from '../ui/button';
@@ -22,8 +25,9 @@ export default function SalesDashboard({
   const { currentExercise } = useExerciseStore();
 
   const { data, isPending, error } = useChartList(section.id);
+  const { data: groups } = useGroupedProducts();
   const { data: marketableTypes, isLoading: isTypeLoading } =
-    useMarketableProductTypes();
+    useMarketableProductTypes(groups || []);
 
   const handleFilter = (key: string, value: string[]) => {
     const newFilters = { ...filters };
@@ -31,11 +35,6 @@ export default function SalesDashboard({
     setFilters(newFilters);
   };
 
-  useEffect(() => {
-    if (marketableTypes && marketableTypes?.length > 0) {
-      setDefaultTab(marketableTypes[0].id);
-    }
-  }, [marketableTypes]);
   if (!currentExercise || isPending) return <Loading />;
 
   if (error) return <p className="p-4">Error Loading Charts...</p>;
