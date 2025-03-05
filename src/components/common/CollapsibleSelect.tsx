@@ -235,7 +235,7 @@ export function CollapsibleSelect({
               className="justify-center py-2 text-center cursor-pointer"
             >
               <p className="flex gap-3 items-center font-bold text-xs">
-                Comparer <ChevronRight />
+                {selectIndex === 0 ? "Visualiser" : "Comparer"} <ChevronRight />
               </p>
             </CommandItem>
           </CommandList>

@@ -19,9 +19,9 @@ const DemandTypeFilter: FC<DashboardFilterProps<string[]>> = ({
 
   return (
     <Filter
-      data={data}
+      data={data.filter(d => d.name.toLowerCase() !== "réalisé")}
       basecomp="multiselect"
-      title="Type de demande"
+      title="Statut de demande"
       placeholder="Chercher"
       mapOption={(demandType) => ({
         label: demandType.name,

@@ -291,9 +291,7 @@ export function ChartBox({
                   type={chart.chartType}
                   height={350}
                 />
-                <span className="text-muted-foreground mx-auto">
-                  {d.groupedBy.label}
-                </span>
+                 {data.length > 1 && <span className='text-muted-foreground mx-auto'>{d.groupedBy.label}</span>}
               </div>
             ))
           ) : (
