@@ -29,7 +29,7 @@ type Filter<T> = {
 } & (
   | {
       basecomp: 'multiselect';
-      mapOption: (data: T) => TOption<string>;
+      mapOption: (data: T) => TOption<number | string>;
     }
   | {
       basecomp: 'treecombobox';
@@ -63,7 +63,7 @@ const Filter = <T,>(props: Filter<T>) => {
           onSelectionChange={(selectedItems) => {
             onChange(selectedItems);
           }}
-          values={searchTree(data.map(mapOption),values)}
+          values={searchTree(data.map(mapOption), values)}
         />
       </div>
     );
