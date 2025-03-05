@@ -1,8 +1,11 @@
-import { TreeItem } from '@/types/common/TreeComboboxFilterTypes';
-import { TOption } from '@/utils/types';
 import MultiSelect from './MultiSelect';
 import TreeCombobox from '../TreeCombobox';
+import SelectComponent from './Select';
+import { TreeItem } from '@/types/common/TreeComboboxFilterTypes';
+import { FilterProps } from '@/types/filters';
+import { TOption } from '@/utils/types';
 
+// Helper function for treecombobox branch
 function searchTree(
   items: TreeItem[],
   idsSearch: string[]
@@ -20,38 +23,20 @@ function searchTree(
 
   return results;
 }
-type Filter<T> = {
-  title: string;
-  placeholder: string;
-  data: T[];
-  onChange: (values: string[]) => void;
-  values: string[];
-} & (
-  | {
-      basecomp: 'multiselect';
-      mapOption: (data: T) => TOption<number | string>;
-    }
-  | {
-      basecomp: 'treecombobox';
-      selectChildren: boolean;
-      multiSelect: boolean;
-      selectParent: boolean;
-      mapOption: (data: T) => TreeItem;
-    }
-);
 
-const Filter = <T,>(props: Filter<T>) => {
-  const { basecomp, title, placeholder, data, onChange, mapOption, values } =
-    props;
-  const handleChangeMultiSelect = (option: TOption<string>) => {
-    const newValues = values.includes(option.value)
-      ? values.filter((v) => v !== option.value)
-      : [...values, option.value];
-    onChange(newValues);
-  };
+const Filter = <T,>(props: FilterProps<T>) => {
+  // Destructure common props
+  const { basecomp, title, placeholder, data, mapOption } = props;
+
   if (basecomp === 'treecombobox') {
-    const { selectChildren, multiSelect, selectParent } = props;
-
+    // Narrow props for treecombobox
+    const {
+      selectChildren,
+      multiSelect,
+      selectParent,
+      onChange,
+      values = [],
+    } = props;
     return (
       <div>
         <TreeCombobox
@@ -62,27 +47,43 @@ const Filter = <T,>(props: Filter<T>) => {
           selectChildren={selectChildren}
           multiSelect={multiSelect}
           selectParent={selectParent}
-          onSelectionChange={(selectedItems) => {
-            onChange(selectedItems);
-          }}
+          onSelectionChange={(selectedItems) => onChange(selectedItems)}
           values={searchTree(data.map(mapOption), values)}
         />
       </div>
     );
-  }
+  } else if (basecomp === 'multiselect') {
+    // Narrow props for multiselect
+    const { onChange, values = [] } = props;
 
-  if (basecomp === 'multiselect') {
+    const handleChangeMultiSelect = (option: TOption<string>) => {
+      const newValues = values.includes(option.value)
+        ? values.filter((v) => v !== option.value)
+        : [...values, option.value];
+      onChange(newValues);
+    };
+
     return (
       <MultiSelect
         options={data.map(mapOption)}
         title={title}
         placeholder={placeholder}
         values={data.map(mapOption).filter((d) => values.includes(d.value))}
-        onChange={(e) => {
-          // onChange([e.value]);
-          handleChangeMultiSelect(e);
-        }}
+        onChange={handleChangeMultiSelect}
         onClear={() => onChange([])}
+      />
+    );
+  } else if (basecomp === 'select') {
+    // Narrow props for select
+    const { onChange, value } = props;
+    return (
+      <SelectComponent
+        title={title}
+        placeholder={placeholder}
+        options={data.map(mapOption)}
+        value={value}
+        onChange={(e) => onChange(e.value)}
+        onClear={() => {}}
       />
     );
   }

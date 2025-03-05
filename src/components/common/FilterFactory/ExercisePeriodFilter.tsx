@@ -1,13 +1,12 @@
 import { useExerciseStore } from '@/store/exercises/useExerciseStore';
 import Filter from './Filter';
 import { FC } from 'react';
+import { DashboardFilterProps } from '@/types/dashboard';
 
-type Props = {
-  onChange: (values: string[]) => void;
-  values: string[];
-};
-
-const ExercisePeriodFilter: FC<Props> = ({ onChange, values }) => {
+const ExercisePeriodFilter: FC<DashboardFilterProps<string[]>> = ({
+  onChange,
+  values,
+}) => {
   const { exercisePeriods: periods } = useExerciseStore();
   if (!periods) return <div />;
   return (

@@ -17,17 +17,21 @@ export function ChartWrapper({
   tabs,
   handleChange,
   handleChangeFilter,
+  handleChangeLimit,
   filtersConfig,
   children,
   filters,
+  limit,
 }: PropsWithChildren & {
   handleChange: (tab: TOption<string>) => void;
   handleChangeFilter: (name: string, values: string[]) => void;
+  handleChangeLimit?: (limit: number) => void;
   title: string;
   subTitle: string;
   tabs: TOption<string>[];
   filtersConfig?: Filter[];
   filters: Record<string, string[]>;
+  limit?: number;
 }) {
   const [activeTab, setActiveTab] = useState<TOption<string>>();
   return (
@@ -40,6 +44,14 @@ export function ChartWrapper({
           </div>
           {filtersConfig && (
             <div className="flex items-center justify-center gap-2 ">
+              {limit && handleChangeLimit && (
+                <FilterFactory<number>
+                  key={'limit'}
+                  module={'top'}
+                  value={limit}
+                  onChange={(v) => handleChangeLimit(v)}
+                />
+              )}
               {filtersConfig
                 .filter((e) => !e.hidden)
                 .map((e, key) => (
@@ -47,7 +59,7 @@ export function ChartWrapper({
                     key={key}
                     module={e.name}
                     values={filters[e.name] || []}
-                    onChange={(v) => handleChangeFilter(e.name, v)}
+                    onChange={(v) => handleChangeFilter(e.name, v as string[])}
                   />
                 ))}
             </div>

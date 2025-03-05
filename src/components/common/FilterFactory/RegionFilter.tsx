@@ -1,13 +1,12 @@
 import { useRegions } from '@/services/referential.Service';
 import Filter from './Filter';
 import { FC } from 'react';
+import { DashboardFilterProps } from '@/types/dashboard';
 
-type Props = {
-  onChange: (values: string[]) => void;
-  values: string[];
-};
-
-const RegionFilter: FC<Props> = ({ onChange, values }) => {
+const RegionFilter: FC<DashboardFilterProps<string[]>> = ({
+  onChange,
+  values,
+}) => {
   const { data, status } = useRegions();
 
   if (status === 'pending') {

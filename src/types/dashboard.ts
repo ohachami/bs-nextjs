@@ -1,3 +1,4 @@
+import { DashboardFilterProps } from './dashboard';
 import { Section } from './exercise';
 import { User } from './user';
 
@@ -26,7 +27,7 @@ interface GroupingItem {
 }
 
 export interface GroupedDataItem {
-  dataVersionId: string
+  dataVersionId: string;
   groupedBy: GroupingItem;
 }
 
@@ -50,6 +51,7 @@ export type QueryDefinition = {
   filters: Filter[];
   formula: Record<string, string>[];
   dataVersionsIds: string[];
+  limit?: number;
 };
 
 export type ChartIF = {
@@ -88,4 +90,10 @@ export interface DashboardProps {
   section: Section;
   user: User;
   disableCompare?: boolean;
+}
+
+export interface DashboardFilterProps<T> {
+  onChange<T>(values: T): void;
+  values?: T;
+  value?: T;
 }

@@ -1,13 +1,12 @@
 import { useDemandTypes } from '@/services/referential.Service';
 import Filter from './Filter';
 import { FC } from 'react';
+import { DashboardFilterProps } from '@/types/dashboard';
 
-type Props = {
-  onChange: (values: string[]) => void;
-  values: string[];
-};
-
-const DemandTypeFilter: FC<Props> = ({ onChange, values }) => {
+const DemandTypeFilter: FC<DashboardFilterProps<string[]>> = ({
+  onChange,
+  values,
+}) => {
   const { data, status } = useDemandTypes();
 
   if (status === 'pending') {
