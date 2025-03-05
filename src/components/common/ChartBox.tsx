@@ -59,10 +59,11 @@ export function ChartBox({
   const [activePeriod, setActivePeriod] = useState<PeriodIF>();
   const [periods] = useState<PeriodIF[]>(initialPeriods);
   const [groupBy, setGroupBy] = useState<string[]>(chart.config.groupedBy);
+  const [limit, setLimit] = useState<number>(chart.config.limit || 10);
 
   useEffect(() => {
-    setGroupBy(chart.config.groupedBy)
-  }, [chart.config.groupedBy])
+    setGroupBy(chart.config.groupedBy);
+  }, [chart.config.groupedBy]);
 
   // Initial filters state: always include periods from currentExercise
   const [filters, setFilters] = useState<Record<string, string[]>>({
@@ -99,17 +100,17 @@ export function ChartBox({
         if (!updated[key]) {
           updated[key] = [];
         }
-        
+
         updated[key] = Array.from(new Set([...globalFilters[key]]));
-        
-        if(chart.config.groupingKey && ["regions"].includes(key) ) {
+
+        if (chart.config.groupingKey && ['regions'].includes(key)) {
           const temp = [...groupBy];
-          if(updated[key].length > 0) {
+          if (updated[key].length > 0) {
             temp[0] = chart.config.groupingKey;
-          }else {
+          } else {
             temp[0] = chart.config.groupedBy[0];
           }
-          setGroupBy(temp)
+          setGroupBy(temp);
         }
       });
       return updated;
@@ -119,14 +120,14 @@ export function ChartBox({
   const handleChangeFilter = useCallback((name: string, values: string[]) => {
     const newFilter = { ...filters };
     newFilter[name] = values;
-    if(chart.config.groupingKey && ["regions"].includes(name) ) {
+    if (chart.config.groupingKey && ['regions'].includes(name)) {
       const temp = [...groupBy];
-      if(newFilter[name].length > 0) {
+      if (newFilter[name].length > 0) {
         temp[0] = chart.config.groupingKey;
-      }else {
+      } else {
         temp[0] = chart.config.groupedBy[0];
       }
-      setGroupBy(temp)
+      setGroupBy(temp);
     }
     setFilters(newFilter);
   }, []);
@@ -143,6 +144,7 @@ export function ChartBox({
     filters: aggregatedFilters,
     formula: chart.config.formula,
     dataVersionsIds: versionIds,
+    limit: limit,
   });
 
   // Prepare chart series data
@@ -165,7 +167,13 @@ export function ChartBox({
             const { MIN, AVG, MAX } = item.values;
             return {
               x: item.label,
-              y: [Math.round(MIN), Math.round(AVG), Math.round(AVG), Math.round(AVG), Math.round(MAX)],
+              y: [
+                Math.round(MIN),
+                Math.round(AVG),
+                Math.round(AVG),
+                Math.round(AVG),
+                Math.round(MAX),
+              ],
             };
           }),
         };
@@ -199,43 +207,44 @@ export function ChartBox({
   const chartOptions = useCallback(
     (index: number, d: GroupedDataItem) => ({
       ...(marketableType && { colors: marketableType.colors }),
-      chart: { id: `${chart.id}-${index}` ,
-      toolbar: {
-        show: true,
-        tools: {
-          download: true,
-          selection: false, // Disable selection zoom
-          zoom: false,      // Disable zoom
-          zoomin: false,    // Disable zoom in
-          zoomout: false,   // Disable zoom out
-          pan: false,       // Disable panning
-          reset: false      // Disable reset zoom
-        }
-      },
+      chart: {
+        id: `${chart.id}-${index}`,
+        toolbar: {
+          show: true,
+          tools: {
+            download: true,
+            selection: false, // Disable selection zoom
+            zoom: false, // Disable zoom
+            zoomin: false, // Disable zoom in
+            zoomout: false, // Disable zoom out
+            pan: false, // Disable panning
+            reset: false, // Disable reset zoom
+          },
+        },
       },
       legend: {
-        show: false
+        show: false,
       },
       plotOptions: {
         bar: {
           columnWidth: '40%',
           barHeight: '60%',
-          distributed: true
+          distributed: true,
         },
         boxPlot: {
           colors: {
             upper: '#CA7C45',
             lower: '#F4CDB2',
-            distributed: true
+            distributed: true,
           },
         },
       },
       yaxis: {
         labels: {
-          formatter: function(val: number) {
+          formatter: function (val: number) {
             return Math.round(val).toFixed(0);
-          }
-        }
+          },
+        },
       },
       xaxis: {
         categories: d.groupedBy.data.map((item: DimentionItem) => item.label),
@@ -249,8 +258,12 @@ export function ChartBox({
       filtersConfig={chart.config.filters}
       handleChangeFilter={handleChangeFilter}
       title={chart.name}
-      filters={filters}
       subTitle={chart.subTitle}
+      filters={filters}
+      {...(chart.config.limit && {
+        limit,
+        handleChangeLimit: (e) => setLimit(e),
+      })}
       tabs={periods
         .filter(
           (e) =>
@@ -263,25 +276,33 @@ export function ChartBox({
     >
       {isLoading && <Loading />}
       {isSuccess && Array.isArray(data) && (
-       
         <div
           className={`grid ${getGridColsClass(data.length)} gap-6 mx-auto p-4`}
         >
-          {data.length > 0 ? data.map((d, index) => (
-            <div className='flex flex-col' key={`${d.groupedBy.label}-${index}`}>
-              <Chart
-                options={chartOptions(index, d)}
-                series={prepareData(d.groupedBy.data)}
-                type={chart.chartType}
-                height={350}
-              />
-              <span className='text-muted-foreground mx-auto'>{d.groupedBy.label}</span>
+          {data.length > 0 ? (
+            data.map((d, index) => (
+              <div
+                className="flex flex-col"
+                key={`${d.groupedBy.label}-${index}`}
+              >
+                <Chart
+                  options={chartOptions(index, d)}
+                  series={prepareData(d.groupedBy.data)}
+                  type={chart.chartType}
+                  height={350}
+                />
+                <span className="text-muted-foreground mx-auto">
+                  {d.groupedBy.label}
+                </span>
+              </div>
+            ))
+          ) : (
+            <div className="flex justify-center align-center">
+              <span className="text-center text-muted-foreground font-medium">
+                {"Aucune donnée n'a été trouvée pour ce graphe"}
+              </span>
             </div>
-          )): 
-          <div className='flex justify-center align-center'>
-            <span className='text-center text-muted-foreground font-medium'>{"Aucune donnée n'a été trouvée pour ce graphe"}</span>
-          </div>
-          }
+          )}
         </div>
       )}
     </ChartWrapper>

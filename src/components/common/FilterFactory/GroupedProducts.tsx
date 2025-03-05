@@ -1,13 +1,12 @@
 import { useGroupedProducts } from '@/services/referential.Service';
 import Filter from './Filter';
 import { FC } from 'react';
+import { DashboardFilterProps } from '@/types/dashboard';
 
-type Props = {
-  onChange: (values: string[]) => void;
-  values: string[];
-};
-
-const ProductFilter: FC<Props> = ({ onChange, values }) => {
+const ProductFilter: FC<DashboardFilterProps<string[]>> = ({
+  onChange,
+  values,
+}) => {
   const { data, status } = useGroupedProducts();
 
   if (status === 'pending') {

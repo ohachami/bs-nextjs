@@ -4,14 +4,13 @@ import RegionFilter from './RegionFilter';
 import ExercisePeriodFilter from './ExercisePeriodFilter';
 import DemandTypeFilter from './DemandTypeFilter';
 import TopFilter from './TopFilter';
+import { DashboardFilterProps } from '@/types/dashboard';
 
-type Props = {
+type Props<T> = DashboardFilterProps<T> & {
   module: string;
-  onChange: (values: string[]) => void;
-  values?: string[];
 };
 
-const FilterFactory: React.FC<Props> = ({ module, onChange, values = [] }) => {
+const FilterFactory = <T,>({ module, onChange, values = [], value }: Props<T>) => {
   switch (module) {
     case 'products':
       return <ProductFilter onChange={onChange} values={values} />;
@@ -20,7 +19,7 @@ const FilterFactory: React.FC<Props> = ({ module, onChange, values = [] }) => {
     case 'demandType':
       return <DemandTypeFilter onChange={onChange} values={values} />;
     case 'top':
-      return <TopFilter onChange={onChange} values={values} />;
+      return <TopFilter onChange={onChange} value={value} />;
     default:
       return <ExercisePeriodFilter onChange={onChange} values={values} />;
   }
