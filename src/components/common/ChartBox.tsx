@@ -25,8 +25,9 @@ const getGridColsClass = (length: number) => {
 const buildFilters = (
   filters: Record<string, string[]>,
   filterConfig: Filter[]
-) =>
-  Object.entries(filters).reduce<Filter[]>((acc, [name, values]) => {
+) => {
+
+  const result =  Object.entries(filters).reduce<Filter[]>((acc, [name, values]) => {
     const currentFilter = filterConfig.find((f) => f.name === name);
     if (currentFilter) {
       acc.push({
@@ -37,6 +38,15 @@ const buildFilters = (
     }
     return acc;
   }, []);
+
+  filterConfig.forEach(config => {
+    if(!result.find((f) => f.name === config.name)) {
+      result.push(config)
+    }
+  })
+
+  return result;
+}
 
 export function ChartBox({
   chart,

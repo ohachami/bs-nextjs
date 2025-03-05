@@ -144,6 +144,11 @@ export const TOP_FILTER_DATA = [
   { label: 'Top 20', value: '20' },
 ] as TOption<string>[];
 
+export const CONTRACT_FILTER_DATA = [
+  { label: 'Contrat', value: 'Contract' },
+  { label: 'Spot', value: 'Spot' },
+] as TOption<string>[];
+
 export const getMarketableProductConfig = (name: string) => {
   return MARKETABLE_PRODUCT_TYPES.find(
     (m) => m.name.toLowerCase() === name.toLowerCase()

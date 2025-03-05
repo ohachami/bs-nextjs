@@ -59,7 +59,7 @@ export function ChartWrapper({
                     key={key}
                     module={e.name}
                     values={filters[e.name] || []}
-                    onChange={(v) => handleChangeFilter(e.name, v as string[])}
+                    onChange={(v) => handleChangeFilter(e.name, Array.isArray(v) ? v as string[]: [v] as string[])}
                   />
                 ))}
             </div>
