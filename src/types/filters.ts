@@ -31,10 +31,10 @@ type SelectFilter<T> = {
   basecomp: 'select';
   title: string;
   placeholder: string;
-  data: T[];
+  data: TOption<T>[];
   onChange: (value: string | number) => void;
   value?: T;
-  mapOption: (data: T) => TOption<number>;
+  mapOption: (data: TOption<T>) => TOption<T>;
 };
 
 export type FilterProps<T> =
