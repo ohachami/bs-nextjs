@@ -29,7 +29,7 @@ function Page() {
       }
       waitingStepMessage={{
         title:
-          'L’équipe BS Manufacturing est en train de préparer la première version des hypothèses Manufacturing',
+          'Les données industrielles sont en cours de mise à jour',
       }}
     >
       {({ subStepSelected, user, sections }) => {

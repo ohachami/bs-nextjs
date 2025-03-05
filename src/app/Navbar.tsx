@@ -40,7 +40,9 @@ const NavBar = () => {
 
   return (
     <div className="sticky top-0 z-50 h-16 bg-white py-3 px-4 flex justify-between items-center border-b border-[#E2E8F0]">
-      <Image src={svgLogo} alt="logo" />
+      <Link href="/">
+          <Image src={svgLogo} alt="logo" />
+      </Link>
 
       <div className="grow ml-[50px]">
         {pathname.startsWith('/modules/tacticalPlanning/exercises') ? (

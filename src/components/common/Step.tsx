@@ -75,7 +75,7 @@ function Step({
             >
               {status === STEP_STATUS.DONE ? (
                 <Check color="#57D762" />
-              ) : status === STEP_STATUS.INACTIVE ? (
+              ) : !isActive ? (
                 stepNumber
               ) : (
                 <Icon />
