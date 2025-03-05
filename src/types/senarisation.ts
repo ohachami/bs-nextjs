@@ -18,3 +18,24 @@ export interface ScenarioIF {
     is_automatic: boolean
 }
 
+
+export interface ConsolidatedDemandIF {
+    //add more attribute
+    id: string
+}
+export interface ConsolidatedProductionIF {
+    //add more attribute
+    id: string
+}
+
+export interface ConsolidatedCapacityTreatmentIF {
+    //add more attribute
+    id: string
+}
+
+
+export interface ScenarioDataIF {
+    demands: Array<ConsolidatedDemandIF>;
+    chemicalProduction: Array<ConsolidatedProductionIF>;
+    capacityTreatments: Array<ConsolidatedCapacityTreatmentIF>;
+}

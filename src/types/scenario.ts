@@ -12,4 +12,5 @@ export type Scenario = {
   comments: number;
   liked: boolean;
   disliked: boolean;
+  id: string
 };
