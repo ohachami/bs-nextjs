@@ -19,7 +19,7 @@ export default function SalesDashboard({
   disableCompare = false,
 }: DashboardProps) {
   const [displayType] = useState<string>('VISUALIZE');
-  const [, setDefaultTab] = useState<string>();
+  
   const [filters, setFilters] = useState<Record<string, any>>({});
 
   const { currentExercise } = useExerciseStore();
