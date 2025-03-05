@@ -35,6 +35,7 @@ type Filter<T> = {
       basecomp: 'treecombobox';
       selectChildren: boolean;
       multiSelect: boolean;
+      selectParent: boolean;
       mapOption: (data: T) => TreeItem;
     }
 );
@@ -49,7 +50,7 @@ const Filter = <T,>(props: Filter<T>) => {
     onChange(newValues);
   };
   if (basecomp === 'treecombobox') {
-    const { selectChildren, multiSelect } = props;
+    const { selectChildren, multiSelect, selectParent } = props;
 
     return (
       <div>
@@ -60,6 +61,7 @@ const Filter = <T,>(props: Filter<T>) => {
           placeholder={placeholder}
           selectChildren={selectChildren}
           multiSelect={multiSelect}
+          selectParent={selectParent}
           onSelectionChange={(selectedItems) => {
             onChange(selectedItems);
           }}

@@ -24,6 +24,7 @@ const ProductFilter: FC<Props> = ({ onChange, values }) => {
       basecomp="treecombobox"
       multiSelect
       selectChildren
+      selectParent
       title="Produits"
       placeholder="Chercher"
       mapOption={(pg) => ({
