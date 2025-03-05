@@ -1,5 +1,5 @@
-import { PermissionKey } from "@/types/user";
-import { MarketableConfig } from "./types";
+import { PermissionKey } from '@/types/user';
+import { MarketableConfig, TOption } from './types';
 
 export const modules = {
   marketSteering: 'marketSteering',
@@ -32,11 +32,11 @@ export const permissions = {
 } as const;
 
 export const requiredPermissions: {
-  READ_EXERCISES_LIST: PermissionKey[],
-  VIEW_EXERCISE_SHEET_DETAILS: PermissionKey[],
+  READ_EXERCISES_LIST: PermissionKey[];
+  VIEW_EXERCISE_SHEET_DETAILS: PermissionKey[];
 } = {
   READ_EXERCISES_LIST: ['ROLE_EXERCISES_LIST_R'],
-  VIEW_EXERCISE_SHEET_DETAILS: ['ROLE_EXERCISE_R']
+  VIEW_EXERCISE_SHEET_DETAILS: ['ROLE_EXERCISE_R'],
 } as const;
 
 // Exercice Types
@@ -95,46 +95,57 @@ export const SECTIONS = {
   HYPO_MANUFACTURING: 'HYPO_MANUFACTURING',
 };
 
-
-export const MARKETABLE_PRODUCT_TYPES: MarketableConfig[] = [{
-  name: "Marketable Rock",
-  colors: ["#936646", "#C28154","#E99C66","#F0BF9D","#F6D6C0",]
-}, {
-  name: "Marketable Acid",
-  colors: ["#57D762", "#6DE477", "#8FED97",  "#A8F2AF", "#ACEEB2",]
-}, {
-  name: "Feed",
-  colors: ["#57D762"]
-}, {
-  name: "Fertilizer",
-  colors: ["#007BFF"]
-}]
+export const MARKETABLE_PRODUCT_TYPES: MarketableConfig[] = [
+  {
+    name: 'Marketable Rock',
+    colors: ['#936646', '#C28154', '#E99C66', '#F0BF9D', '#F6D6C0'],
+  },
+  {
+    name: 'Marketable Acid',
+    colors: ['#57D762', '#6DE477', '#8FED97', '#A8F2AF', '#ACEEB2'],
+  },
+  {
+    name: 'Feed',
+    colors: ['#57D762'],
+  },
+  {
+    name: 'Fertilizer',
+    colors: ['#007BFF'],
+  },
+];
 
 // rus_status
 export const RUN_STATUS = {
-  PENDING: "PENDING",
-  RUNNING: "RUNNING",
-  ERROR: "ERROR",
-  DONE: "DONE"
-} as const
+  PENDING: 'PENDING',
+  RUNNING: 'RUNNING',
+  ERROR: 'ERROR',
+  DONE: 'DONE',
+} as const;
 
 //workflow_status
 export const WORKFLOW_STATUS = {
-  SHORTLISTED: "SHORTLISTED",
-  VALIDATED: "VALIDATED"
-} as const
+  SHORTLISTED: 'SHORTLISTED',
+  VALIDATED: 'VALIDATED',
+} as const;
 
 export const SENARIO_TYPE = {
-  EXPLORATION: "EXPLORATION",
-  EXPLOITATION: "EXPLOITATION"
-} as const
+  EXPLORATION: 'EXPLORATION',
+  EXPLOITATION: 'EXPLOITATION',
+} as const;
 
 export const SENARIO_INPUTS_TYPE = {
-  DONNEES_CONSOLIDEES: "DONNEES_CONSOLIDEES",
-  SCENARIOS_EXISTANTS: "SCENARIOS_EXISTANTS"
-} as const
+  DONNEES_CONSOLIDEES: 'DONNEES_CONSOLIDEES',
+  SCENARIOS_EXISTANTS: 'SCENARIOS_EXISTANTS',
+} as const;
 
+export const TOP_FILTER_DATA = [
+  { label: 'Top 5', value: 5 },
+  { label: 'Top 10', value: 10 },
+  { label: 'Top 20', value: 20 },
+] as TOption<number>[];
 
 export const getMarketableProductConfig = (name: string) => {
-  return MARKETABLE_PRODUCT_TYPES.find(m => m.name.toLowerCase() === name.toLowerCase());
-} 
+  return MARKETABLE_PRODUCT_TYPES.find(
+    (m) => m.name.toLowerCase() === name.toLowerCase()
+  );
+};
