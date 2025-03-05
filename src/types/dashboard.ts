@@ -1,4 +1,3 @@
-import { DashboardFilterProps } from './dashboard';
 import { Section } from './exercise';
 import { User } from './user';
 
@@ -95,5 +94,5 @@ export interface DashboardProps {
 export interface DashboardFilterProps<T> {
   onChange<T>(values: T): void;
   values?: T;
-  value?: T;
+  value?: string;
 }

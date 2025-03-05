@@ -10,7 +10,7 @@ type Props<T> = DashboardFilterProps<T> & {
   module: string;
 };
 
-const FilterFactory = <T,>({ module, onChange, values = [], value }: Props<T>) => {
+const FilterFactory = ({ module, onChange, values, value }: Props<string[]>) => {
   switch (module) {
     case 'products':
       return <ProductFilter onChange={onChange} values={values} />;

@@ -139,10 +139,10 @@ export const SENARIO_INPUTS_TYPE = {
 } as const;
 
 export const TOP_FILTER_DATA = [
-  { label: 'Top 5', value: 5 },
-  { label: 'Top 10', value: 10 },
-  { label: 'Top 20', value: 20 },
-] as TOption<number>[];
+  { label: 'Top 5', value: '5' },
+  { label: 'Top 10', value: '10' },
+  { label: 'Top 20', value: '20' },
+] as TOption<string>[];
 
 export const getMarketableProductConfig = (name: string) => {
   return MARKETABLE_PRODUCT_TYPES.find(

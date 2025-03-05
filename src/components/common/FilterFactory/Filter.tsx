@@ -80,8 +80,8 @@ const Filter = <T,>(props: FilterProps<T>) => {
       <SelectComponent
         title={title}
         placeholder={placeholder}
-        options={data.map(mapOption)}
-        value={value}
+        options={data.map(mapOption) as TOption<string>[]}
+        value={value as string}
         onChange={(e) => onChange(e.value)}
         onClear={() => {}}
       />
