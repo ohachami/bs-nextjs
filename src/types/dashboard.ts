@@ -92,7 +92,7 @@ export interface DashboardProps {
 }
 
 export interface DashboardFilterProps<T> {
-  onChange<T>(values: T): void;
-  values?: T;
+  onChange<T>(values: T|string): void;
+  values?: T | string[];
   value?: string;
 }

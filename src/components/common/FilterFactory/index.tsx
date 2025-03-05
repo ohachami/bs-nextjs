@@ -11,20 +11,20 @@ type Props<T> = DashboardFilterProps<T> & {
   module: string;
 };
 
-const FilterFactory = ({ module, onChange, values, value }: Props<string[]>) => {
+const FilterFactory = <T,>({ module, onChange, values = [], value }: Props<T>) => {
   switch (module) {
     case 'products':
-      return <ProductFilter onChange={onChange} values={values} />;
+      return <ProductFilter onChange={onChange} values={values as string[]}  />;
     case 'regions':
-      return <RegionFilter onChange={onChange} values={values} />;
+      return <RegionFilter onChange={onChange} values={values as string[]} />;
     case 'demandType':
-      return <DemandTypeFilter onChange={onChange} values={values} />;
+      return <DemandTypeFilter onChange={onChange} values={values as string[]} />;
     case 'top':
       return <TopFilter onChange={onChange} value={value} />;
     case 'contractTypes':
       return <ContractFilter onChange={onChange} value={value} />;
     default:
-      return <ExercisePeriodFilter onChange={onChange} values={values} />;
+      return <ExercisePeriodFilter onChange={onChange} values={values as string[]} />;
   }
 };
 

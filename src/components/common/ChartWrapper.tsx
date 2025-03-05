@@ -45,11 +45,11 @@ export function ChartWrapper({
           {filtersConfig && (
             <div className="flex items-center justify-center gap-2 ">
               {limit && handleChangeLimit && (
-                <FilterFactory<number>
+                <FilterFactory<string>
                   key={'limit'}
                   module={'top'}
-                  value={limit}
-                  onChange={(v) => handleChangeLimit(v)}
+                  value={""+limit}
+                  onChange={(v) => handleChangeLimit(Number(v))}
                 />
               )}
               {filtersConfig

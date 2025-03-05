@@ -19,7 +19,7 @@ export default function SalesDashboard({
   disableCompare = false,
 }: DashboardProps) {
   const [displayType] = useState<string>('VISUALIZE');
-  const [filters, setFilters] = useState<Record<string, any>>({});
+  const [filters, setFilters] = useState<Record<string, string[]>>({});
 
   const { currentExercise } = useExerciseStore();
 
@@ -72,21 +72,21 @@ export default function SalesDashboard({
                   <FilterFactory
                     module="products"
                     onChange={(e) => {
-                      setFilters({ ...filters, products: e });
+                      setFilters({ ...filters, products: e as string[] });
                     }}
                     values={filters['products']}
                   />
                   <FilterFactory
                     module="regions"
                     onChange={(e) => {
-                      setFilters({ ...filters, regions: e });
+                      setFilters({ ...filters, regions: e as string[]});
                     }}
                     values={filters['regions']}
                   />
                   <FilterFactory
                     module="periods"
                     onChange={(e) => {
-                      setFilters({ ...filters, periods: e });
+                      setFilters({ ...filters, periods: e as string[]});
                     }}
                     values={filters['periods']}
                   />
@@ -122,21 +122,21 @@ export default function SalesDashboard({
                 <FilterFactory
                   module="products"
                   onChange={(e) => {
-                    setFilters({ ...filters, products: e });
+                    setFilters({ ...filters, products: e as string[]});
                   }}
                   values={filters['products']}
                 />
                 <FilterFactory
                   module="regions"
                   onChange={(e) => {
-                    setFilters({ ...filters, regions: e });
+                    setFilters({ ...filters, regions: e as string[]});
                   }}
                   values={filters['regions']}
                 />
                 <FilterFactory
                   module="periods"
                   onChange={(e) => {
-                    setFilters({ ...filters, periods: e });
+                    setFilters({ ...filters, periods: e as string[]});
                   }}
                   values={filters['periods']}
                 />
