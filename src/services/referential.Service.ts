@@ -78,16 +78,14 @@ export const useDemandTypes = () => {
 };
 
 
-export const useMarketableProductTypes = () => {
-  const { data } = useGroupedProducts();
-  console.log("data", data)
+export const useMarketableProductTypes = (groups: ProductGroup[]) => {
   const types = MARKETABLE_PRODUCT_TYPES.map(m => m.name);
   return useQuery<MarketableConfig[]>({
-    queryKey: ["marketableProductTypes"],
+    queryKey: ["marketableProductTypes", groups],
     queryFn: async () => {
       const marketables: MarketableConfig[] = []
       types.forEach(t => {
-        const type = data?.find(g => g.productType.name.toLowerCase() === t.toLowerCase())
+        const type = groups?.find(g => g.productType.name.toLowerCase() === t.toLowerCase())
         if (type) {
           const config = getMarketableProductConfig(type.productType.name);
           marketables.push(config ? {
