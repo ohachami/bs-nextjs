@@ -63,22 +63,22 @@ export type ChartIF = {
   sortedBy: number;
   displayType: 'VISUALIZE' | 'COMPARE';
   chartType:
-    | 'line'
-    | 'area'
-    | 'bar'
-    | 'pie'
-    | 'donut'
-    | 'radialBar'
-    | 'scatter'
-    | 'bubble'
-    | 'heatmap'
-    | 'candlestick'
-    | 'boxPlot'
-    | 'radar'
-    | 'polarArea'
-    | 'rangeBar'
-    | 'rangeArea'
-    | 'treemap';
+  | 'line'
+  | 'area'
+  | 'bar'
+  | 'pie'
+  | 'donut'
+  | 'radialBar'
+  | 'scatter'
+  | 'bubble'
+  | 'heatmap'
+  | 'candlestick'
+  | 'boxPlot'
+  | 'radar'
+  | 'polarArea'
+  | 'rangeBar'
+  | 'rangeArea'
+  | 'treemap';
   config: QueryDefinition;
 };
 
@@ -94,5 +94,5 @@ export interface DashboardProps {
 export interface DashboardFilterProps<T> {
   onChange<T>(values: T | string): void;
   values?: T | string[];
-  value?: T;
+  value?: string;
 }

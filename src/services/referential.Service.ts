@@ -5,13 +5,16 @@ import { getMarketableProductConfig, MARKETABLE_PRODUCT_TYPES } from "@/utils/co
 import { MarketableConfig } from "@/utils/types";
 import { useQuery } from '@tanstack/react-query';
 
-export const useRegions = () => {
+export const useSalesRegions = (versionIds: string[]) => {
   return useQuery<RegionTypeIF[]>({
     queryKey: ["regions"],
     queryFn: async () => {
       return await callApi<RegionTypeIF[]>({
-        method: 'GET',
-        url: apiPaths.regions(),
+        method: 'POST',
+        url: apiPaths.salesRegions(),
+        data: {
+          versionIds
+        }
       });
     },
   });
@@ -53,13 +56,16 @@ export const useSbus = () => {
   });
 }
 
-export const useGroupedProducts = () => {
+export const useGroupedProducts = (versionIds: string[]) => {
   return useQuery<ProductGroup[]>({
     queryKey: ["groupedProducts"],
     queryFn: async () => {
       return await callApi<ProductGroup[]>({
-        method: 'GET',
-        url: apiPaths.groupedProducts(),
+        method: 'POST',
+        url: apiPaths.salesGroupedProducts(),
+        data: {
+          versionIds
+        }
       });
     },
   });

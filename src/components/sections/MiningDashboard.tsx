@@ -50,20 +50,20 @@ export default function MiningDashboard({
         <FilterFactory
           module="products"
           onChange={(e) => {
-            setFilters({ ...filters, products: e as string[]});
+            setFilters({ ...filters, products: e as string[] });
           }}
         />
         <FilterFactory
           module="regions"
           onChange={(e) => {
-            setFilters({ ...filters, regions: e as string[]});
+            setFilters({ ...filters, regions: e as string[] });
           }}
         />
         <div>
           <FilterFactory
             module="periods"
             onChange={(e) => {
-              setFilters({ ...filters, periods: e as string[]});
+              setFilters({ ...filters, periods: e as string[] });
             }}
           />
         </div>

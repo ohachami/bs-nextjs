@@ -158,7 +158,6 @@ export function ChartBox({
     groupedBy: groupBy,
     filters: aggregatedFilters,
     dataVersionsIds: versionIds,
-
     formula: chart.config.formula,
     ...(chart.config.limit && {
       limit,

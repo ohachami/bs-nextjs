@@ -101,7 +101,7 @@ function CollectPage({ sbuId, setSubStepSelected }: Props) {
     );
     if (step) {
       onConsolidateSales({ versions: versionIds, stepId: step?.id }).then(
-        (e: {id: string}) => {
+        (e: { id: string }) => {
           //show toast
           toast({
             variant: 'default',
@@ -200,7 +200,7 @@ function CollectPage({ sbuId, setSubStepSelected }: Props) {
                   </Tabs>
                 ) : (
                   // If site are not found
-                  <div className="flex flex-col gap-4 justify-between p-2">
+                  <div className="flex flex-col gap-4 justify-between p-2 pt-0">
                     <div className="flex justify-end">
                       <Button>
                         <RefreshCcw /> Actualiser

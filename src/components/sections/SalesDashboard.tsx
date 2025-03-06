@@ -12,6 +12,7 @@ import {
 import CompareVersions from '../common/CompareVersions';
 import Loading from '@/app/loading';
 import { Button } from '../ui/button';
+import { useComparaisonVersionIds } from '@/store/consolidation/comparaisonVersionIds';
 
 export default function SalesDashboard({
   section,
@@ -23,8 +24,10 @@ export default function SalesDashboard({
 
   const { currentExercise } = useExerciseStore();
 
+  const { versionIds } = useComparaisonVersionIds();
+
   const { data, isPending, error } = useChartList(section.id);
-  const { data: groups } = useGroupedProducts();
+  const { data: groups } = useGroupedProducts(versionIds);
   const { data: marketableTypes, isLoading: isTypeLoading } =
     useMarketableProductTypes(groups || []);
 
@@ -75,6 +78,7 @@ export default function SalesDashboard({
                       setFilters({ ...filters, products: e as string[] });
                     }}
                     values={filters['products']}
+                    versionIds={versionIds}
                   />
                   <FilterFactory
                     module="regions"
@@ -82,6 +86,7 @@ export default function SalesDashboard({
                       setFilters({ ...filters, regions: e as string[] });
                     }}
                     values={filters['regions']}
+                    versionIds={versionIds}
                   />
                   <FilterFactory
                     module="periods"
@@ -125,6 +130,7 @@ export default function SalesDashboard({
                     setFilters({ ...filters, products: e as string[] });
                   }}
                   values={filters['products']}
+                  versionIds={versionIds}
                 />
                 <FilterFactory
                   module="regions"
@@ -132,6 +138,7 @@ export default function SalesDashboard({
                     setFilters({ ...filters, regions: e as string[] });
                   }}
                   values={filters['regions']}
+                  versionIds={versionIds}
                 />
                 <FilterFactory
                   module="periods"

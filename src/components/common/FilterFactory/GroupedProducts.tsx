@@ -3,11 +3,12 @@ import Filter from './Filter';
 import { FC } from 'react';
 import { DashboardFilterProps } from '@/types/dashboard';
 
-const ProductFilter: FC<DashboardFilterProps<string[]>> = ({
-  onChange,
-  values,
-}) => {
-  const { data, status } = useGroupedProducts();
+const ProductFilter: FC<
+  DashboardFilterProps<string[]> & {
+    versionIds: string[];
+  }
+> = ({ onChange, values, versionIds }) => {
+  const { data, status } = useGroupedProducts(versionIds);
 
   if (status === 'pending') {
     return <span>Loading...</span>;

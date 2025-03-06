@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: steerlinx-be-cm
+  namespace: steerlinx-uat
+data:
+  SPRING_DATASOURCE_URL: jdbc:postgresql://10.195.9.210:5432/steerlixdev?currentSchema=public

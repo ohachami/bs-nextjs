@@ -1,0 +1,191 @@
+include:
+  project: pubops/deploiement_openshift
+  ref: master
+  file: gitlab/templates.yaml
+
+variables:
+  HARBOR_URL: "harbor.digilab.ocpgroup.ma"
+  IMAGE_TAG: "$CI_COMMIT_REF_NAME"
+  HARBOR_PROJECT: "steerlinx"
+
+default:
+  retry:
+    max: 2
+
+stages:
+  - test
+  - build
+  - release
+  - deploy
+
+cache:
+  key: ${CI_COMMIT_REF_SLUG}
+  paths:
+    - node_modules/
+    - .next/cache/
+    - /usr/local/share/.cache/
+
+test:
+  stage: test
+  tags:
+    - oc-xlarge
+  extends:
+    - .test-yarn
+    - .except-version
+  variables:
+    WORKDIR: .
+    BUILD_DIR: dist
+    BUILDER_IMAGE_NODE: "harbor.digilab.ocpgroup.ma/base/node:22-alpine"
+  only:
+    - branches
+
+sonar-analysis:
+  stage: test
+  tags: 
+    - large
+  image: harbor.digilab.ocpgroup.ma/devops/sonar-scanner:4.2
+  script: sonar-scanner -X -Dsonar.projectKey="SteerLinx-FE" -Dsonar.host.url="https://sonarqube.digilab.ocpgroup.ma" -Dsonar.login=${SONAR_TOKEN} -Dsonar.projectName="SteerLinx-FE" -Dsonar.branch.name=${CI_COMMIT_REF_NAME}
+  cache: []
+  only:
+    - branches
+build:
+  stage: build
+  tags:
+    - oc-xlarge
+  script:
+    - echo "$GAF_CA" >> /usr/local/share/ca-certificates/proxy-ca.crt
+    - cp /usr/local/share/ca-certificates/proxy-ca.crt /etc/ssl/certs/ && update-ca-certificates
+    - export NODE_EXTRA_CA_CERTS=/etc/ssl/certs/proxy-ca.crt
+    - yarn install
+    - export http_proxy="$PROXY"
+    - export https_proxy="$PROXY"
+    - ls -alt
+    - yarn build
+    - ls -alt
+  image: "harbor.digilab.ocpgroup.ma/base/node:22"
+  artifacts:
+    paths:
+      - .next
+      - package.json
+      - node_modules
+      - public
+      - .env
+    expire_in: 1 week
+
+release:       
+  stage: release
+  image: harbor.digilab.ocpgroup.ma/devops/docker:latest
+  services:
+      - name: harbor.digilab.ocpgroup.ma/devops/docker:dind
+        alias: docker 
+  variables:
+    DOCKER_DRIVER: overlay
+    DOCKER_HOST: 'tcp://localhost:2375'
+  tags: 
+    - oc-small
+  dependencies:
+    - build
+  before_script:
+      - |
+        if [[ "$CI_COMMIT_REF_NAME" == "master" ]]; then
+          IMAGE_TAG="dev-$CI_COMMIT_SHORT_SHA"
+        else
+          IMAGE_TAG="$CI_COMMIT_REF_NAME"
+        fi
+  script:  
+      - docker info
+      - docker login $HARBOR_URL -u "robot$"${HARBOR_USERNAME} -p ${HARBOR_TOKEN}  
+      - docker build -t harbor.digilab.ocpgroup.ma/${HARBOR_PROJECT}/steerlinx-fe:$IMAGE_TAG -f dockerfile .
+      - docker push harbor.digilab.ocpgroup.ma/${HARBOR_PROJECT}/steerlinx-fe:$IMAGE_TAG
+  cache: []
+  only:
+    - master
+    - tags
+
+deploy-stg:
+  stage: deploy
+  tags:
+    - oc-4-medium
+  extends:
+    - .deploy-oc-4
+  variables:
+    OC_URL: api.techlab.ocpgroup.ma:6443
+    REGISTRY_URL: harbor.digilab.ocpgroup.ma
+    OC_TOKEN: $OC4_TOKEN_STG
+    DOCKER_REPO: steerlinx
+    DOCKER_IMAGE: steerlinx-fe
+    DOCKER_TAG: dev-$CI_COMMIT_SHORT_SHA
+    APP: steerlinx
+    ENV_SMALL: dev
+    OC_TEMPLATE_PROJECT: steerlinx-dev
+    OC_TEMPLATE_NAME: df-template-dev
+    WORKDIR: .
+  cache: []
+  only:
+    - master
+
+
+deploy-dev-nginx:
+  stage: deploy
+  tags:
+    - oc-4-small
+  extends:
+    - .deploy-oc-4
+  script: 
+    - oc apply -f oc/nginx/dev/configmap.yaml
+    - oc apply -f oc/nginx/dev/deployment.yaml
+    - oc apply -f oc/nginx/dev/service.yaml
+    - oc apply -f oc/nginx/dev/route.yaml
+  variables:
+    OC_URL: api.techlab.ocpgroup.ma:6443
+    OC_TOKEN: $OC4_TOKEN_STG
+    APP: steerlinx
+    ENV_SMALL: dev
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "master"'
+      changes:
+        - oc/nginx/dev/**
+  cache: []
+
+deploy-uat:
+  stage: deploy
+  tags:
+    - oc-4-medium
+  extends:
+    - .deploy-oc-4
+    - .select-uat
+  variables:
+    OC_URL: api.techlab.ocpgroup.ma:6443
+    REGISTRY_URL: harbor.digilab.ocpgroup.ma
+    OC_TOKEN: ${OC4_TOKEN_UAT}
+    DOCKER_REPO: steerlinx
+    DOCKER_IMAGE: steerlinx-fe
+    DOCKER_TAG: $IMAGE_TAG
+    APP: steerlinx
+    ENV_SMALL: uat
+    OC_TEMPLATE_PROJECT: steerlinx-uat
+    OC_TEMPLATE_NAME: df-template
+    WORKDIR: .
+  cache: []
+
+deploy-uat-nginx:
+  stage: deploy
+  tags:
+    - oc-4-small
+  extends:
+    - .deploy-oc-4
+  script: 
+    - oc apply -f oc/nginx/uat/configmap.yaml
+    - oc apply -f oc/nginx/uat/deployment.yaml
+    - oc apply -f oc/nginx/uat/service.yaml
+    - oc apply -f oc/nginx/uat/route.yaml
+  variables:
+    OC_URL: api.techlab.ocpgroup.ma:6443
+    OC_TOKEN: ${OC4_TOKEN_UAT}
+    APP: steerlinx
+    ENV_SMALL: uat
+  rules:
+    - if: '$CI_COMMIT_REF_NAME =~ /^v.*-uat$/'
+      changes:
+        - oc/nginx/uat/**
+  cache: []

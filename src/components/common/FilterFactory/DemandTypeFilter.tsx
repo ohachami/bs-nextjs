@@ -19,7 +19,7 @@ const DemandTypeFilter: FC<DashboardFilterProps<string[]>> = ({
 
   return (
     <Filter
-      data={data.filter(d => d.name.toLowerCase() !== "réalisé")}
+      data={data.filter((d) => d.name.toLowerCase() !== 'réalisé')}
       basecomp="multiselect"
       title="Statut de demande"
       placeholder="Chercher"

@@ -1,13 +1,14 @@
-import { useRegions } from '@/services/referential.Service';
+import { useSalesRegions } from '@/services/referential.Service';
 import Filter from './Filter';
 import { FC } from 'react';
 import { DashboardFilterProps } from '@/types/dashboard';
 
-const RegionFilter: FC<DashboardFilterProps<string[]>> = ({
-  onChange,
-  values,
-}) => {
-  const { data, status } = useRegions();
+const RegionFilter: FC<
+  DashboardFilterProps<string[]> & {
+    versionIds: string[];
+  }
+> = ({ onChange, values, versionIds }) => {
+  const { data, status } = useSalesRegions(versionIds);
 
   if (status === 'pending') {
     return <span>Loading...</span>;

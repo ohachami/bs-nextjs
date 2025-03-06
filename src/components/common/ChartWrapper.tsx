@@ -10,6 +10,7 @@ import { Filter } from '@/types/dashboard';
 import { TOption } from '@/utils/types';
 import { PropsWithChildren, useState } from 'react';
 import FilterFactory from './FilterFactory';
+import { useComparaisonVersionIds } from '@/store/consolidation/comparaisonVersionIds';
 
 export function ChartWrapper({
   title,
@@ -34,6 +35,7 @@ export function ChartWrapper({
   limit?: number;
 }) {
   const [activeTab, setActiveTab] = useState<TOption<string>>();
+  const { versionIds } = useComparaisonVersionIds();
   return (
     <Card className="w-full">
       <CardHeader className="flex justify-between flex-col items-stretch space-y-0 border-b p-0 sm:flex-row gap-5">

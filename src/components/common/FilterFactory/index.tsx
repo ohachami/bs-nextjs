@@ -9,27 +9,41 @@ import ContractFilter from './ContractFilter';
 
 type Props<T> = DashboardFilterProps<T> & {
   module: string;
+  versionIds?: string[];
 };
 
 const FilterFactory = <T,>({
   module,
   onChange,
-  values = [],
+  values,
   value,
+  versionIds = [],
 }: Props<T>) => {
   switch (module) {
     case 'products':
-      return <ProductFilter onChange={onChange} values={values as string[]} />;
+      return (
+        <ProductFilter
+          onChange={onChange}
+          values={values as string[]}
+          versionIds={versionIds}
+        />
+      );
     case 'regions':
-      return <RegionFilter onChange={onChange} values={values as string[]} />;
+      return (
+        <RegionFilter
+          onChange={onChange}
+          values={values as string[]}
+          versionIds={versionIds}
+        />
+      );
     case 'demandType':
       return (
         <DemandTypeFilter onChange={onChange} values={values as string[]} />
       );
     case 'top':
-      return <TopFilter onChange={onChange} value={value as number} />;
+      return <TopFilter onChange={onChange} value={value} />;
     case 'contractTypes':
-      return <ContractFilter onChange={onChange} value={value as string} />;
+      return <ContractFilter onChange={onChange} values={values as string[]} />;
     default:
       return (
         <ExercisePeriodFilter onChange={onChange} values={values as string[]} />

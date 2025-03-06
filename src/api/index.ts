@@ -9,21 +9,21 @@ const api = axios.create({
 // Request Interceptor
 api.interceptors.request.use(
   (config) => {
-    console.info(
-      `Request: ${config?.method?.toUpperCase()} ${config.baseURL}${config.url}`
-    );
-    if (config.params) {
-      console.info(`Request Params: ${JSON.stringify(config.params)}`);
-    }
-    if (config.data) {
-      console.info(
-        `Request Data: ${JSON.stringify(
-          config.data,
-          (_, v) => (typeof v === 'bigint' ? v.toString() : v),
-          2
-        )}`
-      );
-    }
+    // console.info(
+    //   `Request: ${config?.method?.toUpperCase()} ${config.baseURL}${config.url}`
+    // );
+    // if (config.params) {
+    //   console.info(`Request Params: ${JSON.stringify(config.params)}`);
+    // }
+    // if (config.data) {
+    //   console.info(
+    //     `Request Data: ${JSON.stringify(
+    //       config.data,
+    //       (_, v) => (typeof v === 'bigint' ? v.toString() : v),
+    //       2
+    //     )}`
+    //   );
+    // }
     return config;
   },
   (error) => {
@@ -35,9 +35,9 @@ api.interceptors.request.use(
 // Response Interceptor
 api.interceptors.response.use(
   (response) => {
-    console.info(
-      `Response: ${response.status} ${response.config.baseURL}${response.config.url}`
-    );
+    // console.info(
+    //   `Response: ${response.status} ${response.config.baseURL}${response.config.url}`
+    // );
     return response;
   },
   (error) => {

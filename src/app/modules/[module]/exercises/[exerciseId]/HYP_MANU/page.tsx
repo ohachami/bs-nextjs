@@ -28,8 +28,7 @@ function Page() {
         )
       }
       waitingStepMessage={{
-        title:
-          'Les données industrielles sont en cours de mise à jour',
+        title: 'Les données industrielles sont en cours de mise à jour',
       }}
     >
       {({ subStepSelected, user, sections }) => {

@@ -16,10 +16,10 @@ export const apiPaths = {
   datasourceVersions: (datasourceId: string) =>
     `/datasources/${datasourceId}/versions`,
   version: (id: string) => `/datasources/versions/${id}`,
-  regions: () => `/referential/regions`,
   products: () => `/referential/products`,
   productTypes: () => `/referential/product-types`,
-  groupedProducts: () => `/referential/grouped-products`,
+  salesRegions: () => `/sales/regions`,
+  salesGroupedProducts: () => `/sales/grouped-products`,
   sbus: () => `/referential/sbus`,
   consolidationVersions: (sbuId?: string) =>
     !sbuId ? `/consolidation` : `/consolidation?sbuId=${sbuId}`,
