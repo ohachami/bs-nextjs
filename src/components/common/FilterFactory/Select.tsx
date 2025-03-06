@@ -19,7 +19,7 @@ type SelectProps<T> = {
   onClear: () => void;
 };
 
-const SelectComponent = <T extends string | number>({
+const SelectComponent = <T,>({
   title,
   placeholder,
   options,
@@ -32,9 +32,7 @@ const SelectComponent = <T extends string | number>({
       onClear();
       return;
     }
-    const selectedOption = options.find(
-      (option) => option.value.toString() === newValue
-    );
+    const selectedOption = options.find((option) => option.value === newValue);
     if (selectedOption) {
       onChange(selectedOption);
     }
@@ -52,10 +50,7 @@ const SelectComponent = <T extends string | number>({
         <SelectGroup>
           <SelectLabel>{title}</SelectLabel>
           {options.map((option) => (
-            <SelectItem
-              key={option.value.toString()}
-              value={option.value.toString()}
-            >
+            <SelectItem key={`${option.value}`} value={`${option.value}`}>
               <div className="flex items-center justify-between w-full">
                 <span>{option.label}</span>
                 {/* {value && option.value.toString() === value.toString() && (

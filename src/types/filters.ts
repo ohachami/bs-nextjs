@@ -32,7 +32,7 @@ type SelectFilter<T> = {
   title: string;
   placeholder: string;
   data: TOption<T>[];
-  onChange: (value: string | number) => void;
+  onChange: (value: T) => void;
   value?: T;
   mapOption: (data: TOption<T>) => TOption<T>;
 };

@@ -77,11 +77,11 @@ const Filter = <T,>(props: FilterProps<T>) => {
     // Narrow props for select
     const { onChange, value } = props;
     return (
-      <SelectComponent
+      <SelectComponent<T>
         title={title}
         placeholder={placeholder}
-        options={data.map(mapOption) as TOption<string>[]}
-        value={value as string}
+        options={data.map(mapOption) as TOption<T>[]}
+        value={value}
         onChange={(e) => onChange(e.value)}
         onClear={() => {}}
       />

@@ -26,27 +26,29 @@ const buildFilters = (
   filters: Record<string, string[]>,
   filterConfig: Filter[]
 ) => {
+  const result = Object.entries(filters).reduce<Filter[]>(
+    (acc, [name, values]) => {
+      const currentFilter = filterConfig.find((f) => f.name === name);
+      if (currentFilter) {
+        acc.push({
+          name,
+          key: currentFilter.key,
+          values,
+        });
+      }
+      return acc;
+    },
+    []
+  );
 
-  const result =  Object.entries(filters).reduce<Filter[]>((acc, [name, values]) => {
-    const currentFilter = filterConfig.find((f) => f.name === name);
-    if (currentFilter) {
-      acc.push({
-        name,
-        key: currentFilter.key,
-        values,
-      });
+  filterConfig.forEach((config) => {
+    if (!result.find((f) => f.name === config.name)) {
+      result.push(config);
     }
-    return acc;
-  }, []);
-
-  filterConfig.forEach(config => {
-    if(!result.find((f) => f.name === config.name)) {
-      result.push(config)
-    }
-  })
+  });
 
   return result;
-}
+};
 
 export function ChartBox({
   chart,
@@ -127,20 +129,23 @@ export function ChartBox({
     });
   }, [globalFilters]);
 
-  const handleChangeFilter = useCallback((name: string, values: string[]) => {
-    const newFilter = { ...filters };
-    newFilter[name] = values;
-    if (chart.config.groupingKey && ['regions'].includes(name)) {
-      const temp = [...groupBy];
-      if (newFilter[name].length > 0) {
-        temp[0] = chart.config.groupingKey;
-      } else {
-        temp[0] = chart.config.groupedBy[0];
+  const handleChangeFilter = useCallback(
+    (name: string, values: string[]) => {
+      const newFilter = { ...filters };
+      newFilter[name] = values;
+      if (chart.config.groupingKey && ['regions'].includes(name)) {
+        const temp = [...groupBy];
+        if (newFilter[name].length > 0) {
+          temp[0] = chart.config.groupingKey;
+        } else {
+          temp[0] = chart.config.groupedBy[0];
+        }
+        setGroupBy(temp);
       }
-      setGroupBy(temp);
-    }
-    setFilters(newFilter);
-  }, []);
+      setFilters(newFilter);
+    },
+    [filters]
+  );
 
   const aggregatedFilters = useMemo(
     () => buildFilters(filters, chart.config?.filters || []),
@@ -152,9 +157,12 @@ export function ChartBox({
     aggregations: chart.config.aggregations,
     groupedBy: groupBy,
     filters: aggregatedFilters,
-    formula: chart.config.formula,
     dataVersionsIds: versionIds,
-    limit: limit,
+
+    formula: chart.config.formula,
+    ...(chart.config.limit && {
+      limit,
+    }),
   });
 
   // Prepare chart series data
@@ -212,7 +220,6 @@ export function ChartBox({
     },
     [chart.config, chart.type, filters]
   );
-
   // Generate chart options for each chart instance
   const chartOptions = useCallback(
     (index: number, d: GroupedDataItem) => ({
@@ -301,7 +308,11 @@ export function ChartBox({
                   type={chart.chartType}
                   height={350}
                 />
-                 {data.length > 1 && <span className='text-muted-foreground mx-auto'>{d.groupedBy.label}</span>}
+                {data.length > 1 && (
+                  <span className="text-muted-foreground mx-auto">
+                    {d.groupedBy.label}
+                  </span>
+                )}
               </div>
             ))
           ) : (
