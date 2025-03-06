@@ -21,7 +21,7 @@ import {
 import { SENARIO_INPUTS_TYPE, SENARIO_TYPE } from '@/utils/constants';
 import { Form } from '../ui/form';
 
-const Scenarisation = () => {
+const Scenarisation: React.FC = () => {
   const { listScenarios, setlistScenarios, settingModel, setSettingModel } =
     useScenarisationStore();
 
@@ -44,7 +44,6 @@ const Scenarisation = () => {
 
   const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log('onSubmit:', form.getValues());
   };
 
   return (
@@ -97,7 +96,7 @@ const Scenarisation = () => {
 
               <ScenarioParams consolidated_data_id={id} form={form} />
               <div className="flex justify-end">
-                <Button>
+                <Button type="submit">
                   Run scénario
                   <ArrowRight className="size-4" />
                 </Button>

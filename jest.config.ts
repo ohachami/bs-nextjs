@@ -15,6 +15,7 @@ const config: Config = {
         // Map lucide-react to the mock
         '^lucide-react$': '<rootDir>/__mocks__/lucide-react.js',
     },
+    testPathIgnorePatterns: ["__tests__/utils/"],
 }
 
 

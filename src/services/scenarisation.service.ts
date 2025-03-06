@@ -11,7 +11,7 @@ export const useScenarioParams = (consoDataId: string) => {
         queryFn: async () => {
             return await callApi<ScenarioDataIF>({
                 method: "GET",
-                url: apiPaths.ScenarioParams(consoDataId)
+                url: apiPaths.scenarioParams(consoDataId)
             })
         },
         enabled: !!consoDataId

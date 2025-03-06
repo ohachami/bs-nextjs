@@ -72,7 +72,7 @@ const ScenarioParams: FC<PropsIF> = ({ consolidated_data_id, form }) => {
     // isError,
   } = useScenarioParams(consolidated_data_id);
 
-  console.log(consolidatedData, form.getValues());
+  // console.log(consolidatedData, form.getValues());
 
   // if (isLoading) <p className="p-4">consolidatedData is loading...</p>;
 
@@ -102,7 +102,10 @@ const ScenarioParams: FC<PropsIF> = ({ consolidated_data_id, form }) => {
         {/* Inputs Content with Nested Tabs */}
         <TabsContent value="2">
           <Tabs defaultValue={consolidatedDataTabs[0]?.id.toString()}>
-            <TabsList variant="link" className="flex justify-start gap-x-5">
+            <TabsList
+              variant="link"
+              className="flex justify-start gap-x-5 rounded-t-lg rounded-b-none"
+            >
               {consolidatedDataTabs.map((item) => (
                 <TabsTrigger
                   className="text-sm font-normal w-fit text-muted-foreground px-4"
@@ -122,7 +125,7 @@ const ScenarioParams: FC<PropsIF> = ({ consolidated_data_id, form }) => {
                 >
                   <TabsList
                     variant="link"
-                    className="flex justify-start gap-x-5"
+                    className="flex justify-start gap-x-5 rounded-b-lg rounded-t-none"
                   >
                     {item.consolidation.map((item) => (
                       <TabsTrigger
@@ -139,7 +142,7 @@ const ScenarioParams: FC<PropsIF> = ({ consolidated_data_id, form }) => {
                     <TabsContent
                       key={item.id}
                       value={item.id.toString()}
-                      className="flex-1 h-[260px]"
+                      className="flex-1 h-[260px] overflow-y-scroll"
                     >
                       <p>{item.name}</p>
                     </TabsContent>

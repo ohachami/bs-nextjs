@@ -1,6 +1,5 @@
 import { create } from "zustand"
 
-
 interface scenarisationState {
     listScenarios: boolean;// if true, list Scenarios list get displayed
     settingModel: boolean // f true, model setting get displayed

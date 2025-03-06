@@ -1,32 +1,48 @@
 import { render, renderHook, waitFor, screen } from '@testing-library/react';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { useExercisesCount } from '@/services/exercises.service';
+import { useExercisesCountByStatus } from '@/services/exercises.service';
 import Module from '@/app/modules/[module]/page';
-
-const queryClient = new QueryClient();
-const wrapper = ({ children }: { children: React.ReactNode }) => (
-  <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
-);
+import { EXERCISE_STATUS } from '@/utils/constants';
+import { Wrapper } from '../../utils/test-utils';
 
 describe('Module page', () => {
   test('renders the component and shows the correct count', async () => {
-    const { result } = renderHook(() => useExercisesCount(), { wrapper });
-    // // Wait for data to be available
-    await waitFor(() => expect(result.current.isSuccess).toBe(true));
-    console.log({ result: result.current.data });
-    expect(result.current.data).toBe(19);
+    const { result: countInProgress } = renderHook(
+      () => useExercisesCountByStatus(EXERCISE_STATUS.IN_PROGRESS),
+      {
+        wrapper: Wrapper,
+      }
+    );
+    //Wait for data to be available
+    await waitFor(() => expect(countInProgress.current.isSuccess).toBe(true));
+    expect(countInProgress.current.data).toBe(9);
+
+    const { result: countClosed } = renderHook(
+      () => useExercisesCountByStatus(EXERCISE_STATUS.CLOSED),
+      {
+        wrapper: Wrapper,
+      }
+    );
+    await waitFor(() => expect(countClosed.current.isSuccess).toBe(true));
+    expect(countClosed.current.data).toBe(13);
 
     render(
-      <QueryClientProvider client={queryClient}>
+      <Wrapper>
         <Module />
-      </QueryClientProvider>
+      </Wrapper>
     );
 
     expect(
       screen.getByText('Tactical planning (business steering)')
     ).toBeInTheDocument();
-    expect(screen.getByText('19 Exercices publiques')).toBeInTheDocument();
-    expect(screen.getByText('0 Exercices locaux')).toBeInTheDocument();
+
+    expect(
+      screen.getByText(`${countClosed.current.data} Exercices clôturés`)
+    ).toBeInTheDocument();
+
+    expect(
+      screen.getByText(`${countInProgress.current.data} Exercices en cours`)
+    ).toBeInTheDocument();
+
     expect(screen.getByText('5 Simulations')).toBeInTheDocument();
   });
 });
