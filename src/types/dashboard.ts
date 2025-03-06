@@ -27,7 +27,25 @@ interface GroupingItem {
 
 export interface GroupedDataItem {
   groupedBy: GroupingItem;
+  dataVersionId: string;
 }
+
+export type GroupedDataByRegion = {
+  label: string;
+  versions: {
+    dataVersionId: string;
+    data: DimentionItem[];
+  }[];
+};
+
+export type PreSerie = {
+  name: string;
+  labels: string[];
+  versions: {
+    dataVersionId: string;
+    values: Record<string, number>[];
+  }[];
+};
 
 interface Aggregation {
   metric: string;

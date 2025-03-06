@@ -2,19 +2,19 @@
 import Loading from '@/app/loading';
 import { useAggregations } from '@/services/aggregations.service';
 import { useExerciseStore } from '@/store/exercises/useExerciseStore';
-import {
-  ChartIF,
-  CHART_FILTERS,
-  DimentionItem,
-  Filter,
-  GroupedDataItem,
-} from '@/types/dashboard';
+import { ChartIF, CHART_FILTERS, Filter, PreSerie } from '@/types/dashboard';
 import { PeriodIF } from '@/types/refExercise/config';
 import { useEffect, useState, useMemo, useCallback } from 'react';
 import Chart from 'react-apexcharts';
 import { ChartWrapper } from './ChartWrapper';
 import { useComparaisonVersionIds } from '@/store/consolidation/comparaisonVersionIds';
 import { MarketableConfig, TOption } from '@/utils/types';
+import {
+  createPreSeriesFromTransformedData,
+  makeBoxPlotData,
+  transformData,
+} from '@/utils/chartHerlpers';
+import { collapsibleSelectColors } from '@/utils/colors';
 
 const getGridColsClass = (length: number) => {
   if (length <= 1) return 'grid-cols-1';
@@ -120,9 +120,18 @@ export function ChartBox({
     dataVersionsIds: versionIds,
   });
 
+  const transformedData = useMemo(() => {
+    if (isSuccess && data) {
+      return transformData(data).map((group) =>
+        createPreSeriesFromTransformedData(group)
+      );
+    }
+    return [];
+  }, [data, isSuccess]);
+
   // Prepare chart series data
   const prepareData = useCallback(
-    (dataItems: DimentionItem[]) => {
+    (dataItems: PreSerie) => {
       const series: {
         name: string;
         data:
@@ -132,89 +141,94 @@ export function ChartBox({
             }[]
           | number[];
       }[] = [];
-
-      if (chart.chartType === 'boxPlot') {
-        const boxSeries = {
-          name: 'BoxPlot Series',
-          data: dataItems.map((item) => {
-            const { MIN, AVG, MAX } = item.values;
-            return {
-              x: item.label,
-              y: [Math.ceil(MIN), Math.ceil(AVG), Math.ceil(AVG), Math.ceil(AVG), Math.ceil(MAX)],
-            };
-          }),
-        };
-        series.push(boxSeries);
-      } else if (
-        chart.config.aggregations &&
-        chart.config.aggregations.length > 0
-      ) {
-        chart.config.aggregations.forEach((agg, index) => {
-          series.push({
-            name: `Serie ${index}`,
-            data: dataItems.map((d) => Math.ceil(d.values[agg.operation])),
+      dataItems.versions.forEach((version) => {
+        if (chart.chartType === 'boxPlot') {
+          const boxSeries = {
+            name: 'BoxPlot Series',
+            data: version.values.map((item, index) =>
+              makeBoxPlotData(item, dataItems.labels[index])
+            ),
+          };
+          series.push(boxSeries);
+        } else if (
+          chart.config.aggregations &&
+          chart.config.aggregations.length > 0
+        ) {
+          chart.config.aggregations.forEach((agg, index) => {
+            series.push({
+              name: `Serie ${index}`,
+              data: version.values.map((d) => Math.ceil(d[agg.operation])),
+            });
           });
-        });
-      } else if (chart.config.formula && chart.config.formula.length > 0) {
-        chart.config.formula.forEach((formulaObj, index) => {
-          const key = Object.keys(formulaObj).pop() as string;
-          series.push({
-            name: `Serie ${index}`,
-            data: dataItems.map((d) => d.values[key]),
+        } else if (chart.config.formula && chart.config.formula.length > 0) {
+          chart.config.formula.forEach((formulaObj, index) => {
+            const key = Object.keys(formulaObj).pop() as string;
+            series.push({
+              name: `Serie ${index}`,
+              data: version.values.map((d) => (d && d[key] ? d[key] : 0)),
+            });
           });
-        });
-      }
-
+        }
+      });
+      console.log('series', series);
       return series;
     },
     [chart.config, chart.type, filters]
   );
-
   // Generate chart options for each chart instance
   const chartOptions = useCallback(
-    (index: number, d: GroupedDataItem) => ({
+    (index: number, d: PreSerie) => ({
       ...(marketableType && { colors: marketableType.colors }),
-      chart: { id: `${chart.id}-${index}` ,
-      toolbar: {
-        show: true,
-        tools: {
-          download: true,
-          selection: false, // Disable selection zoom
-          zoom: false,      // Disable zoom
-          zoomin: false,    // Disable zoom in
-          zoomout: false,   // Disable zoom out
-          pan: false,       // Disable panning
-          reset: false      // Disable reset zoom
-        }
-      },
+      chart: {
+        id: `${chart.id}-${index}`,
+        toolbar: {
+          show: true,
+          tools: {
+            download: true,
+            selection: false, // Disable selection zoom
+            zoom: false, // Disable zoom
+            zoomin: false, // Disable zoom in
+            zoomout: false, // Disable zoom out
+            pan: false, // Disable panning
+            reset: false, // Disable reset zoom
+          },
+        },
       },
       legend: {
-        show: false
+        show: false,
       },
       plotOptions: {
         bar: {
           columnWidth: '40%',
           barHeight: '60%',
-          distributed: true
+          distributed: true,
         },
         boxPlot: {
           colors: {
             upper: '#CA7C45',
             lower: '#F4CDB2',
-            distributed: true
+            distributed: true,
           },
         },
       },
       yaxis: {
         labels: {
-          formatter: function(val: number) {
+          formatter: function (val: number) {
             return Math.round(val).toFixed(0);
-          }
-        }
+          },
+        },
       },
       xaxis: {
-        categories: d.groupedBy.data.map((item: DimentionItem) => item.label),
+        categories: d.labels,
       },
+      // collapsibleSelectColors[the index of the versionId in the versionIds array]
+      colors: d.versions.map(
+        (v, i) =>
+          collapsibleSelectColors[
+            (versionIds.indexOf(v.dataVersionId) || i) %
+              collapsibleSelectColors.length
+          ]
+      ),
     }),
     [chart.id, marketableType]
   );
@@ -238,25 +252,28 @@ export function ChartBox({
     >
       {isLoading && <Loading />}
       {isSuccess && Array.isArray(data) && (
-       
         <div
           className={`grid ${getGridColsClass(data.length)} gap-6 mx-auto p-4`}
         >
-          {data.length > 0 ? data.map((d, index) => (
-            <div className='flex flex-col' key={`${d.groupedBy.label}-${index}`}>
-              <Chart
-                options={chartOptions(index, d)}
-                series={prepareData(d.groupedBy.data)}
-                type={chart.chartType}
-                height={350}
-              />
-              <span className='text-muted-foreground mx-auto'>{d.groupedBy.label}</span>
+          {transformedData.length > 0 ? (
+            transformedData.map((d, index) => (
+              <div className="flex flex-col" key={`${d.name}-${index}`}>
+                <Chart
+                  options={chartOptions(index, d)}
+                  series={prepareData(d)}
+                  type={chart.chartType}
+                  height={350}
+                />
+                <span className="text-muted-foreground mx-auto">{d.name}</span>
+              </div>
+            ))
+          ) : (
+            <div className="flex justify-center align-center">
+              <span className="text-center text-muted-foreground font-medium">
+                {"Aucune donnée n'a été trouvée pour ce graphe"}
+              </span>
             </div>
-          )): 
-          <div className='flex justify-center align-center'>
-            <span className='text-center text-muted-foreground font-medium'>{"Aucune donnée n'a été trouvée pour ce graphe"}</span>
-          </div>
-          }
+          )}
         </div>
       )}
     </ChartWrapper>
