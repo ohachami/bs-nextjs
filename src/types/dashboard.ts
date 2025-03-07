@@ -95,4 +95,5 @@ export interface DashboardFilterProps<T> {
   onChange<T>(values: T|string): void;
   values?: T | string[];
   value?: string;
+  sbuId?: string;
 }
