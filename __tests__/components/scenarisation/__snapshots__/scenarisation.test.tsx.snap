@@ -1,0 +1,346 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Scenarisation component renders the componnet and show the correct data 1`] = `
+{
+  "asFragment": [Function],
+  "baseElement": <body>
+    <div>
+      <form>
+        <div>
+          <div
+            class="flex flex-col gap-y-4"
+          >
+            <div>
+              <button
+                class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:bg-accent hover:text-accent-foreground h-9 p-0"
+              >
+                <div
+                  data-testid="mock-list"
+                />
+                Liste des sénarios
+              </button>
+            </div>
+            <p
+              class="text-2xl font-bold"
+            >
+              Scénario Default v1
+            </p>
+            <div
+              class="flex items-center justify-between"
+            >
+              <div
+                class="flex items-center gap-x-5"
+              >
+                <div
+                  class="text-sm font-normal"
+                >
+                  Data input
+                </div>
+                <div
+                  class="flex gap-x-1 text-sm font-normal"
+                >
+                  <div
+                    data-testid="mock-file-spreadsheet"
+                  />
+                  Données_consolidées_V2
+                </div>
+                <button
+                  class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground h-9 px-2 py-4"
+                >
+                  <div
+                    data-testid="mock-chart-no-axes"
+                  />
+                </button>
+              </div>
+              <button
+                class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground px-4 py-2 h-8"
+              >
+                <div
+                  data-testid="mock-cog"
+                />
+                Model Setting
+                <div
+                  data-testid="mock-chevron-down"
+                />
+              </button>
+            </div>
+            <div>
+              <div
+                data-orientation="horizontal"
+                dir="ltr"
+              >
+                <div
+                  aria-orientation="horizontal"
+                  class="bg-background gap-2 p-0 pt-2 pb-1 px-1 font-bold rounded-md shadow-none w-full flex justify-start gap-x-5"
+                  data-orientation="horizontal"
+                  role="tablist"
+                  style="outline: none;"
+                  tabindex="0"
+                >
+                  <button
+                    aria-controls="radix-:r0:-content-1"
+                    aria-selected="true"
+                    class="inline-flex items-center justify-center bg-background border-b-2 border-background focus:border-primary ring-0 outline-none shadow-none data-[state=active]:border-b-2 data-[state=active]:border-primary disabled:opacity-100 data-[state=active]:shadow-none rounded-none m-0 pt-1.5 pb-2 hover:bg-background-muted text-sm font-normal w-fit text-muted-foreground px-4"
+                    data-orientation="horizontal"
+                    data-radix-collection-item=""
+                    data-state="active"
+                    id="radix-:r0:-trigger-1"
+                    role="tab"
+                    tabindex="-1"
+                    type="button"
+                  >
+                    Paramètres
+                  </button>
+                  <button
+                    aria-controls="radix-:r0:-content-2"
+                    aria-selected="false"
+                    class="inline-flex items-center justify-center bg-background border-b-2 border-background focus:border-primary ring-0 outline-none shadow-none data-[state=active]:border-b-2 data-[state=active]:border-primary disabled:opacity-100 data-[state=active]:shadow-none rounded-none m-0 pt-1.5 pb-2 hover:bg-background-muted text-sm font-normal w-fit text-muted-foreground px-4"
+                    data-orientation="horizontal"
+                    data-radix-collection-item=""
+                    data-state="inactive"
+                    id="radix-:r0:-trigger-2"
+                    role="tab"
+                    tabindex="-1"
+                    type="button"
+                  >
+                    Inputs
+                  </button>
+                </div>
+                <div
+                  aria-labelledby="radix-:r0:-trigger-1"
+                  class="mt-5 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                  data-orientation="horizontal"
+                  data-state="active"
+                  id="radix-:r0:-content-1"
+                  role="tabpanel"
+                  style="animation-duration: 0s;"
+                  tabindex="0"
+                >
+                  Paramètres compt 
+                </div>
+                <div
+                  aria-labelledby="radix-:r0:-trigger-2"
+                  class="mt-5 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                  data-orientation="horizontal"
+                  data-state="inactive"
+                  hidden=""
+                  id="radix-:r0:-content-2"
+                  role="tabpanel"
+                  tabindex="0"
+                />
+              </div>
+            </div>
+            <div
+              class="flex justify-end"
+            >
+              <button
+                class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground shadow hover:bg-primary/90 h-9 px-4 py-2"
+                type="submit"
+              >
+                Run scénario
+                <div
+                  data-testid="mock-arrow-right"
+                />
+              </button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </body>,
+  "container": <div>
+    <form>
+      <div>
+        <div
+          class="flex flex-col gap-y-4"
+        >
+          <div>
+            <button
+              class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:bg-accent hover:text-accent-foreground h-9 p-0"
+            >
+              <div
+                data-testid="mock-list"
+              />
+              Liste des sénarios
+            </button>
+          </div>
+          <p
+            class="text-2xl font-bold"
+          >
+            Scénario Default v1
+          </p>
+          <div
+            class="flex items-center justify-between"
+          >
+            <div
+              class="flex items-center gap-x-5"
+            >
+              <div
+                class="text-sm font-normal"
+              >
+                Data input
+              </div>
+              <div
+                class="flex gap-x-1 text-sm font-normal"
+              >
+                <div
+                  data-testid="mock-file-spreadsheet"
+                />
+                Données_consolidées_V2
+              </div>
+              <button
+                class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground h-9 px-2 py-4"
+              >
+                <div
+                  data-testid="mock-chart-no-axes"
+                />
+              </button>
+            </div>
+            <button
+              class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground px-4 py-2 h-8"
+            >
+              <div
+                data-testid="mock-cog"
+              />
+              Model Setting
+              <div
+                data-testid="mock-chevron-down"
+              />
+            </button>
+          </div>
+          <div>
+            <div
+              data-orientation="horizontal"
+              dir="ltr"
+            >
+              <div
+                aria-orientation="horizontal"
+                class="bg-background gap-2 p-0 pt-2 pb-1 px-1 font-bold rounded-md shadow-none w-full flex justify-start gap-x-5"
+                data-orientation="horizontal"
+                role="tablist"
+                style="outline: none;"
+                tabindex="0"
+              >
+                <button
+                  aria-controls="radix-:r0:-content-1"
+                  aria-selected="true"
+                  class="inline-flex items-center justify-center bg-background border-b-2 border-background focus:border-primary ring-0 outline-none shadow-none data-[state=active]:border-b-2 data-[state=active]:border-primary disabled:opacity-100 data-[state=active]:shadow-none rounded-none m-0 pt-1.5 pb-2 hover:bg-background-muted text-sm font-normal w-fit text-muted-foreground px-4"
+                  data-orientation="horizontal"
+                  data-radix-collection-item=""
+                  data-state="active"
+                  id="radix-:r0:-trigger-1"
+                  role="tab"
+                  tabindex="-1"
+                  type="button"
+                >
+                  Paramètres
+                </button>
+                <button
+                  aria-controls="radix-:r0:-content-2"
+                  aria-selected="false"
+                  class="inline-flex items-center justify-center bg-background border-b-2 border-background focus:border-primary ring-0 outline-none shadow-none data-[state=active]:border-b-2 data-[state=active]:border-primary disabled:opacity-100 data-[state=active]:shadow-none rounded-none m-0 pt-1.5 pb-2 hover:bg-background-muted text-sm font-normal w-fit text-muted-foreground px-4"
+                  data-orientation="horizontal"
+                  data-radix-collection-item=""
+                  data-state="inactive"
+                  id="radix-:r0:-trigger-2"
+                  role="tab"
+                  tabindex="-1"
+                  type="button"
+                >
+                  Inputs
+                </button>
+              </div>
+              <div
+                aria-labelledby="radix-:r0:-trigger-1"
+                class="mt-5 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                data-orientation="horizontal"
+                data-state="active"
+                id="radix-:r0:-content-1"
+                role="tabpanel"
+                style="animation-duration: 0s;"
+                tabindex="0"
+              >
+                Paramètres compt 
+              </div>
+              <div
+                aria-labelledby="radix-:r0:-trigger-2"
+                class="mt-5 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                data-orientation="horizontal"
+                data-state="inactive"
+                hidden=""
+                id="radix-:r0:-content-2"
+                role="tabpanel"
+                tabindex="0"
+              />
+            </div>
+          </div>
+          <div
+            class="flex justify-end"
+          >
+            <button
+              class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground shadow hover:bg-primary/90 h-9 px-4 py-2"
+              type="submit"
+            >
+              Run scénario
+              <div
+                data-testid="mock-arrow-right"
+              />
+            </button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;

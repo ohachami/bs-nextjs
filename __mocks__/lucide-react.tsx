@@ -9,3 +9,16 @@ export const SlidersHorizontal = () => (
   <div data-testid="mock-slider-horizontal" />
 );
 export const MoveRight = () => <div data-testid="mock-move-right" />;
+
+export const List = () => <div data-testid="mock-list" />;
+export const ChartNoAxesCombined = () => (
+  <div data-testid="mock-chart-no-axes" />
+);
+export const FileSpreadsheet = () => (
+  <div data-testid="mock-file-spreadsheet" />
+);
+export const Cog = () => <div data-testid="mock-cog" />;
+export const ChevronDown = () => <div data-testid="mock-chevron-down" />;
+export const ChevronUp = () => <div data-testid="mock-chevron-up" />;
+export const ArrowRight = () => <div data-testid="mock-arrow-right" />;
+export const Split = () => <div data-testid="mock-split" />;

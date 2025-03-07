@@ -1,0 +1,34 @@
+{
+  "success": true,
+  "data":  [
+      {
+        "id": "1",
+        "creator": "Mahmoud",
+        "creationDate": "2024-03-06T12:00:00Z",
+        "name": "Scenario-Parametres X",
+        "type": 1,
+        "published": true,
+        "topList": [
+          { "key": "Total Revenue", "value": "1231.22 K$" },
+          { "key": "CGM global", "value": "171 K$" }
+        ],
+        "bottomList": [
+          { "key": "Engrais", "value": 33 },
+          { "key": "Feeds", "value": 100 },
+          { "key": "Acid", "value": 10 },
+          { "key": "Roche", "value": 0 },
+          { "key": "Sulfur", "value": 33 },
+          { "key": "Phosp.", "value": 100 },
+          { "key": "Concent.", "value": 10 },
+          { "key": "Granu.", "value": 0 }
+        ],
+        "likes": 2,
+        "dislikes": 1,
+        "comments": 5,
+        "liked": false,
+        "disliked": false
+      }
+     
+      
+    ]
+}
