@@ -99,6 +99,21 @@ interface ProductGroup {
   products: ProductIF[];
 }
 
+interface RefStageIF {
+  id: string;
+  name: string;
+  isDisabled: boolean;
+  order: number;
+}
+
+interface RefTreatmentIF {
+  id: string;
+  name: string;
+  isDisabled: boolean;
+  isExplore: boolean;
+  stages?: RefStageIF[];
+}
+
 export type {
   PeriodConfigIF,
   PeriodConfigV2IF,
@@ -111,7 +126,10 @@ export type {
   ProductIF,
   RegionTypeIF,
   ProductGroup,
+  RefStageIF,
+  RefTreatmentIF
 };
 
 export type CodeSubStepType =
   (typeof CODE_SUB_STEPS)[keyof typeof CODE_SUB_STEPS];
+

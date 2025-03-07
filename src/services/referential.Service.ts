@@ -1,5 +1,5 @@
 import { callApi } from "@/hooks/useApi";
-import { ProductGroup, ProductTypeIF, RefSbu, RegionTypeIF } from '@/types/refExercise/config';
+import { ProductGroup, ProductTypeIF, RefSbu, RefSiteIF, RefTreatmentIF, RegionTypeIF } from '@/types/refExercise/config';
 import { apiPaths } from "@/utils/apiPaths";
 import { getMarketableProductConfig, MARKETABLE_PRODUCT_TYPES } from "@/utils/constants";
 import { MarketableConfig } from "@/utils/types";
@@ -102,3 +102,29 @@ export const useMarketableProductTypes = (groups: ProductGroup[]) => {
     },
   });
 }
+
+export const useSites = (sbuId?: string) => {
+  return useQuery<RefSiteIF[]>({
+    enabled: Boolean(sbuId),
+    queryKey: ["sites", sbuId],
+    queryFn: async () => {
+      return await callApi<RefSiteIF[]>({
+        method: 'GET',
+        url: apiPaths.sites(sbuId ?? ''),
+      });
+    },
+  });
+};
+
+export const useTreatments = (sbuId?: string) => {
+  return useQuery<RefTreatmentIF[]>({
+    enabled: Boolean(sbuId),
+    queryKey: ["treatments", sbuId],
+    queryFn: async () => {
+      return await callApi<RefTreatmentIF[]>({
+        method: 'GET',
+        url: apiPaths.treatments(sbuId ?? ''),
+      });
+    },
+  });
+};
